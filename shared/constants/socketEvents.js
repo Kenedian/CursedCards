@@ -5,14 +5,29 @@ export const SOCKET_EVENTS = {
   CREATE_LOBBY:
     "create-lobby",
 
+  CREATE_LOBBY_SUCCESS:
+    "create-lobby-success",
+
   JOIN_LOBBY:
     "join-lobby",
+
+  JOIN_LOBBY_SUCCESS:
+    "join-lobby-success",
 
   LEAVE_LOBBY:
     "leave-lobby",
 
   LOBBY_UPDATED:
     "lobby-updated",
+
+  LOBBY_ERROR:
+    "lobby-error",
+
+  KICK_PLAYER:
+    "kick-player",
+
+  PLAYER_KICKED:
+    "player-kicked",
 
   // game
 

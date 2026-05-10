@@ -4,6 +4,14 @@ import {
   computed
 } from "vue"
 
+import socket
+from "../socket"
+
+import {
+  SOCKET_EVENTS
+}
+from "../../../shared/constants/socketEvents"
+
 import useGameStore
 from "../stores/gameStore"
 
@@ -13,24 +21,47 @@ const emit = defineEmits([
 ])
 
 const {
-  players
+  currentLobby,
+  currentPlayer
 } = useGameStore()
-
-const lobbyCode = "ABCD"
 
 const copied =
   ref(false)
 
 const maxPlayers = 8
 
+const players = computed(() => {
+
+  return (
+    currentLobby.value?.players || []
+  )
+})
+
+const lobbyCode = computed(() => {
+
+  return (
+    currentLobby.value?.code || "----"
+  )
+})
+
+const isHost = computed(() => {
+
+  return (
+    currentPlayer.value?.isHost
+  )
+})
+
 const playerCount = computed(() => {
+
   return players.value.length
 })
 
 async function copyCode() {
 
   await navigator.clipboard
-    .writeText(lobbyCode)
+    .writeText(
+      lobbyCode.value
+    )
 
   copied.value = true
 
@@ -43,11 +74,16 @@ async function copyCode() {
 
 function kickPlayer(playerId) {
 
-  players.value =
-    players.value.filter(
-      player =>
-        player.id !== playerId
-    )
+  socket.emit(
+    SOCKET_EVENTS.KICK_PLAYER,
+
+    {
+      code:
+        lobbyCode.value,
+
+      playerId
+    }
+  )
 }
 </script>
 
@@ -101,7 +137,13 @@ function kickPlayer(playerId) {
           </div>
 
           <button
+            v-if="isHost"
+
             class="btn btn-success lobby-button"
+
+            :disabled="
+              playerCount < 3
+            "
 
             @click="
               emit('start-game')
@@ -110,6 +152,17 @@ function kickPlayer(playerId) {
             Start Game
           </button>
 
+          <div
+            v-if="
+              isHost &&
+              playerCount < 3
+            "
+
+            class="minimum-text"
+          >
+            Minimum 3 players required
+          </div>
+
           <button
             class="btn btn-danger lobby-button"
 
@@ -117,7 +170,11 @@ function kickPlayer(playerId) {
               emit('leave')
             "
           >
-            Close Lobby
+            {{
+              isHost
+                ? "Close Lobby"
+                : "Leave Lobby"
+            }}
           </button>
 
         </div>
@@ -164,13 +221,17 @@ function kickPlayer(playerId) {
                 ></i>
 
                 <span>
-                  {{ player.name }}
+                  {{ player.username }}
                 </span>
 
               </div>
 
               <button
-                v-if="!player.isHost"
+                v-if="
+                  isHost &&
+                  !player.isHost
+                "
+
                 class="btn btn-danger kick-button"
 
                 @click="
@@ -377,10 +438,6 @@ function kickPlayer(playerId) {
   font-size: 24px;
 }
 
-.player-score {
-  opacity: 0.7;
-}
-
 .host-icon {
   color: gold;
 
@@ -392,8 +449,6 @@ function kickPlayer(playerId) {
       rgba(255,215,0,0.4)
     );
 }
-
-/* COPY BUTTON */
 
 .copy-button {
   width: 64px;
@@ -454,8 +509,6 @@ function kickPlayer(playerId) {
   font-size: 28px;
 }
 
-/* KICK BUTTON */
-
 .kick-button {
   width: 52px;
   height: 52px;
@@ -477,8 +530,6 @@ function kickPlayer(playerId) {
   width: 52px;
   height: 52px;
 }
-
-/* CAPSULE */
 
 .capsule {
   height: 52px;
@@ -502,8 +553,6 @@ function kickPlayer(playerId) {
 
   font-size: 20px;
 }
-
-/* PLAYER LIST ANIMATIONS */
 
 .player-list-enter-active,
 .player-list-leave-active,
@@ -533,8 +582,6 @@ function kickPlayer(playerId) {
 
   width: calc(100% - 10px);
 }
-
-/* ANIMATIONS */
 
 @keyframes copiedPulse {
 

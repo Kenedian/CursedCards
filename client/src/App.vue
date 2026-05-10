@@ -1,5 +1,20 @@
 <script setup>
-import { ref } from "vue"
+import {
+  ref,
+  watch
+}
+from "vue"
+
+import socket
+from "./socket"
+
+import useGameStore
+from "./stores/gameStore"
+
+import {
+  SOCKET_EVENTS
+}
+from "../../shared/constants/socketEvents"
 
 import { SCREENS }
 from "./constants/screens"
@@ -16,25 +31,62 @@ from "./views/GameScreen.vue"
 import AdminScreen
 from "./views/AdminScreen.vue"
 
+const {
+  currentLobby
+} = useGameStore()
+
 const currentScreen =
   ref(SCREENS.MENU)
 
+watch(
+
+  currentLobby,
+
+  lobby => {
+
+    if (!lobby) {
+
+      if (
+        currentScreen.value ===
+        SCREENS.LOBBY
+      ) {
+
+        currentScreen.value =
+          SCREENS.MENU
+      }
+    }
+  }
+)
+
 function openMenu() {
+
+  if (currentLobby.value) {
+
+    socket.emit(
+      SOCKET_EVENTS.LEAVE_LOBBY,
+
+      currentLobby.value.code
+    )
+  }
+
   currentScreen.value =
     SCREENS.MENU
 }
 
 function openLobby() {
+
   currentScreen.value =
     SCREENS.LOBBY
 }
 
 function openGame() {
+
   currentScreen.value =
     SCREENS.GAME
 }
 
 function openAdmin() {
+
   currentScreen.value =
     SCREENS.ADMIN
 }

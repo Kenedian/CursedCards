@@ -12,27 +12,17 @@ from "../../../shared/constants/socketEvents"
 import getBlackCardPickCount
 from "../utils/cards/getBlackCardPickCount"
 
-import {
-  mockPlayers
-}
-from "../mocks/players"
-
-import {
-  mockSubmissions
-}
-from "../mocks/submissions"
-
 const whiteCards =
   ref([])
 
 const blackCards =
   ref([])
 
-const players =
-  ref([...mockPlayers])
+const currentLobby =
+  ref(null)
 
-const submissions =
-  ref([...mockSubmissions])
+const currentPlayer =
+  ref(null)
 
 socket.on(
   SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
@@ -44,6 +34,63 @@ socket.on(
 
     blackCards.value =
       cards.blackCards
+  }
+)
+
+socket.on(
+  SOCKET_EVENTS.CREATE_LOBBY_SUCCESS,
+
+  lobby => {
+
+    currentLobby.value =
+      lobby
+
+    currentPlayer.value =
+      lobby.players.find(
+        player =>
+          player.id ===
+          socket.id
+      )
+  }
+)
+
+socket.on(
+  SOCKET_EVENTS.JOIN_LOBBY_SUCCESS,
+
+  lobby => {
+
+    currentLobby.value =
+      lobby
+
+    currentPlayer.value =
+      lobby.players.find(
+        player =>
+          player.id ===
+          socket.id
+      )
+  }
+)
+
+socket.on(
+  SOCKET_EVENTS.LOBBY_UPDATED,
+
+  lobby => {
+
+    currentLobby.value =
+      lobby
+  }
+)
+
+socket.on(
+  SOCKET_EVENTS.PLAYER_KICKED,
+
+  () => {
+
+    currentLobby.value =
+      null
+
+    currentPlayer.value =
+      null
   }
 )
 
@@ -89,10 +136,10 @@ export default function useGameStore() {
     whiteCards,
     blackCards,
 
-    // gameplay
+    // lobby
 
-    players,
-    submissions,
+    currentLobby,
+    currentPlayer,
 
     // helpers
 

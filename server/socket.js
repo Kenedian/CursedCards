@@ -1,6 +1,9 @@
 const registerAdminHandlers =
   require("./handlers/adminHandler")
 
+const registerLobbyHandlers =
+  require("./handlers/lobbyHandler")
+
 module.exports =
   function registerSocketHandlers(io) {
 
@@ -15,6 +18,11 @@ module.exports =
         )
 
         registerAdminHandlers(
+          io,
+          socket
+        )
+
+        registerLobbyHandlers(
           io,
           socket
         )
