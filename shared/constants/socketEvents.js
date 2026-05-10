@@ -18,5 +18,16 @@ export const SOCKET_EVENTS = {
     "start-game",
 
   GAME_UPDATED:
-    "game-updated"
+    "game-updated",
+
+
+  // admin
+  ADMIN_LOGIN:
+    "admin-login",
+
+  ADMIN_LOGIN_SUCCESS:
+    "admin-login-success",
+
+  ADMIN_LOGIN_FAILED:
+    "admin-login-failed"
 }

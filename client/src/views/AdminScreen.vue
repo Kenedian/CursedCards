@@ -1,5 +1,14 @@
 <script setup>
-import { ref } from "vue"
+import { ref }
+from "vue"
+
+import socket
+from "../socket"
+
+import {
+  SOCKET_EVENTS
+}
+from "../../../shared/constants/socketEvents"
 
 import AdminAuthScreen
 from "./admin/AdminAuthScreen.vue"
@@ -7,19 +16,41 @@ from "./admin/AdminAuthScreen.vue"
 import AdminPanelScreen
 from "./admin/AdminPanelScreen.vue"
 
-const authenticated = ref(true) // TODO: change to false
-const error = ref("")
+const authenticated =
+  ref(false)
+
+const error =
+  ref("")
 
 function authenticate(password) {
-  if (password === "fazolepokadil") {
-    authenticated.value = true
-    error.value = ""
 
-    return
-  }
-
-  error.value = "Wrong password"
+  socket.emit(
+    SOCKET_EVENTS.ADMIN_LOGIN,
+    password
+  )
 }
+
+socket.on(
+  SOCKET_EVENTS.ADMIN_LOGIN_SUCCESS,
+
+  () => {
+
+    authenticated.value =
+      true
+
+    error.value = ""
+  }
+)
+
+socket.on(
+  SOCKET_EVENTS.ADMIN_LOGIN_FAILED,
+
+  () => {
+
+    error.value =
+      "Wrong password"
+  }
+)
 </script>
 
 <template>
