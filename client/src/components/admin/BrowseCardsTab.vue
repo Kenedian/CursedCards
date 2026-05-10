@@ -50,6 +50,19 @@ const filteredCards = computed(() => {
   return props.blackCards
 })
 
+const modeLabel = computed(() => {
+
+  if (currentMode.value === ADMIN_MODES.EDIT) {
+    return "Editing cards"
+  }
+
+  if (currentMode.value === ADMIN_MODES.DELETE) {
+    return "Deleting cards"
+  }
+
+  return "Viewing deck"
+})
+
 function handleCardClick(card) {
 
   if (currentMode.value === ADMIN_MODES.DELETE) {
@@ -107,91 +120,120 @@ function confirmDelete() {
 
     <div class="browse-top">
 
-      <div class="top-group">
+      <div class="toolbar-panel">
 
-        <button
-          class="btn"
+        <div class="toolbar-label">
+          Deck Type
+        </div>
 
-          :class="
-            currentType === CARD_TYPES.WHITE
-              ? 'btn-primary'
-              : 'btn-secondary'
-          "
+        <div class="top-group">
 
-          @click="
-            currentType = CARD_TYPES.WHITE
-          "
-        >
-          White Cards
-        </button>
+          <button
+            class="btn"
 
-        <button
-          class="btn"
+            :class="
+              currentType === CARD_TYPES.WHITE
+                ? 'btn-primary'
+                : 'btn-secondary'
+            "
 
-          :class="
-            currentType === CARD_TYPES.BLACK
-              ? 'btn-primary'
-              : 'btn-secondary'
-          "
+            @click="
+              currentType = CARD_TYPES.WHITE
+            "
+          >
+            White Cards
+          </button>
 
-          @click="
-            currentType = CARD_TYPES.BLACK
-          "
-        >
-          Black Cards
-        </button>
+          <button
+            class="btn"
+
+            :class="
+              currentType === CARD_TYPES.BLACK
+                ? 'btn-primary'
+                : 'btn-secondary'
+            "
+
+            @click="
+              currentType = CARD_TYPES.BLACK
+            "
+          >
+            Black Cards
+          </button>
+
+        </div>
 
       </div>
 
-      <div class="top-group">
+      <div
+        class="mode-chip"
 
-        <button
-          class="btn"
+        :class="{
+          edit: currentMode === ADMIN_MODES.EDIT,
+          delete: currentMode === ADMIN_MODES.DELETE
+        }"
+      >
+        {{ modeLabel }}
+        ·
+        {{ filteredCards.length }}
+      </div>
 
-          :class="
-            currentMode === ADMIN_MODES.VIEW
-              ? 'btn-primary'
-              : 'btn-secondary'
-          "
+      <div class="toolbar-panel">
 
-          @click="
-            currentMode = ADMIN_MODES.VIEW
-          "
-        >
-          View
-        </button>
+        <div class="toolbar-label">
+          Action Mode
+        </div>
 
-        <button
-          class="btn"
+        <div class="top-group">
 
-          :class="
-            currentMode === ADMIN_MODES.EDIT
-              ? 'btn-warning'
-              : 'btn-secondary'
-          "
+          <button
+            class="btn"
 
-          @click="
-            currentMode = ADMIN_MODES.EDIT
-          "
-        >
-          Edit
-        </button>
+            :class="
+              currentMode === ADMIN_MODES.VIEW
+                ? 'btn-primary'
+                : 'btn-secondary'
+            "
 
-        <button
-          class="btn"
+            @click="
+              currentMode = ADMIN_MODES.VIEW
+            "
+          >
+            View
+          </button>
 
-          :class="
-            currentMode === ADMIN_MODES.DELETE
-              ? 'btn-danger'
-              : 'btn-secondary'
-          "
+          <button
+            class="btn"
 
-          @click="
-            currentMode = ADMIN_MODES.DELETE
-          "
-        >
-          Delete
-        </button>
+            :class="
+              currentMode === ADMIN_MODES.EDIT
+                ? 'btn-warning'
+                : 'btn-secondary'
+            "
+
+            @click="
+              currentMode = ADMIN_MODES.EDIT
+            "
+          >
+            Edit
+          </button>
+
+          <button
+            class="btn"
+
+            :class="
+              currentMode === ADMIN_MODES.DELETE
+                ? 'btn-danger'
+                : 'btn-secondary'
+            "
+
+            @click="
+              currentMode = ADMIN_MODES.DELETE
+            "
+          >
+            Delete
+          </button>
+
+        </div>
 
       </div>
 
@@ -275,9 +317,83 @@ function confirmDelete() {
   gap: 20px;
 }
 
+.toolbar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 12px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 12px;
+
+  background:
+    rgba(3,5,4,0.42);
+}
+
+.toolbar-label {
+  color:
+    var(--game-muted);
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 .top-group {
   display: flex;
   gap: 10px;
+}
+
+.mode-chip {
+  min-width: 190px;
+  height: 48px;
+
+  padding: 0 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border:
+    1px solid rgba(77,156,255,0.28);
+
+  border-radius: 10px;
+
+  background:
+    rgba(77,156,255,0.09);
+
+  color:
+    #9cc9ff;
+
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.mode-chip.edit {
+  border-color:
+    rgba(255,216,77,0.34);
+
+  background:
+    rgba(255,216,77,0.09);
+
+  color:
+    var(--game-yellow);
+}
+
+.mode-chip.delete {
+  border-color:
+    rgba(255,77,97,0.34);
+
+  background:
+    rgba(255,77,97,0.1);
+
+  color:
+    #ff9aa6;
 }
 
 .cards-grid {
@@ -293,9 +409,15 @@ function confirmDelete() {
 
   gap: 28px;
 
-  padding-top: 12px;
-  padding-right: 12px;
-  padding-bottom: 20px;
+  padding: 18px 12px 22px;
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+
+  border-radius: 12px;
+
+  background:
+    rgba(0,0,0,0.18);
 
   justify-items: center;
   align-content: start;
@@ -311,21 +433,26 @@ function confirmDelete() {
 }
 
 .cards-grid::-webkit-scrollbar {
-  width: 18px;
+  width: 14px;
 }
 
 .cards-grid::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #080a09;
 
-  border-radius: 999px;
+  border-radius: 10px;
 }
 
 .cards-grid::-webkit-scrollbar-thumb {
-  background: #444;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(47,230,107,0.55),
+      rgba(47,230,107,0.18)
+    );
 
-  border-radius: 999px;
+  border-radius: 10px;
 
-  border: 3px solid #1a1a1a;
+  border: 3px solid #080a09;
 }
 
 .card-wrapper {
@@ -352,7 +479,7 @@ function confirmDelete() {
   filter:
     drop-shadow(
       0 0 14px
-      rgba(255,193,7,0.45)
+    rgba(255,193,7,0.45)
     );
 
   transform: translateY(-6px);
@@ -372,5 +499,21 @@ function confirmDelete() {
   transform:
     translateY(-6px)
     scale(1.02);
+}
+
+@media (max-width: 1050px) {
+
+  .browse-top {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .top-group {
+    flex-wrap: wrap;
+  }
+
+  .mode-chip {
+    width: 100%;
+  }
 }
 </style>

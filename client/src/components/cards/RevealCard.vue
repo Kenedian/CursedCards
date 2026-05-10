@@ -119,12 +119,16 @@ const {
 
   background:
     linear-gradient(
-      180deg,
-      #080808 0%,
-      #040404 100%
+      145deg,
+      #101311,
+      #030403 58%,
+      #000
     );
 
-  border-radius: 28px;
+  border:
+    1px solid rgba(255,255,255,0.1);
+
+  border-radius: 14px;
 
   padding: 26px;
 
@@ -142,7 +146,9 @@ const {
     blur(2px);
 
   box-shadow:
-    0 0 35px rgba(0,0,0,0.45);
+    0 16px 0 rgba(0,0,0,0.24),
+    0 24px 42px rgba(0,0,0,0.42),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 
   transition:
     transform 0.45s cubic-bezier(.2,1,.2,1),
@@ -171,6 +177,7 @@ const {
   z-index: 20;
 
   box-shadow:
+    0 16px 0 rgba(0,0,0,0.24),
     0 0 0 3px #2fe66b,
     0 0 55px rgba(47,230,107,0.35),
     0 0 100px rgba(47,230,107,0.12);
@@ -304,8 +311,8 @@ const {
 
   border-radius: 999px;
 
-  background: #2fe66b;
-  color: black;
+  background: var(--game-green);
+  color: #041006;
 
   display: flex;
   justify-content: center;

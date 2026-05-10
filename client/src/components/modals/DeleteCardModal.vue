@@ -60,7 +60,7 @@ const emit = defineEmits([
   inset: 0;
 
   background:
-    rgba(0,0,0,0.65);
+    rgba(0,0,0,0.72);
 
   display: flex;
   justify-content: center;
@@ -68,24 +68,55 @@ const emit = defineEmits([
 
   z-index: 99999;
 
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
 }
 
 .modal-box {
   width: 420px;
 
-  background: #242424;
+  background:
+    linear-gradient(
+      180deg,
+      var(--game-panel-strong),
+      rgba(7,9,8,0.98)
+    );
 
-  border-radius: 24px;
+  border:
+    1px solid rgba(255,77,97,0.28);
+
+  border-radius: 14px;
 
   padding: 32px;
 
   box-shadow:
-    0 0 40px rgba(0,0,0,0.45);
+    var(--game-shadow),
+    0 0 44px rgba(255,77,97,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 
   display: flex;
   flex-direction: column;
   gap: 22px;
+}
+
+.modal-box h2 {
+  margin: 0;
+
+  color:
+    #ff9aa6;
+
+  font-size: 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.modal-box p {
+  margin: 0;
+
+  color:
+    var(--game-muted);
+
+  font-size: 16px;
+  font-weight: 800;
 }
 
 .modal-buttons {

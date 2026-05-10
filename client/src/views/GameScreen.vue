@@ -246,12 +246,19 @@ function handleSelectVote(id) {
   width: 100vw;
   height: 100vh;
 
-  padding: 28px;
+  padding: 22px;
 
   display: flex;
   flex-direction: column;
 
   overflow: hidden;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(47,230,107,0.08),
+      transparent 48%
+    );
 }
 
 .game-layout {
@@ -265,13 +272,14 @@ function handleSelectVote(id) {
 }
 
 .sidebar-slot {
-  width: 240px;
+  width: 264px;
 
   flex-shrink: 0;
 
   display: flex;
 
   padding-top: 18px;
+  padding-right: 18px;
 }
 
 .sidebar-enter-active,

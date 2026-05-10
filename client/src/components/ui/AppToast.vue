@@ -25,18 +25,32 @@ defineProps({
       :class="type"
     >
 
+      <div class="toast-icon">
+        <i
+          :class="
+            type === 'success'
+              ? 'fa-solid fa-check'
+              : 'fa-solid fa-triangle-exclamation'
+          "
+        ></i>
+      </div>
+
+      <div class="toast-content">
+
       <div class="toast-title">
 
         {{
           type === "success"
-            ? "Success"
-            : "Error"
+            ? "Signal Confirmed"
+            : "Action Blocked"
         }}
 
       </div>
 
       <div class="toast-message">
         {{ message }}
+      </div>
+
       </div>
 
     </div>
@@ -57,43 +71,109 @@ defineProps({
   color: white;
 
   padding:
-    18px 22px;
+    14px 16px;
 
-  border-radius: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  border:
+    1px solid rgba(255,255,255,0.1);
+
+  border-left:
+    4px solid var(--game-red);
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(18,23,20,0.98),
+      rgba(7,9,8,0.98)
+    );
 
   z-index: 999999;
 
+  backdrop-filter:
+    blur(12px);
+
   box-shadow:
-    0 10px 28px rgba(0,0,0,0.4);
+    0 18px 42px rgba(0,0,0,0.42),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .toast-container.error {
-  background: #dc3545;
+  border-left-color:
+    var(--game-red);
 }
 
 .toast-container.success {
-  background: #2fe66b;
+  border-left-color:
+    var(--game-green);
+}
 
-  color: black;
+.toast-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255,77,97,0.14);
+
+  color:
+    #ff9aa6;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.toast-container.success
+.toast-icon {
+  background:
+    rgba(47,230,107,0.14);
+
+  color:
+    var(--game-green);
+}
+
+.toast-content {
+  min-width: 0;
 }
 
 .toast-title {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 900;
 
-  opacity: 0.8;
+  color:
+    #ff9aa6;
 
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
+}
+
+.toast-container.success
+.toast-title {
+  color:
+    var(--game-green);
 }
 
 .toast-message {
-  font-size: 18px;
-  font-weight: 600;
+  color:
+    rgba(255,255,255,0.9);
 
-  line-height: 1.4;
+  font-size: 16px;
+  font-weight: 800;
+
+  line-height: 1.32;
 }
 
 .toast-enter-active {
@@ -106,14 +186,16 @@ defineProps({
   opacity: 0;
 
   transform:
-    translateY(-18px);
+    translateX(22px)
+    scale(0.98);
 }
 
 .toast-enter-to {
   opacity: 1;
 
   transform:
-    translateY(0);
+    translateX(0)
+    scale(1);
 }
 
 .toast-leave-active {
@@ -126,13 +208,15 @@ defineProps({
   opacity: 1;
 
   transform:
-    translateY(0);
+    translateX(0)
+    scale(1);
 }
 
 .toast-leave-to {
   opacity: 0;
 
   transform:
-    translateY(-24px);
+    translateX(26px)
+    scale(0.98);
 }
 </style>

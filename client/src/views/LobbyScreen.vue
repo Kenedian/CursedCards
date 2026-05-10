@@ -297,13 +297,17 @@ function kickPlayer(playerId) {
   text-align: center;
 
   font-size: 72px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
 
   margin-bottom: 12px;
 
   flex-shrink: 0;
 
   text-shadow:
-    0 0 30px rgba(255,255,255,0.06);
+    0 4px 0 rgba(0,0,0,0.55),
+    0 0 34px rgba(47,230,107,0.2);
 }
 
 .lobby-box {
@@ -315,45 +319,25 @@ function kickPlayer(playerId) {
 
   padding: 42px;
 
-  border-radius: 34px;
+  border-radius: 14px;
 
   background:
     linear-gradient(
       180deg,
-      rgba(42,42,42,0.92),
-      rgba(28,28,28,0.96)
+      var(--game-panel-strong),
+      rgba(8,10,9,0.96)
     );
 
   border:
-    1px solid rgba(255,255,255,0.05);
+    1px solid var(--game-line);
 
   backdrop-filter:
     blur(12px);
 
   box-shadow:
-    0 0 50px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.04);
-
-  animation:
-    lobbyFloat 6s ease-in-out infinite;
-}
-
-@keyframes lobbyFloat {
-
-  0% {
-    transform:
-      translateY(0px);
-  }
-
-  50% {
-    transform:
-      translateY(-2px);
-  }
-
-  100% {
-    transform:
-      translateY(0px);
-  }
+    var(--game-shadow),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 0 4px rgba(0,0,0,0.22);
 }
 
 /* LEFT */
@@ -371,6 +355,8 @@ function kickPlayer(playerId) {
   margin: 0;
 
   font-size: 48px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 /* DIVIDER */
@@ -416,17 +402,17 @@ function kickPlayer(playerId) {
   justify-content: center;
   align-items: center;
 
-  border-radius: 24px;
+  border-radius: 12px;
 
   background:
     linear-gradient(
       180deg,
-      #151515,
-      #0f0f0f
+      #080b09,
+      #030403
     );
 
   border:
-    1px solid rgba(255,255,255,0.06);
+    1px solid var(--game-line-strong);
 
   font-size: 58px;
   font-weight: bold;
@@ -435,7 +421,8 @@ function kickPlayer(playerId) {
 
   box-shadow:
     inset 0 0 30px rgba(0,0,0,0.45),
-    0 0 24px rgba(0,0,0,0.35);
+    0 0 24px rgba(0,0,0,0.35),
+    0 0 24px rgba(47,230,107,0.08);
 
   text-shadow:
     0 0 14px rgba(255,255,255,0.08);
@@ -447,7 +434,7 @@ function kickPlayer(playerId) {
   height: 68px;
 
   border: none;
-  border-radius: 18px;
+  border-radius: 10px;
 
   font-size: 24px;
 
@@ -484,9 +471,15 @@ function kickPlayer(playerId) {
   height: 68px;
 
   border: none;
-  border-radius: 20px;
+  border-radius: 10px;
 
-  background: #1f6fff;
+  background:
+    linear-gradient(
+      180deg,
+      #5ba7ff,
+      #1f6fff 58%,
+      #1649ad
+    );
 
   color: white;
 
@@ -511,7 +504,13 @@ function kickPlayer(playerId) {
 }
 
 .copy-button.copied {
-  background: #20c96b;
+  background:
+    linear-gradient(
+      180deg,
+      #43f27d,
+      #20c96b 58%,
+      #12682e
+    );
 }
 
 .copy-button i {
@@ -542,6 +541,8 @@ function kickPlayer(playerId) {
   margin: 0;
 
   font-size: 42px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .players-list {
@@ -590,10 +591,10 @@ function kickPlayer(playerId) {
   justify-content: space-between;
   align-items: center;
 
-  border-radius: 20px;
+  border-radius: 10px;
 
   background:
-    rgba(255,255,255,0.035);
+    rgba(255,255,255,0.045);
 
   border:
     1px solid rgba(255,255,255,0.04);
@@ -683,9 +684,14 @@ function kickPlayer(playerId) {
 /* CAPSULE */
 
 .capsule {
-  background: #242424;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(25,31,28,0.98),
+      rgba(7,10,8,0.98)
+    );
 
-  border-radius: 999px;
+  border-radius: 10px;
 
   padding: 0 24px;
 
@@ -697,9 +703,10 @@ function kickPlayer(playerId) {
   align-items: center;
 
   font-size: 20px;
+  font-weight: 900;
 
   border:
-    1px solid rgba(255,255,255,0.05);
+    1px solid var(--game-line);
 
   box-shadow:
     0 0 18px rgba(0,0,0,0.35),

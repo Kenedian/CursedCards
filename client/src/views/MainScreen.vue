@@ -253,15 +253,33 @@ onUnmounted(() => {
 .title {
   text-align: center;
 
-  font-size: 64px;
+  font-size: 74px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
 
   margin-bottom: 25px;
+
+  color:
+    #f9fff9;
+
+  text-shadow:
+    0 4px 0 rgba(0,0,0,0.55),
+    0 0 34px rgba(47,230,107,0.22);
 }
 
 .menu-box {
-  background: #2a2a2a;
+  background:
+    linear-gradient(
+      180deg,
+      var(--game-panel-strong),
+      rgba(8,10,9,0.96)
+    );
 
-  border-radius: 25px;
+  border:
+    1px solid var(--game-line);
+
+  border-radius: 14px;
 
   padding: 40px;
 
@@ -272,7 +290,9 @@ onUnmounted(() => {
   gap: 40px;
 
   box-shadow:
-    0 0 30px rgba(0,0,0,0.5);
+    var(--game-shadow),
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 0 4px rgba(0,0,0,0.22);
 }
 
 .menu-side {
@@ -282,6 +302,21 @@ onUnmounted(() => {
   flex-direction: column;
 
   gap: 20px;
+}
+
+.menu-side h2 {
+  margin: 0;
+
+  color:
+    var(--game-yellow);
+
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+
+  text-shadow:
+    0 0 16px rgba(255,216,77,0.16);
 }
 
 .divider {

@@ -355,14 +355,28 @@ function handleAction() {
 
   align-items: center;
 
-  padding-bottom: 16px;
+  padding:
+    12px 14px 16px;
 
   border-bottom:
-    1px solid rgba(255,255,255,0.04);
+    1px solid rgba(47,230,107,0.18);
 
   margin-bottom: 12px;
 
   z-index: 50;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,16,14,0.82),
+      rgba(6,8,7,0.38)
+    );
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 18px 32px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .top-left,
@@ -385,10 +399,11 @@ function handleAction() {
   padding: 0;
 
   border: none;
-  border-radius: 16px;
+  border-radius: 10px;
 
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 900;
+  text-transform: uppercase;
 
   transition:
     transform 0.16s,
@@ -420,10 +435,11 @@ function handleAction() {
   padding: 0 18px;
 
   border: none;
-  border-radius: 16px;
+  border-radius: 10px;
 
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 900;
+  text-transform: uppercase;
 
   transition:
     transform 0.16s,
@@ -452,19 +468,25 @@ function handleAction() {
   align-items: center;
   justify-content: center;
 
-  border-radius: 999px;
+  border-radius: 10px;
 
   background:
-    rgba(255,255,255,0.045);
+    linear-gradient(
+      180deg,
+      rgba(24,30,27,0.96),
+      rgba(7,10,8,0.96)
+    );
 
   border:
-    1px solid rgba(255,255,255,0.05);
+    1px solid rgba(255,255,255,0.1);
 
   backdrop-filter:
     blur(10px);
 
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
   color:
     rgba(255,255,255,0.92);

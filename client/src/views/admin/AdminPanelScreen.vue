@@ -103,9 +103,29 @@ onUnmounted(() => {
 
       <div class="top-left">
 
-        <h1>
-          Admin Panel
-        </h1>
+        <div>
+
+          <div class="panel-kicker">
+            Deck Console
+          </div>
+
+          <h1>
+            Admin Panel
+          </h1>
+
+        </div>
+
+        <div class="deck-stats">
+
+          <div class="stat-chip">
+            White {{ whiteCards.length }}
+          </div>
+
+          <div class="stat-chip">
+            Black {{ blackCards.length }}
+          </div>
+
+        </div>
 
         <div class="tab-buttons">
 
@@ -239,10 +259,17 @@ onUnmounted(() => {
   width: 100vw;
   height: 100vh;
 
-  padding: 30px;
+  padding: 22px;
 
   display: flex;
   flex-direction: column;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(47,230,107,0.08),
+      transparent 52%
+    );
 }
 
 .top-bar {
@@ -250,13 +277,83 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 30px;
+  gap: 18px;
+
+  margin-bottom: 18px;
+
+  padding: 14px;
+
+  border:
+    1px solid rgba(47,230,107,0.18);
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,16,14,0.88),
+      rgba(6,8,7,0.48)
+    );
+
+  box-shadow:
+    0 18px 32px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .top-left {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 18px;
+  min-width: 0;
+}
+
+.panel-kicker {
+  color:
+    var(--game-green);
+
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.top-left h1 {
+  margin: 0;
+
+  font-size: 34px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+.deck-stats {
+  display: flex;
+  gap: 8px;
+}
+
+.stat-chip {
+  height: 38px;
+
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+
+  border:
+    1px solid rgba(255,255,255,0.1);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,0.045);
+
+  color:
+    var(--game-muted);
+
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .tab-buttons {
@@ -267,5 +364,36 @@ onUnmounted(() => {
 .panel-content {
   flex: 1;
   min-height: 0;
+
+  padding: 18px;
+
+  border:
+    1px solid var(--game-line);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(13,17,15,0.76),
+      rgba(7,9,8,0.84)
+    );
+
+  box-shadow:
+    var(--game-shadow),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+@media (max-width: 1050px) {
+
+  .top-bar,
+  .top-left {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tab-buttons {
+    flex-wrap: wrap;
+  }
 }
 </style>

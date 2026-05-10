@@ -66,9 +66,18 @@ const {
   width: 280px;
   height: 380px;
 
-  background: #050505;
+  background:
+    linear-gradient(
+      145deg,
+      #101311,
+      #030403 58%,
+      #000
+    );
 
-  border-radius: 28px;
+  border:
+    1px solid rgba(255,255,255,0.1);
+
+  border-radius: 18px;
 
   padding: 26px;
 
@@ -78,7 +87,9 @@ const {
   margin-bottom: 120px;
 
   box-shadow:
-    0 0 60px rgba(0,0,0,0.45);
+    0 24px 0 rgba(0,0,0,0.28),
+    0 34px 70px rgba(0,0,0,0.48),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 
   overflow: hidden;
 
@@ -123,17 +134,24 @@ const {
 
   padding: 0 14px;
 
-  border-radius: 999px;
+  border-radius: 8px;
 
-  background: #2fe66b;
-  color: white;
+  background:
+    linear-gradient(
+      180deg,
+      var(--game-green),
+      var(--game-green-dark)
+    );
+
+  color: #041006;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 900;
+  text-transform: uppercase;
 
   box-shadow:
     0 0 18px rgba(47,230,107,0.35),

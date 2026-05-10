@@ -64,7 +64,23 @@ defineProps({
 
   justify-content: center;
 
-  padding-top: 10px;
+  padding: 16px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(13,17,15,0.78),
+      rgba(7,9,8,0.78)
+    );
+
+  box-shadow:
+    0 18px 34px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .players-list {
@@ -79,13 +95,27 @@ defineProps({
   justify-content: space-between;
   align-items: center;
 
-  min-height: 24px;
+  min-height: 38px;
+
+  padding: 0 8px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(255,255,255,0.025);
 
   font-size: 16px;
+  font-weight: 800;
 
   transition:
     transform 0.18s ease,
-    opacity 0.18s ease;
+    opacity 0.18s ease,
+    background 0.18s ease;
+}
+
+.player-row:hover {
+  background:
+    rgba(255,255,255,0.05);
 }
 
 .player-left {
@@ -113,9 +143,11 @@ defineProps({
   }
 
 .player-score {
-  opacity: 0.7;
+  color:
+    var(--game-yellow);
 
   font-size: 15px;
+  font-weight: 900;
 
   flex-shrink: 0;
 }

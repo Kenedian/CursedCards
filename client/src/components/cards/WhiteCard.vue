@@ -77,10 +77,19 @@ const {
   width: 180px;
   height: 240px;
 
-  background: white;
-  color: black;
+  background:
+    linear-gradient(
+      145deg,
+      #fffdf2,
+      #e8e2cf 100%
+    );
 
-  border-radius: 24px;
+  color: #070707;
+
+  border:
+    1px solid rgba(0,0,0,0.16);
+
+  border-radius: 14px;
 
   padding: 18px;
 
@@ -95,7 +104,9 @@ const {
   cursor: pointer;
 
   box-shadow:
-    0 0 25px rgba(0,0,0,0.3);
+    0 14px 0 rgba(0,0,0,0.24),
+    0 22px 30px rgba(0,0,0,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.85);
 
   overflow: hidden;
 
@@ -117,8 +128,10 @@ const {
     scale(1.04);
 
   box-shadow:
-    0 0 25px rgba(0,0,0,0.35),
-    0 0 18px rgba(47,230,107,0.35);
+    0 18px 0 rgba(0,0,0,0.22),
+    0 26px 40px rgba(0,0,0,0.34),
+    0 0 0 4px rgba(47,230,107,0.35),
+    0 0 30px rgba(47,230,107,0.18);
 }
 
 .white-card-wrapper.picked:hover {
@@ -160,18 +173,24 @@ const {
   width: 42px;
   height: 42px;
 
-  border-bottom-right-radius: 18px;
-  border-top-left-radius: 24px;
+  border-bottom-right-radius: 12px;
+  border-top-left-radius: 14px;
 
-  background: #2fe66b;
-  color: white;
+  background:
+    linear-gradient(
+      180deg,
+      var(--game-green),
+      var(--game-green-dark)
+    );
+
+  color: #041006;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 900;
 
   box-shadow:
     0 0 14px rgba(47,230,107,0.45);
@@ -181,6 +200,8 @@ const {
   height: 65%;
 
   line-height: 1.15;
+
+  font-weight: 900;
 
   overflow: hidden;
 
