@@ -32,7 +32,16 @@ const server =
 const io =
   new Server(server, {
     cors: {
-      origin: "*"
+
+      origin: [
+        "http://localhost:5173",
+        "https://tvujfrontend.vercel.app"
+      ],
+
+      methods: [
+        "GET",
+        "POST"
+      ]
     }
   })
 
