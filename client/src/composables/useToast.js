@@ -1,6 +1,11 @@
 import useUiStore
 from "../stores/uiStore"
 
+import {
+  playSound
+}
+from "./useGameAudio"
+
 let toastTimeout = null
 
 export default function useToast() {
@@ -20,6 +25,10 @@ export default function useToast() {
       message,
       type
     }
+
+    playSound(
+      "toastError"
+    )
 
     clearTimeout(
       toastTimeout
@@ -42,19 +51,10 @@ export default function useToast() {
     )
   }
 
-  function toastSuccess(message) {
-
-    showToast(
-      message,
-      "success"
-    )
-  }
-
   return {
 
     showToast,
 
-    toastError,
-    toastSuccess
+    toastError
   }
 }

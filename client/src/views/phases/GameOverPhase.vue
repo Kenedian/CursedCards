@@ -1,8 +1,21 @@
 <script setup>
-import { computed, ref, onMounted } from "vue"
+import {
+  computed,
+  ref,
+  onMounted,
+  onUnmounted
+} from "vue"
+
+import {
+  playSound
+}
+from "../../composables/useGameAudio"
 
 const props = defineProps({
-  players: Array
+  players: {
+    type: Array,
+    default: () => []
+  }
 })
 
 function isHost(player) {
@@ -34,10 +47,16 @@ const revealRemaining = ref(false)
 
 const shakeWinner = ref(false)
 
+let cancelled = false
+
 function wait(ms) {
   return new Promise(resolve =>
     setTimeout(resolve, ms)
   )
+}
+
+function isCancelled() {
+  return cancelled
 }
 
 async function startReveal() {
@@ -46,9 +65,17 @@ async function startReveal() {
 
     await wait(500)
 
+    if (isCancelled()) {
+      return
+    }
+
     revealThird.value = true
 
     await wait(220)
+
+    if (isCancelled()) {
+      return
+    }
 
     revealThirdText.value = true
   }
@@ -57,9 +84,17 @@ async function startReveal() {
 
     await wait(650)
 
+    if (isCancelled()) {
+      return
+    }
+
     revealSecond.value = true
 
     await wait(220)
+
+    if (isCancelled()) {
+      return
+    }
 
     revealSecondText.value = true
   }
@@ -68,17 +103,35 @@ async function startReveal() {
 
     await wait(850)
 
+    if (isCancelled()) {
+      return
+    }
+
     revealFirst.value = true
 
+    playSound("gameOverWinner")
+
     await wait(260)
+
+    if (isCancelled()) {
+      return
+    }
 
     shakeWinner.value = true
 
     await wait(350)
 
+    if (isCancelled()) {
+      return
+    }
+
     shakeWinner.value = false
 
     await wait(100)
+
+    if (isCancelled()) {
+      return
+    }
 
     revealWinnerText.value = true
   }
@@ -86,11 +139,21 @@ async function startReveal() {
   // vždy revealni pravou stranu
   await wait(700)
 
+  if (isCancelled()) {
+    return
+  }
+
   revealRemaining.value = true
 }
 
 onMounted(() => {
+  cancelled = false
+
   startReveal()
+})
+
+onUnmounted(() => {
+  cancelled = true
 })
 </script>
 
@@ -106,6 +169,8 @@ onMounted(() => {
         <!-- #1 -->
 
         <div
+          v-if="firstPlace"
+
           class="winner-wrapper"
 
           :class="{

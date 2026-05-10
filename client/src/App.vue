@@ -30,6 +30,11 @@ from "./views/AdminScreen.vue"
 import AppToast
 from "./components/ui/AppToast.vue"
 
+import {
+  playSound
+}
+from "./composables/useGameAudio"
+
 const {
   currentLobby
 } = useGameStore()
@@ -59,6 +64,8 @@ const currentScreen =
   })
 
 function openAdmin() {
+
+  playSound("adminOpen")
 
   adminOpen.value = true
 }
