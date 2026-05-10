@@ -40,11 +40,11 @@ const formattedText = computed(() => {
   props.selectedCards.forEach(card => {
 
     formatted = formatted.replace(
-      card,
+      card.text,
 
       `
         <span class="answer-text">
-          ${card}
+          ${card.text}
         </span>
       `
     )
@@ -80,10 +80,10 @@ const {
   >
 
     <div
-      v-if="props.votes !== undefined"
+      v-if="props.voteCount !== undefined"
       class="votes-badge"
     >
-      {{ props.votes }}
+      {{ props.voteCount }}
     </div>
 
     <div

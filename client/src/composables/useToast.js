@@ -1,0 +1,60 @@
+import useUiStore
+from "../stores/uiStore"
+
+let toastTimeout = null
+
+export default function useToast() {
+
+  const {
+    toast
+  } = useUiStore()
+
+  function showToast(
+    message,
+    type = "error"
+  ) {
+
+    toast.value = {
+
+      visible: true,
+      message,
+      type
+    }
+
+    clearTimeout(
+      toastTimeout
+    )
+
+    toastTimeout =
+      setTimeout(() => {
+
+        toast.value.visible =
+          false
+
+      }, 3000)
+  }
+
+  function toastError(message) {
+
+    showToast(
+      message,
+      "error"
+    )
+  }
+
+  function toastSuccess(message) {
+
+    showToast(
+      message,
+      "success"
+    )
+  }
+
+  return {
+
+    showToast,
+
+    toastError,
+    toastSuccess
+  }
+}

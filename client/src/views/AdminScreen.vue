@@ -1,6 +1,9 @@
 <script setup>
-import { ref }
-from "vue"
+import {
+  ref,
+  onMounted,
+  onUnmounted
+} from "vue"
 
 import socket
 from "../socket"
@@ -30,31 +33,53 @@ function authenticate(password) {
   )
 }
 
-socket.on(
-  SOCKET_EVENTS.ADMIN_LOGIN_SUCCESS,
+function handleLoginSuccess() {
 
-  () => {
+  authenticated.value =
+    true
 
-    authenticated.value =
-      true
+  error.value = ""
 
-    error.value = ""
+  socket.emit(
+    SOCKET_EVENTS.ADMIN_GET_CARDS
+  )
+}
 
-    socket.emit(
-      SOCKET_EVENTS.ADMIN_GET_CARDS
-    )
-  }
-)
+function handleLoginFailed() {
 
-socket.on(
-  SOCKET_EVENTS.ADMIN_LOGIN_FAILED,
+  error.value =
+    "Wrong password"
+}
 
-  () => {
+onMounted(() => {
 
-    error.value =
-      "Wrong password"
-  }
-)
+  socket.on(
+    SOCKET_EVENTS.ADMIN_LOGIN_SUCCESS,
+
+    handleLoginSuccess
+  )
+
+  socket.on(
+    SOCKET_EVENTS.ADMIN_LOGIN_FAILED,
+
+    handleLoginFailed
+  )
+})
+
+onUnmounted(() => {
+
+  socket.off(
+    SOCKET_EVENTS.ADMIN_LOGIN_SUCCESS,
+
+    handleLoginSuccess
+  )
+
+  socket.off(
+    SOCKET_EVENTS.ADMIN_LOGIN_FAILED,
+
+    handleLoginFailed
+  )
+})
 </script>
 
 <template>

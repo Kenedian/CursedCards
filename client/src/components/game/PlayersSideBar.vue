@@ -18,7 +18,7 @@ defineProps({
           class="player-row"
 
           v-for="player in players"
-          :key="player.name"
+          :key="player.id"
         >
 
           <div class="player-left">
@@ -28,9 +28,15 @@ defineProps({
               :class="{ ready: player.ready }"
             ></div>
 
-            <span class="player-name">
-              {{ player.name }}
-            </span>
+            <div
+              class="player-name"
+
+              :class="{
+                host: player.isHost
+              }"
+            >
+              {{ player.username }}
+            </div>
 
           </div>
 
@@ -91,11 +97,20 @@ defineProps({
   min-width: 0;
 }
 
-.player-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+  .player-name {
+    color: rgba(255,255,255,0.92);
+
+    transition:
+      color 0.18s ease,
+      text-shadow 0.18s ease;
+  }
+
+  .player-name.host {
+    color: #ffd84d;
+
+    text-shadow:
+      0 0 12px rgba(255,216,77,0.18);
+  }
 
 .player-score {
   opacity: 0.7;

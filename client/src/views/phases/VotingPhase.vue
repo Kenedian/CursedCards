@@ -7,12 +7,23 @@ const props = defineProps({
 
   submissions: Array,
 
-  selectedVoteId: Number
+  selectedVoteId: [
+    String,
+    Number
+  ]
 })
 
 const emit = defineEmits([
   "select-vote"
 ])
+
+function clickSubmission(id) {
+
+  emit(
+    "select-vote",
+    id
+  )
+}
 </script>
 
 <template>
@@ -28,7 +39,7 @@ const emit = defineEmits([
     "
 
     @card-click="
-      emit('select-vote', $event)
+      clickSubmission
     "
   />
 </template>

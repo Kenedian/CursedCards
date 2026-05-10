@@ -1,14 +1,7 @@
 <script setup>
-import { computed }
-from "vue"
-
-import useGameStore
-from "../stores/gameStore"
-
-import useGameRound
-from "../composables/game/useGameRound"
-
-import { GAME_PHASES }
+import {
+  GAME_PHASES
+}
 from "../../../shared/constants/gamePhases"
 
 import TopBar
@@ -17,20 +10,21 @@ from "../components/game/TopBar.vue"
 import PlayersSideBar
 from "../components/game/PlayersSideBar.vue"
 
-const emit = defineEmits([
-  "leave",
-  "back-to-lobby"
-])
+import useGameState
+from "../composables/game/useGameState"
+
+import useGameSelections
+from "../composables/game/useGameSelections"
+
+import useGamePhase
+from "../composables/game/useGamePhase"
+
+import useGameActions
+from "../composables/game/useGameActions"
 
 const {
-  players,
-  submissions,
 
-  getRandomWhiteCards,
-  getRandomBlackCard
-} = useGameStore()
-
-const {
+  currentLobby,
 
   gamePhase,
 
@@ -40,106 +34,117 @@ const {
   blackCard,
   handCards,
 
+  submissions,
+
+  sortedPlayers,
+
+  readyCount,
+  totalPlayers,
+
+  isHost,
+  isReady
+
+} = useGameState()
+
+const {
+
   selectedCards,
   selectedVoteId,
 
-  currentPhase,
   canReady,
 
   toggleCard,
-  selectVote,
+  selectVote
+
+} = useGameSelections({
+
+  gamePhase,
+  blackCard
+})
+
+const {
+  currentPhase
+} = useGamePhase(
+  gamePhase
+)
+
+const {
+
+  toggleReady,
+
+  submitVote,
 
   nextRound,
-  resetGame
+  backToLobby,
 
-} = useGameRound({
-  getRandomWhiteCards,
-  getRandomBlackCard
+  leaveGame
+
+} = useGameActions({
+
+  currentLobby,
+
+  gamePhase,
+
+  selectedCards,
+  handCards,
+
+  selectedVoteId
 })
 
-function backToLobby() {
+function handleSelectVote(id) {
 
-  resetGame()
+  selectVote(id)
 
-  emit("back-to-lobby")
+  submitVote(id)
 }
-
-function toggleReady() {
-
-  players.value[0].ready =
-    !players.value[0].ready
-}
-
-const sortedPlayers = computed(() => {
-
-  return [...players.value]
-    .sort(
-      (a, b) =>
-        b.score - a.score
-    )
-})
-
-const readyCount = computed(() => {
-
-  return players.value.filter(
-    player => player.ready
-  ).length
-})
-
-const totalPlayers = computed(() => {
-
-  return players.value.length
-})
 </script>
 
 <template>
   <div class="game-container">
 
-  <TopBar
-    :phase="gamePhase"
+    <TopBar
+      :phase="gamePhase"
 
-    :can-ready="canReady"
+      :can-ready="canReady"
 
-    :is-host="true"
+      :is-host="isHost"
 
-    :is-ready="
-      players[0]?.ready
-    "
+      :is-ready="isReady"
 
-    :round="round"
+      :round="round"
 
-    :max-rounds="
-      maxRounds
-    "
+      :max-rounds="
+        maxRounds
+      "
 
-    :ready-count="
-      readyCount
-    "
+      :ready-count="
+        readyCount
+      "
 
-    :total-players="
-      totalPlayers
-    "
+      :total-players="
+        totalPlayers
+      "
 
-    @toggle-ready="
-      toggleReady
-    "
+      @toggle-ready="
+        toggleReady
+      "
 
-    @leave="
-      emit('leave')
-    "
+      @next-round="
+        nextRound
+      "
 
-    @next-round="
-      nextRound
-    "
+      @back-to-lobby="
+        backToLobby
+      "
 
-    @back-to-lobby="
-      backToLobby
-    "
-  />
+      @leave="
+        leaveGame
+      "
+    />
 
     <div class="game-layout">
 
-      <!-- SIDEBAR SLOT -->
+      <!-- SIDEBAR -->
 
       <div class="sidebar-slot">
 
@@ -160,7 +165,7 @@ const totalPlayers = computed(() => {
 
       </div>
 
-      <!-- PHASE CONTENT -->
+      <!-- PHASE -->
 
       <div class="phase-wrapper">
 
@@ -206,7 +211,7 @@ const totalPlayers = computed(() => {
               "
 
               @select-vote="
-                selectVote
+                handleSelectVote
               "
             />
 
@@ -215,67 +220,6 @@ const totalPlayers = computed(() => {
         </transition>
 
       </div>
-
-    </div>
-
-    <!-- DEBUG -->
-
-    <div class="phase-buttons">
-
-      <button
-        class="btn btn-secondary"
-
-        @click="
-          gamePhase =
-          GAME_PHASES.PICKING
-        "
-      >
-        Picking
-      </button>
-
-      <button
-        class="btn btn-secondary"
-
-        @click="
-          gamePhase =
-          GAME_PHASES.REVEAL
-        "
-      >
-        Reveal
-      </button>
-
-      <button
-        class="btn btn-secondary"
-
-        @click="
-          gamePhase =
-          GAME_PHASES.VOTING
-        "
-      >
-        Voting
-      </button>
-
-      <button
-        class="btn btn-secondary"
-
-        @click="
-          gamePhase =
-          GAME_PHASES.RESULTS
-        "
-      >
-        Results
-      </button>
-
-      <button
-        class="btn btn-secondary"
-
-        @click="
-          gamePhase =
-          GAME_PHASES.GAME_OVER
-        "
-      >
-        Game Over
-      </button>
 
     </div>
 
@@ -305,8 +249,6 @@ const totalPlayers = computed(() => {
   min-height: 0;
 }
 
-/* SIDEBAR */
-
 .sidebar-slot {
   width: 240px;
 
@@ -327,8 +269,6 @@ const totalPlayers = computed(() => {
 .sidebar-leave-to {
   opacity: 0;
 }
-
-/* PHASE */
 
 .phase-wrapper {
   flex: 1;
@@ -371,19 +311,5 @@ const totalPlayers = computed(() => {
   transform:
     translateY(-10px)
     scale(0.985);
-}
-
-/* DEBUG */
-
-.phase-buttons {
-  position: absolute;
-
-  bottom: 20px;
-  right: 20px;
-
-  display: flex;
-  gap: 10px;
-
-  z-index: 9999;
 }
 </style>

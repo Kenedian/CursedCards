@@ -37,6 +37,24 @@ export const SOCKET_EVENTS = {
   GAME_UPDATED:
     "game-updated",
 
+  TOGGLE_READY:
+    "toggle-ready",
+
+  SUBMIT_CARDS:
+    "submit-cards",
+
+  SUBMIT_VOTE:
+    "submit-vote",
+
+  NEXT_ROUND:
+    "next-round",
+
+  BACK_TO_LOBBY:
+    "back-to-lobby",
+
+  REVEAL_FINISHED:
+   "reveal-finished",
+
   // admin auth
 
   ADMIN_LOGIN:

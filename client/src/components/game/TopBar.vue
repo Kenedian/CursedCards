@@ -1,13 +1,17 @@
 <script setup>
 import {
   computed
-} from "vue"
+}
+from "vue"
 
-import { GAME_PHASES }
+import {
+  GAME_PHASES
+}
 from "../../../../shared/constants/gamePhases"
 
 const props = defineProps({
   phase: String,
+
   isHost: Boolean,
   isReady: Boolean,
 
@@ -31,40 +35,242 @@ const emit = defineEmits([
 ])
 
 const isLastRound =
-  computed(() =>
-    props.round >=
-    props.maxRounds
+  computed(() => {
+
+    return (
+      props.round >=
+      props.maxRounds
+    )
+  })
+
+const showReadyCapsule =
+  computed(() => {
+
+    return (
+
+      props.phase ===
+      GAME_PHASES.PICKING
+
+      ||
+
+      props.phase ===
+      GAME_PHASES.VOTING
+    )
+  })
+
+const showRoundCapsule =
+  computed(() => {
+
+    return (
+
+      props.phase !==
+      GAME_PHASES.GAME_OVER
+    )
+  })
+
+const phaseConfig =
+  computed(() => {
+
+    switch (props.phase) {
+
+      // PICKING
+
+      case GAME_PHASES.PICKING:
+
+        return {
+
+          text:
+
+            props.isReady
+              ? "Unready"
+              : "Ready",
+
+          className:
+
+            props.isReady
+              ? "btn-danger"
+              : "btn-success",
+
+          disabled:
+            !props.canReady,
+
+          action:
+            "toggle-ready"
+        }
+
+      // REVEAL
+
+      case GAME_PHASES.REVEAL:
+
+        return {
+
+          text:
+            "Revealing...",
+
+          className:
+            "btn-secondary",
+
+          disabled: true
+        }
+
+      // VOTING
+
+      case GAME_PHASES.VOTING:
+
+        return {
+
+          text:
+
+            props.isReady
+              ? "Unready"
+              : "Vote",
+
+          className:
+
+            props.isReady
+              ? "btn-danger"
+              : "btn-success",
+
+          disabled:
+            !props.canReady,
+
+          action:
+            "toggle-ready"
+        }
+
+      // RESULTS
+
+      case GAME_PHASES.RESULTS:
+
+        if (props.isHost) {
+
+          return {
+
+            text:
+
+              isLastRound.value
+                ? "Finish"
+                : "Next Round",
+
+            className:
+              "btn-primary",
+
+            disabled: false,
+
+            action:
+              "next-round"
+          }
+        }
+
+        return {
+
+          text:
+            "Waiting...",
+
+          className:
+            "btn-secondary",
+
+          disabled: true
+        }
+
+      // GAME OVER
+
+      case GAME_PHASES.GAME_OVER:
+
+        if (props.isHost) {
+
+          return {
+
+            text:
+              "Back To Lobby",
+
+            className:
+              "btn-primary",
+
+            disabled: false,
+
+            action:
+              "back-to-lobby"
+          }
+        }
+
+        return {
+
+          text:
+            "Waiting...",
+
+          className:
+            "btn-secondary",
+
+          disabled: true
+        }
+
+      default:
+
+        return null
+    }
+  })
+
+function handleAction() {
+
+  if (
+    !phaseConfig.value?.action
+  ) {
+
+    return
+  }
+
+  emit(
+    phaseConfig.value.action
   )
+}
 </script>
 
 <template>
   <div class="top-bar">
 
+    <!-- LEFT -->
+
     <div class="top-left">
 
       <button
-        class="btn btn-danger leave-button"
+        class="
+          btn
+          btn-danger
+          leave-button
+        "
 
-        @click="emit('leave')"
+        @click="
+          emit('leave')
+        "
       >
         Leave
       </button>
 
-      <transition name="capsule-fade">
+      <transition
+        name="capsule-fade"
+      >
 
         <div
           v-if="
-            phase === GAME_PHASES.PICKING ||
-            phase === GAME_PHASES.VOTING
+            showReadyCapsule
           "
+
           class="capsule"
         >
-          Ready {{ readyCount }} / {{ totalPlayers }}
+
+          Ready
+          {{ readyCount }}
+          /
+          {{ totalPlayers }}
+
         </div>
 
       </transition>
 
     </div>
+
+    <!-- RIGHT -->
 
     <div class="top-right">
 
@@ -74,148 +280,63 @@ const isLastRound =
       >
 
         <div
-          :key="phase"
-          class="top-right-content"
+          class="
+            top-right-content
+          "
         >
 
-          <!-- PICKING + VOTING -->
-
-          <template
+          <button
             v-if="
-              phase === GAME_PHASES.PICKING ||
-              phase === GAME_PHASES.VOTING
+              phaseConfig
+            "
+
+            class="
+              btn
+              ready-button
+            "
+
+            :class="
+              phaseConfig.className
+            "
+
+            :disabled="
+              phaseConfig.disabled
+            "
+
+            @click="
+              handleAction
             "
           >
 
-            <button
-              class="btn ready-button"
+            {{
+              phaseConfig.text
+            }}
 
-              :class="
-                isReady
-                  ? 'btn-danger'
-                  : 'btn-success'
-              "
-
-              :disabled="!canReady"
-
-              @click="
-                emit('toggle-ready')
-              "
-            >
-
-              {{
-                isReady
-                  ? 'Unready'
-                  : 'Ready'
-              }}
-
-            </button>
-
-          </template>
-
-          <!-- RESULTS -->
-
-          <template
-            v-else-if="
-              phase === GAME_PHASES.RESULTS
-            "
-          >
-
-            <button
-              v-if="isHost"
-
-              class="
-                btn
-                btn-primary
-                ready-button
-              "
-
-              @click="
-                emit('next-round')
-              "
-            >
-
-              {{
-                isLastRound
-                  ? "Finish"
-                  : "Next Round"
-              }}
-
-            </button>
-
-            <button
-              v-else
-
-              class="
-                btn
-                btn-secondary
-                ready-button
-              "
-
-              disabled
-            >
-              Waiting...
-            </button>
-
-          </template>
-
-          <!-- GAME OVER -->
-
-          <template
-            v-else-if="
-              phase === GAME_PHASES.GAME_OVER
-            "
-          >
-
-            <button
-              v-if="isHost"
-
-              class="
-                btn
-                btn-primary
-                ready-button
-              "
-
-              @click="
-                emit('back-to-lobby')
-              "
-            >
-              Back To Lobby
-            </button>
-
-            <button
-              v-else
-
-              class="
-                btn
-                btn-secondary
-                ready-button
-              "
-
-              disabled
-            >
-              Waiting...
-            </button>
-
-          </template>
+          </button>
 
         </div>
 
       </transition>
 
-      <!-- ROUND COUNTER -->
+      <!-- ROUND -->
 
-      <transition name="capsule-fade">
+      <transition
+        name="capsule-fade"
+      >
 
         <div
           v-if="
-            phase !==
-            GAME_PHASES.GAME_OVER
+            showRoundCapsule
           "
 
           class="capsule"
         >
-          Round {{ round }} / {{ maxRounds }}
+
+          Round
+          {{ round }}
+          /
+          {{ maxRounds }}
+
         </div>
 
       </transition>
@@ -228,10 +349,18 @@ const isLastRound =
 <style scoped>
 .top-bar {
   display: flex;
-  justify-content: space-between;
+
+  justify-content:
+    space-between;
+
   align-items: center;
 
-  margin-bottom: 2px;
+  padding-bottom: 16px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.04);
+
+  margin-bottom: 12px;
 
   z-index: 50;
 }
@@ -239,9 +368,10 @@ const isLastRound =
 .top-left,
 .top-right {
   display: flex;
+
   align-items: center;
 
-  gap: 10px;
+  gap: 12px;
 }
 
 .top-right-content {
@@ -249,19 +379,16 @@ const isLastRound =
 }
 
 .ready-button {
-  width: 148px;
-  height: 38px;
+  width: 160px;
+  height: 42px;
 
   padding: 0;
 
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
 
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-
-  box-shadow:
-    0 0 18px rgba(0,0,0,0.18);
 
   transition:
     transform 0.16s,
@@ -271,27 +398,32 @@ const isLastRound =
 
 .ready-button:hover:not(:disabled) {
   transform:
-    translateY(-1px);
+    translateY(-2px);
 
-  filter: brightness(1.04);
+  filter:
+    brightness(1.05);
+}
 
+.ready-button.btn-success {
   box-shadow:
-    0 0 24px rgba(0,0,0,0.24);
+    0 0 24px rgba(47,230,107,0.25);
+}
+
+.ready-button.btn-danger {
+  box-shadow:
+    0 0 24px rgba(255,80,80,0.22);
 }
 
 .leave-button {
-  height: 38px;
+  height: 42px;
 
-  padding: 0 16px;
+  padding: 0 18px;
 
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
 
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-
-  box-shadow:
-    0 0 18px rgba(0,0,0,0.18);
 
   transition:
     transform 0.16s,
@@ -301,41 +433,44 @@ const isLastRound =
 
 .leave-button:hover {
   transform:
-    translateY(-1px);
+    translateY(-2px);
 
-  filter: brightness(1.04);
+  filter:
+    brightness(1.05);
 
   box-shadow:
-    0 0 24px rgba(0,0,0,0.24);
+    0 0 24px rgba(255,80,80,0.18);
 }
 
 .capsule {
-  height: 38px;
+  height: 42px;
 
-  padding: 0 16px;
+  padding: 0 18px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   border-radius: 999px;
 
   background:
-    rgba(255,255,255,0.05);
+    rgba(255,255,255,0.045);
 
   border:
     1px solid rgba(255,255,255,0.05);
 
-  backdrop-filter: blur(8px);
+  backdrop-filter:
+    blur(10px);
 
   font-size: 15px;
   font-weight: 600;
 
   color:
-    rgba(255,255,255,0.9);
+    rgba(255,255,255,0.92);
 
   box-shadow:
-    0 0 16px rgba(0,0,0,0.14);
+    0 0 18px rgba(0,0,0,0.18);
 }
 
 .topbar-enter-active,

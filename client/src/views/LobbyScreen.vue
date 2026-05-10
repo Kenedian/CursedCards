@@ -15,11 +15,6 @@ from "../../../shared/constants/socketEvents"
 import useGameStore
 from "../stores/gameStore"
 
-const emit = defineEmits([
-  "leave",
-  "start-game"
-])
-
 const {
   currentLobby,
   currentPlayer
@@ -70,6 +65,26 @@ async function copyCode() {
     copied.value = false
 
   }, 1000)
+}
+
+function startGame() {
+
+  socket.emit(
+    SOCKET_EVENTS.START_GAME,
+
+    lobbyCode.value
+  )
+}
+
+function leaveLobby() {
+
+  socket.emit(
+    SOCKET_EVENTS.LEAVE_LOBBY,
+
+    lobbyCode.value
+  )
+
+  currentLobby.value = null
 }
 
 function kickPlayer(playerId) {
@@ -145,9 +160,7 @@ function kickPlayer(playerId) {
               playerCount < 3
             "
 
-            @click="
-              emit('start-game')
-            "
+            @click="startGame"
           >
             Start Game
           </button>
@@ -166,15 +179,9 @@ function kickPlayer(playerId) {
           <button
             class="btn btn-danger lobby-button"
 
-            @click="
-              emit('leave')
-            "
+            @click="leaveLobby"
           >
-            {{
-              isHost
-                ? "Close Lobby"
-                : "Leave Lobby"
-            }}
+            Leave Lobby
           </button>
 
         </div>
@@ -220,7 +227,11 @@ function kickPlayer(playerId) {
                   class="fa-solid fa-crown host-icon"
                 ></i>
 
-                <span>
+                <span
+                  :class="{
+                    'host-name': player.isHost
+                  }"
+                >
                   {{ player.username }}
                 </span>
 
@@ -267,11 +278,16 @@ function kickPlayer(playerId) {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  padding: 30px;
+  box-sizing: border-box;
 }
 
 .lobby-wrapper {
-  width: 80vw;
-  height: 85vh;
+  width: 100%;
+  max-width: 1500px;
+
+  height: 90vh;
 
   display: flex;
   flex-direction: column;
@@ -282,36 +298,97 @@ function kickPlayer(playerId) {
 
   font-size: 72px;
 
-  margin-bottom: 25px;
+  margin-bottom: 12px;
 
   flex-shrink: 0;
+
+  text-shadow:
+    0 0 30px rgba(255,255,255,0.06);
 }
 
 .lobby-box {
   flex: 1;
   min-height: 0;
 
-  background: #2a2a2a;
-
-  border-radius: 30px;
-
-  padding: 50px;
-
   display: flex;
-  gap: 50px;
+  gap: 40px;
+
+  padding: 42px;
+
+  border-radius: 34px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(42,42,42,0.92),
+      rgba(28,28,28,0.96)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+  backdrop-filter:
+    blur(12px);
 
   box-shadow:
-    0 0 40px rgba(0,0,0,0.6);
+    0 0 50px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+
+  animation:
+    lobbyFloat 6s ease-in-out infinite;
 }
 
+@keyframes lobbyFloat {
+
+  0% {
+    transform:
+      translateY(0px);
+  }
+
+  50% {
+    transform:
+      translateY(-2px);
+  }
+
+  100% {
+    transform:
+      translateY(0px);
+  }
+}
+
+/* LEFT */
+
 .left-side {
-  width: 420px;
+  width: 430px;
 
   display: flex;
   flex-direction: column;
 
-  gap: 25px;
+  gap: 22px;
 }
+
+.left-side h1 {
+  margin: 0;
+
+  font-size: 48px;
+}
+
+/* DIVIDER */
+
+.divider {
+  width: 1px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(255,255,255,0.08),
+      transparent
+    );
+
+  opacity: 0.7;
+}
+
+/* RIGHT */
 
 .right-side {
   flex: 1;
@@ -321,56 +398,150 @@ function kickPlayer(playerId) {
   flex-direction: column;
 }
 
-.divider {
-  width: 2px;
-
-  background:
-    rgba(255,255,255,0.08);
-
-  border-radius: 999px;
-}
+/* LOBBY CODE */
 
 .code-box {
   display: flex;
   align-items: center;
 
-  gap: 12px;
+  gap: 14px;
 }
 
 .lobby-code {
   flex: 1;
 
-  height: 95px;
-
-  background: #1a1a1a;
-
-  border-radius: 18px;
+  height: 110px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  font-size: 54px;
+  border-radius: 24px;
 
-  letter-spacing: 8px;
+  background:
+    linear-gradient(
+      180deg,
+      #151515,
+      #0f0f0f
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+
+  font-size: 58px;
+  font-weight: bold;
+
+  letter-spacing: 10px;
+
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.45),
+    0 0 24px rgba(0,0,0,0.35);
+
+  text-shadow:
+    0 0 14px rgba(255,255,255,0.08);
 }
 
+/* BUTTONS */
+
 .lobby-button {
-  height: 65px;
+  height: 68px;
+
+  border: none;
+  border-radius: 18px;
 
   font-size: 24px;
+
+  font-family: inherit;
+
+  transition:
+    transform 0.14s ease,
+    opacity 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+.lobby-button:hover:not(:disabled) {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.28);
+}
+
+.lobby-button:active:not(:disabled) {
+  transform:
+    translateY(0px)
+    scale(0.98);
+}
+
+.lobby-button:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+.copy-button {
+  width: 68px;
+  height: 68px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #1f6fff;
+
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  transition:
+    transform 0.14s ease,
+    background 0.14s ease,
+    box-shadow 0.14s ease;
+}
+
+.copy-button:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 0 24px rgba(31,111,255,0.35);
+}
+
+.copy-button.copied {
+  background: #20c96b;
+}
+
+.copy-button i {
+  font-size: 28px;
+}
+
+.minimum-text {
+  margin-top: -8px;
+
+  text-align: center;
+
+  opacity: 0.65;
+
+  font-size: 18px;
 }
 
 /* PLAYERS */
 
 .players-header {
-  width: 100%;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 25px;
+  margin-bottom: 24px;
+}
+
+.players-header h2 {
+  margin: 0;
+
+  font-size: 42px;
 }
 
 .players-list {
@@ -383,11 +554,9 @@ function kickPlayer(playerId) {
   display: flex;
   flex-direction: column;
 
-  gap: 12px;
+  gap: 14px;
 
   padding-right: 10px;
-
-  position: relative;
 }
 
 .players-list::-webkit-scrollbar {
@@ -395,7 +564,7 @@ function kickPlayer(playerId) {
 }
 
 .players-list::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #151515;
 
   border-radius: 999px;
 }
@@ -405,35 +574,52 @@ function kickPlayer(playerId) {
 
   border-radius: 999px;
 
-  border: 3px solid #1a1a1a;
+  border: 3px solid #151515;
 }
 
+/* PLAYER ROW */
+
 .player-row {
-  min-height: 72px;
+  min-height: 74px;
 
   flex-shrink: 0;
 
-  background: #1a1a1a;
-
-  border-radius: 18px;
-
-  padding: 0 20px;
+  padding: 0 22px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,0.035);
+
+  border:
+    1px solid rgba(255,255,255,0.04);
+
   transition:
-    width 0.24s ease,
-    transform 0.24s ease,
-    padding 0.24s ease;
+    transform 0.14s ease,
+    background 0.14s ease,
+    border-color 0.14s ease;
+}
+
+.player-row:hover {
+  transform:
+    translateX(4px);
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border-color:
+    rgba(255,255,255,0.08);
 }
 
 .player-left {
   display: flex;
   align-items: center;
 
-  gap: 12px;
+  gap: 14px;
 
   font-size: 24px;
 }
@@ -450,17 +636,21 @@ function kickPlayer(playerId) {
     );
 }
 
-.copy-button {
-  width: 64px;
-  height: 64px;
+.host-name {
+  color: #ffd84d;
+
+  text-shadow:
+    0 0 12px rgba(255,216,77,0.14);
+}
+
+/* KICK BUTTON */
+
+.kick-button {
+  width: 54px;
+  height: 54px;
 
   border: none;
-  border-radius: 18px;
-
-  background:
-    #1f6fff;
-
-  color: white;
+  border-radius: 16px;
 
   display: flex;
   justify-content: center;
@@ -470,56 +660,15 @@ function kickPlayer(playerId) {
 
   transition:
     transform 0.14s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease,
-    filter 0.18s ease;
-
-  box-shadow:
-    0 0 18px rgba(31,111,255,0.24);
+    box-shadow 0.14s ease;
 }
 
-.copy-button:hover {
+.kick-button:hover {
   transform:
-    translateY(-2px);
-
-  filter:
-    brightness(1.04);
+    scale(1.05);
 
   box-shadow:
-    0 0 26px rgba(31,111,255,0.36);
-}
-
-.copy-button:active {
-  transform:
-    scale(0.94);
-}
-
-.copy-button.copied {
-  background:
-    #2fe66b;
-
-  box-shadow:
-    0 0 28px rgba(47,230,107,0.42);
-
-  animation:
-    copiedPulse 0.42s ease;
-}
-
-.copy-button i {
-  font-size: 28px;
-}
-
-.kick-button {
-  width: 52px;
-  height: 52px;
-
-  border-radius: 14px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 0;
+    0 0 18px rgba(220,53,69,0.3);
 }
 
 .kick-button i {
@@ -527,45 +676,49 @@ function kickPlayer(playerId) {
 }
 
 .host-placeholder {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
 }
 
+/* CAPSULE */
+
 .capsule {
-  height: 52px;
+  background: #242424;
+
+  border-radius: 999px;
 
   padding: 0 24px;
 
-  border-radius: 999px;
+  min-width: 90px;
+  height: 52px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background:
-    rgba(255,255,255,0.04);
+  font-size: 20px;
 
   border:
     1px solid rgba(255,255,255,0.05);
 
   box-shadow:
-    0 0 24px rgba(0,0,0,0.22);
-
-  font-size: 20px;
+    0 0 18px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
+/* PLAYER TRANSITIONS */
+
 .player-list-enter-active,
-.player-list-leave-active,
-.player-list-move {
+.player-list-leave-active {
   transition:
-    all 0.24s ease;
+    all 0.22s cubic-bezier(.2,.8,.2,1);
 }
 
 .player-list-enter-from {
   opacity: 0;
 
   transform:
-    translateY(12px)
+    translateX(-20px)
     scale(0.96);
 }
 
@@ -573,28 +726,25 @@ function kickPlayer(playerId) {
   opacity: 0;
 
   transform:
-    translateX(30px)
+    translateX(20px)
     scale(0.96);
 }
 
-.player-list-leave-active {
-  position: absolute;
+/* RESPONSIVE */
 
-  width: calc(100% - 10px);
-}
+@media (max-width: 1100px) {
 
-@keyframes copiedPulse {
-
-  0% {
-    transform: scale(1);
+  .lobby-box {
+    flex-direction: column;
   }
 
-  35% {
-    transform: scale(1.12);
+  .divider {
+    width: 100%;
+    height: 1px;
   }
 
-  100% {
-    transform: scale(1);
+  .left-side {
+    width: 100%;
   }
 }
 </style>

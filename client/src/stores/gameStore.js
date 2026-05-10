@@ -1,150 +1,63 @@
-import { ref }
-from "vue"
-
-import socket
-from "../socket"
-
 import {
-  SOCKET_EVENTS
+  ref,
+  computed
 }
-from "../../../shared/constants/socketEvents"
-
-import getBlackCardPickCount
-from "../utils/cards/getBlackCardPickCount"
-
-const whiteCards =
-  ref([])
-
-const blackCards =
-  ref([])
+from "vue"
 
 const currentLobby =
   ref(null)
 
-const currentPlayer =
+const currentPlayerId =
   ref(null)
 
-socket.on(
-  SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
+const currentPlayer =
+  computed(() => {
 
-  cards => {
+    if (!currentLobby.value) {
+      return null
+    }
 
-    whiteCards.value =
-      cards.whiteCards
+    return (
+      currentLobby.value.players || []
+    ).find(
+      player =>
+        player.id ===
+        currentPlayerId.value
+    )
+})
 
-    blackCards.value =
-      cards.blackCards
-  }
-)
+function setLobby(room) {
 
-socket.on(
-  SOCKET_EVENTS.CREATE_LOBBY_SUCCESS,
-
-  lobby => {
-
-    currentLobby.value =
-      lobby
-
-    currentPlayer.value =
-      lobby.players.find(
-        player =>
-          player.id ===
-          socket.id
-      )
-  }
-)
-
-socket.on(
-  SOCKET_EVENTS.JOIN_LOBBY_SUCCESS,
-
-  lobby => {
-
-    currentLobby.value =
-      lobby
-
-    currentPlayer.value =
-      lobby.players.find(
-        player =>
-          player.id ===
-          socket.id
-      )
-  }
-)
-
-socket.on(
-  SOCKET_EVENTS.LOBBY_UPDATED,
-
-  lobby => {
-
-    currentLobby.value =
-      lobby
-  }
-)
-
-socket.on(
-  SOCKET_EVENTS.PLAYER_KICKED,
-
-  () => {
-
-    currentLobby.value =
-      null
-
-    currentPlayer.value =
-      null
-  }
-)
-
-function shuffle(array) {
-
-  return [...array].sort(
-    () => Math.random() - 0.5
-  )
+  currentLobby.value =
+    room
 }
 
-function getRandomWhiteCards(
-  count
-) {
+function clearLobby() {
 
-  return shuffle(
-    whiteCards.value
-  ).slice(0, count)
+  currentLobby.value =
+    null
 }
 
-function getRandomBlackCard() {
+function setCurrentPlayerId(id) {
 
-  const card =
-    shuffle(
-      blackCards.value
-    )[0]
-
-  return {
-    ...card,
-
-    pickCount:
-      getBlackCardPickCount(
-        card.text
-      )
-  }
+  currentPlayerId.value =
+    id
 }
 
 export default function useGameStore() {
 
   return {
 
-    // cards
-
-    whiteCards,
-    blackCards,
-
-    // lobby
+    // state
 
     currentLobby,
     currentPlayer,
+    currentPlayerId,
 
-    // helpers
+    // mutations
 
-    getRandomWhiteCards,
-    getRandomBlackCard,
-    getBlackCardPickCount
+    setLobby,
+    clearLobby,
+    setCurrentPlayerId
   }
 }

@@ -1,6 +1,9 @@
 <script setup>
-import { ref }
-from "vue"
+import {
+  ref,
+  onMounted,
+  onUnmounted
+} from "vue"
 
 import socket
 from "../../socket"
@@ -10,11 +13,11 @@ import {
 }
 from "../../../../shared/constants/socketEvents"
 
+import useToast
+from "../../composables/useToast"
+
 import useCardsAdmin
 from "../../composables/admin/useCardsAdmin"
-
-import AppToast
-from "../../components/ui/AppToast.vue"
 
 import CreateCardTab
 from "../../components/admin/CreateCardTab.vue"
@@ -26,14 +29,12 @@ const emit = defineEmits([
   "leave"
 ])
 
+const {
+  toastError
+} = useToast()
+
 const currentTab =
   ref("create")
-
-const toast =
-  ref("")
-
-let toastTimeout =
-  null
 
 const {
 
@@ -56,25 +57,6 @@ const {
 
 } = useCardsAdmin()
 
-function showToast(
-  message
-) {
-
-  toast.value =
-    message
-
-  clearTimeout(
-    toastTimeout
-  )
-
-  toastTimeout =
-    setTimeout(() => {
-
-      toast.value = ""
-
-    }, 3000)
-}
-
 function handleAdminError(
   message
 ) {
@@ -84,14 +66,8 @@ function handleAdminError(
     message
   )
 
-  showToast(message)
+  toastError(message)
 }
-
-socket.on(
-  SOCKET_EVENTS.ADMIN_ACTION_FAILED,
-
-  handleAdminError
-)
 
 function handleEdit(card) {
 
@@ -100,16 +76,28 @@ function handleEdit(card) {
   currentTab.value =
     "create"
 }
+
+onMounted(() => {
+
+  socket.on(
+    SOCKET_EVENTS.ADMIN_ACTION_FAILED,
+
+    handleAdminError
+  )
+})
+
+onUnmounted(() => {
+
+  socket.off(
+    SOCKET_EVENTS.ADMIN_ACTION_FAILED,
+
+    handleAdminError
+  )
+})
 </script>
 
 <template>
   <div class="panel-container">
-
-    <AppToast
-      :visible="toast.length > 0"
-
-      :message="toast"
-    />
 
     <div class="top-bar">
 

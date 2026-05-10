@@ -15,7 +15,10 @@ const props = defineProps({
 
   clickable: Boolean,
 
-  selectedId: Number,
+  selectedId: [
+    String,
+    Number
+  ],
 
   showVotes: Boolean,
   showPlayer: Boolean,
@@ -42,7 +45,13 @@ const displayedSubmissions = computed(() => {
   }
 
   return [...props.submissions]
-    .sort((a, b) => b.votes - a.votes)
+    .sort(
+      (a, b) =>
+
+        (b.voteCount || 0)
+        -
+        (a.voteCount || 0)
+    )
 })
 
 const highestVotes = computed(() => {
@@ -52,8 +61,12 @@ const highestVotes = computed(() => {
   }
 
   return Math.max(
+
     ...displayedSubmissions.value.map(
-      submission => submission.votes || 0
+
+      submission =>
+
+        submission.voteCount || 0
     )
   )
 })
@@ -91,7 +104,7 @@ const highestVotes = computed(() => {
 
         :votes="
           showVotes
-            ? submission.votes
+            ? submission.voteCount
             : undefined
         "
 
@@ -100,12 +113,12 @@ const highestVotes = computed(() => {
         "
 
         :player-name="
-          submission.playerName
+          submission.player.username
         "
 
         :winner="
           highlightWinner &&
-          submission.votes === highestVotes
+          submission.voteCount === highestVotes
         "
 
         :revealed="

@@ -7,12 +7,15 @@ export default function formatBlackCardText(
 
   return blackCardText.replace(
     /\[BLANK\]/g,
+
     () => {
 
       const card =
-        selectedCards[index++] || "???"
+        selectedCards[index++]
 
-      return card
+      return (
+        card?.text || "???"
+      )
     }
   )
 }

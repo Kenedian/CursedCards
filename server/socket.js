@@ -1,43 +1,51 @@
 const registerAdminHandlers =
-  require("./handlers/adminHandler")
+  require("./handlers/admin/registerAdminHandlers")
 
 const registerLobbyHandlers =
-  require("./handlers/lobbyHandler")
+  require("./handlers/lobby/registerLobbyHandlers")
+
+const registerGameHandlers =
+  require("./handlers/game/registerGameHandlers")
 
 module.exports =
-  function registerSocketHandlers(io) {
+function registerSocketHandlers(io) {
 
-    io.on(
-      "connection",
+  io.on(
+    "connection",
 
-      socket => {
+    socket => {
 
-        console.log(
-          "player connected:",
-          socket.id
-        )
+      console.log(
+        "player connected:",
+        socket.id
+      )
 
-        registerAdminHandlers(
-          io,
-          socket
-        )
+      registerAdminHandlers(
+        io,
+        socket
+      )
 
-        registerLobbyHandlers(
-          io,
-          socket
-        )
+      registerLobbyHandlers(
+        io,
+        socket
+      )
 
-        socket.on(
-          "disconnect",
+      registerGameHandlers(
+        io,
+        socket
+      )
 
-          () => {
+      socket.on(
+        "disconnect",
 
-            console.log(
-              "player disconnected:",
-              socket.id
-            )
-          }
-        )
-      }
-    )
-  }
+        () => {
+
+          console.log(
+            "player disconnected:",
+            socket.id
+          )
+        }
+      )
+    }
+  )
+}

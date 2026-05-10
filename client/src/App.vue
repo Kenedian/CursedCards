@@ -1,22 +1,18 @@
 <script setup>
 import {
   ref,
-  watch
-}
-from "vue"
-
-import socket
-from "./socket"
+  computed
+} from "vue"
 
 import useGameStore
 from "./stores/gameStore"
 
-import {
-  SOCKET_EVENTS
-}
-from "../../shared/constants/socketEvents"
+import useUiStore
+from "./stores/uiStore"
 
-import { SCREENS }
+import {
+  SCREENS
+}
 from "./constants/screens"
 
 import MainScreen
@@ -31,112 +27,101 @@ from "./views/GameScreen.vue"
 import AdminScreen
 from "./views/AdminScreen.vue"
 
+import AppToast
+from "./components/ui/AppToast.vue"
+
 const {
   currentLobby
 } = useGameStore()
 
+const {
+  toast
+} = useUiStore()
+
+const adminOpen =
+  ref(false)
+
 const currentScreen =
-  ref(SCREENS.MENU)
+  computed(() => {
 
-watch(
-
-  currentLobby,
-
-  lobby => {
-
-    if (!lobby) {
-
-      if (
-        currentScreen.value ===
-        SCREENS.LOBBY
-      ) {
-
-        currentScreen.value =
-          SCREENS.MENU
-      }
+    if (!currentLobby.value) {
+      return SCREENS.MENU
     }
-  }
-)
 
-function openMenu() {
+    if (
+      currentLobby.value.game
+    ) {
 
-  if (currentLobby.value) {
+      return SCREENS.GAME
+    }
 
-    socket.emit(
-      SOCKET_EVENTS.LEAVE_LOBBY,
-
-      currentLobby.value.code
-    )
-  }
-
-  currentScreen.value =
-    SCREENS.MENU
-}
-
-function openLobby() {
-
-  currentScreen.value =
-    SCREENS.LOBBY
-}
-
-function openGame() {
-
-  currentScreen.value =
-    SCREENS.GAME
-}
+    return SCREENS.LOBBY
+  })
 
 function openAdmin() {
 
-  currentScreen.value =
-    SCREENS.ADMIN
+  adminOpen.value = true
+}
+
+function closeAdmin() {
+
+  adminOpen.value = false
 }
 </script>
 
 <template>
 
-  <MainScreen
-    v-if="
-      currentScreen ===
-      SCREENS.MENU
+  <!-- GLOBAL TOAST -->
+
+  <AppToast
+    :visible="
+      toast.visible
     "
 
-    @open-lobby="openLobby"
-    @open-admin="openAdmin"
-  />
-
-  <LobbyScreen
-    v-else-if="
-      currentScreen ===
-      SCREENS.LOBBY
+    :message="
+      toast.message
     "
 
-    @leave="openMenu"
-
-    @start-game="
-      openGame
+    :type="
+      toast.type
     "
   />
 
-  <GameScreen
-    v-else-if="
-      currentScreen ===
-      SCREENS.GAME
-    "
-
-    @leave="openMenu"
-
-    @back-to-lobby="
-      openLobby
-    "
-  />
+  <!-- ADMIN -->
 
   <AdminScreen
-    v-else-if="
-      currentScreen ===
-      SCREENS.ADMIN
-    "
+    v-if="adminOpen"
 
-    @leave="openMenu"
+    @leave="closeAdmin"
   />
+
+  <!-- NORMAL APP -->
+
+  <template v-else>
+
+    <MainScreen
+      v-if="
+        currentScreen ===
+        SCREENS.MENU
+      "
+
+      @open-admin="openAdmin"
+    />
+
+    <LobbyScreen
+      v-else-if="
+        currentScreen ===
+        SCREENS.LOBBY
+      "
+    />
+
+    <GameScreen
+      v-else-if="
+        currentScreen ===
+        SCREENS.GAME
+      "
+    />
+
+  </template>
 
 </template>

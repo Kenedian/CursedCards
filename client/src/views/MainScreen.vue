@@ -3,8 +3,7 @@ import {
   ref,
   onMounted,
   onUnmounted
-}
-from "vue"
+} from "vue"
 
 import socket
 from "../socket"
@@ -14,13 +13,17 @@ import {
 }
 from "../../../shared/constants/socketEvents"
 
-import AppToast
-from "../components/ui/AppToast.vue"
+import useToast
+from "../composables/useToast"
 
 const emit = defineEmits([
   "open-lobby",
   "open-admin"
 ])
+
+const {
+  toastError
+} = useToast()
 
 const createUsername =
   ref("")
@@ -31,35 +34,13 @@ const joinUsername =
 const joinCode =
   ref("")
 
-const toast =
-  ref("")
-
-let toastTimeout =
-  null
-
-function showToast(message) {
-
-  toast.value = message
-
-  clearTimeout(
-    toastTimeout
-  )
-
-  toastTimeout =
-    setTimeout(() => {
-
-      toast.value = ""
-
-    }, 3000)
-}
-
 function createLobby() {
 
   if (
     !createUsername.value.trim()
   ) {
 
-    showToast(
+    toastError(
       "Enter username"
     )
 
@@ -82,7 +63,7 @@ function joinLobby() {
     !joinUsername.value.trim()
   ) {
 
-    showToast(
+    toastError(
       "Enter username"
     )
 
@@ -93,7 +74,7 @@ function joinLobby() {
     !joinCode.value.trim()
   ) {
 
-    showToast(
+    toastError(
       "Enter lobby code"
     )
 
@@ -124,7 +105,7 @@ function handleLobbyError(
   message
 ) {
 
-  showToast(message)
+  toastError(message)
 }
 
 onMounted(() => {
@@ -165,12 +146,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-
-  <AppToast
-    :visible="!!toast"
-
-    :message="toast"
-  />
 
   <button
     class="btn btn-danger admin-button"

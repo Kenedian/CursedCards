@@ -9,9 +9,6 @@ from "vue"
 import socket
 from "../../socket"
 
-import useGameStore
-from "../../stores/gameStore"
-
 import {
   SOCKET_EVENTS
 }
@@ -23,10 +20,13 @@ from "../../../../shared/constants/cardTypes"
 import getBlackCardPickCount
 from "../../utils/cards/getBlackCardPickCount"
 
+import useCardsStore
+from "../../stores/cardsStore"
+
 const {
   whiteCards,
   blackCards
-} = useGameStore()
+} = useCardsStore()
 
 export default function useCardsAdmin() {
 
@@ -162,7 +162,15 @@ export default function useCardsAdmin() {
     )
   }
 
-  function handleCardsUpdated() {
+  function handleCardsUpdated(
+    cards
+  ) {
+
+    whiteCards.value =
+      cards.whiteCards
+
+    blackCards.value =
+      cards.blackCards
 
     cancelEdit()
   }

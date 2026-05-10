@@ -5,6 +5,11 @@ defineProps({
   message: {
     type: String,
     default: ""
+  },
+
+  type: {
+    type: String,
+    default: "error"
   }
 })
 </script>
@@ -16,10 +21,18 @@ defineProps({
       v-if="visible"
 
       class="toast-container"
+
+      :class="type"
     >
 
       <div class="toast-title">
-        Error
+
+        {{
+          type === "success"
+            ? "Success"
+            : "Error"
+        }}
+
       </div>
 
       <div class="toast-message">
@@ -41,7 +54,6 @@ defineProps({
   min-width: 320px;
   max-width: 420px;
 
-  background: #dc3545;
   color: white;
 
   padding:
@@ -53,6 +65,16 @@ defineProps({
 
   box-shadow:
     0 10px 28px rgba(0,0,0,0.4);
+}
+
+.toast-container.error {
+  background: #dc3545;
+}
+
+.toast-container.success {
+  background: #2fe66b;
+
+  color: black;
 }
 
 .toast-title {
@@ -74,8 +96,6 @@ defineProps({
   line-height: 1.4;
 }
 
-/* ENTER */
-
 .toast-enter-active {
   transition:
     opacity 0.22s ease,
@@ -95,8 +115,6 @@ defineProps({
   transform:
     translateY(0);
 }
-
-/* LEAVE */
 
 .toast-leave-active {
   transition:

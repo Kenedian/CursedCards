@@ -11,77 +11,112 @@ export default function useFitText(
   defaultFontSize = 28,
   minFontSize = 8
 ) {
-  const textRef = ref(null)
 
-  const fontSize = ref(defaultFontSize)
+  const textRef =
+    ref(null)
+
+  const fontSize =
+    ref(defaultFontSize)
+
+  let resizeObserver =
+    null
 
   async function fitText() {
+
     await nextTick()
 
-    await new Promise(resolve =>
-      requestAnimationFrame(resolve)
-    )
-
-    const el = textRef.value
+    const el =
+      textRef.value
 
     if (!el) {
       return
     }
 
-    fontSize.value = defaultFontSize
+    let low =
+      minFontSize
 
-    await nextTick()
+    let high =
+      defaultFontSize
 
-    await new Promise(resolve =>
-      requestAnimationFrame(resolve)
-    )
+    let best =
+      minFontSize
 
-    while (
-      (
-        el.scrollHeight > el.clientHeight ||
-        el.scrollWidth > el.clientWidth
-      ) &&
-      fontSize.value > minFontSize
-    ) {
-      fontSize.value--
+    while (low <= high) {
+
+      const mid =
+        Math.floor(
+          (low + high) / 2
+        )
+
+      fontSize.value =
+        mid
 
       await nextTick()
 
-      await new Promise(resolve =>
-        requestAnimationFrame(resolve)
-      )
+      const overflowing =
+
+        el.scrollHeight >
+        el.clientHeight
+
+        ||
+
+        el.scrollWidth >
+        el.clientWidth
+
+      if (!overflowing) {
+
+        best = mid
+
+        low = mid + 1
+      }
+
+      else {
+
+        high = mid - 1
+      }
     }
+
+    fontSize.value =
+      best
   }
 
   onMounted(() => {
+
     fitText()
 
-    window.addEventListener(
-      "resize",
-      fitText
-    )
+    resizeObserver =
+      new ResizeObserver(
+        fitText
+      )
+
+    if (textRef.value) {
+
+      resizeObserver.observe(
+        textRef.value
+      )
+    }
   })
 
   onUnmounted(() => {
-    window.removeEventListener(
-      "resize",
-      fitText
-    )
+
+    resizeObserver?.disconnect()
   })
 
   watch(
     watchedSource,
-    () => {
-      fitText()
-    },
+
+    fitText,
+
     {
       deep: true
     }
   )
 
   return {
+
     textRef,
     fontSize,
+
     fitText
   }
 }

@@ -8,6 +8,9 @@ const props = defineProps({
   selectedCards: Array
 })
 
+import getBlackCardPickCount
+from "../../utils/cards/getBlackCardPickCount"
+
 const emit = defineEmits([
   "toggle-card"
 ])
@@ -20,7 +23,7 @@ const emit = defineEmits([
 
     <BlackCard
     :text="blackCard.text"
-    :pick-count="blackCard.pickCount"
+    :pick-count=getBlackCardPickCount(blackCard.text)
     />
 
     </div>

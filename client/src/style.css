@@ -2,16 +2,240 @@ html,
 body,
 #app {
   margin: 0;
+
   width: 100%;
   height: 100%;
-  background: #1a1a1a;
-  color: white;
-  font-family: "Comic Sans MS";
+
   overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #202020 0%,
+      #141414 45%,
+      #101010 100%
+    );
+
+  color: white;
+
+  font-family:
+    "Comic Sans MS",
+    cursive;
+
+  position: relative;
 }
 
+/* AMBIENT BACKGROUND */
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(47,230,107,0.04),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(0,123,255,0.035),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at 50% 80%,
+      rgba(255,255,255,0.02),
+      transparent 35%
+    );
+
+  filter: blur(20px);
+
+  animation:
+    ambientFloat 18s ease-in-out infinite;
+}
+
+@keyframes ambientFloat {
+
+  0% {
+    transform:
+      translateY(0px)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translateY(-12px)
+      scale(1.02);
+  }
+
+  100% {
+    transform:
+      translateY(0px)
+      scale(1);
+  }
+}
+
+/* BUTTONS */
+
+.btn {
+  position: relative;
+
+  overflow: hidden;
+
+  border: none !important;
+
+  border-radius: 16px !important;
+
+  font-weight: bold !important;
+
+  transition:
+    transform 0.14s cubic-bezier(.2,1,.2,1),
+    filter 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease;
+
+  box-shadow:
+    0 0 18px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.btn:hover:not(:disabled) {
+  transform:
+    translateY(-2px)
+    scale(1.015);
+
+  filter: brightness(1.04);
+}
+
+.btn:active:not(:disabled) {
+  transform:
+    translateY(1px)
+    scale(0.96);
+}
+
+/* BUTTON SHINE */
+
+.btn::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.12),
+      transparent
+    );
+
+  transition:
+    left 0.45s ease;
+}
+
+.btn:hover::before {
+  left: 140%;
+}
+
+/* CUSTOM COLORS */
+
+.btn-primary {
+  background:
+    linear-gradient(
+      180deg,
+      #2c7dff,
+      #1f6fff
+    ) !important;
+}
+
+.btn-success {
+  background:
+    linear-gradient(
+      180deg,
+      #26b863,
+      #1d8d4c
+    ) !important;
+}
+
+.btn-danger {
+  background:
+    linear-gradient(
+      180deg,
+      #ff4d61,
+      #e3344a
+    ) !important;
+}
+
+.btn-warning {
+  background:
+    linear-gradient(
+      180deg,
+      #ffcc00,
+      #f2b800
+    ) !important;
+
+  color: black !important;
+}
+
+.btn-secondary {
+  background:
+    linear-gradient(
+      180deg,
+      #707781,
+      #5f666f
+    ) !important;
+}
+
+/* INPUTS */
+
+.form-control {
+  border: none !important;
+
+  border-radius: 16px !important;
+
+  background:
+    rgba(255,255,255,0.92) !important;
+
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,0.12),
+    0 0 0 rgba(47,230,107,0);
+
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.form-control:focus {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 0 0 3px rgba(47,230,107,0.12),
+    0 0 24px rgba(47,230,107,0.08) !important;
+}
+
+/* CAPSULE */
+
 .capsule {
-  background: #242424; /* svetlejsi */
+  background:
+    rgba(255,255,255,0.045);
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
   border-radius: 999px;
 
   padding: 0 22px;
@@ -25,7 +249,9 @@ body,
 
   font-size: 20px;
 
+  backdrop-filter: blur(8px);
+
   box-shadow:
-    0 0 15px rgba(0,0,0,0.35),
+    0 0 20px rgba(0,0,0,0.25),
     inset 0 1px 0 rgba(255,255,255,0.04);
 }

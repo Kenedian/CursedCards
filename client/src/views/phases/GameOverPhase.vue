@@ -1,68 +1,40 @@
 <script setup>
-import {
-  computed,
-  ref,
-  onMounted
-} from "vue"
+import { computed, ref, onMounted } from "vue"
 
 const props = defineProps({
   players: Array
 })
 
-const sortedPlayers = computed(() => {
+function isHost(player) {
+  return player?.isHost
+}
 
-  return [...props.players]
-    .sort(
-      (a, b) =>
-        b.score - a.score
-    )
-})
+const sortedPlayers = computed(() =>
+  [...props.players].sort((a, b) => b.score - a.score)
+)
 
-const firstPlace = computed(() => {
-  return sortedPlayers.value[0]
-})
+const firstPlace = computed(() => sortedPlayers.value[0])
+const secondPlace = computed(() => sortedPlayers.value[1])
+const thirdPlace = computed(() => sortedPlayers.value[2])
 
-const secondPlace = computed(() => {
-  return sortedPlayers.value[1]
-})
+const remainingPlayers = computed(() =>
+  sortedPlayers.value.slice(3)
+)
 
-const thirdPlace = computed(() => {
-  return sortedPlayers.value[2]
-})
+const revealThird = ref(false)
+const revealThirdText = ref(false)
 
-const remainingPlayers =
-  computed(() => {
+const revealSecond = ref(false)
+const revealSecondText = ref(false)
 
-    return sortedPlayers.value
-      .slice(3)
-  })
+const revealFirst = ref(false)
+const revealWinnerText = ref(false)
 
-const revealThird =
-  ref(false)
+const revealRemaining = ref(false)
 
-const revealThirdText =
-  ref(false)
-
-const revealSecond =
-  ref(false)
-
-const revealSecondText =
-  ref(false)
-
-const revealFirst =
-  ref(false)
-
-const revealWinnerText =
-  ref(false)
-
-const revealRemaining =
-  ref(false)
-
-const shakeWinner =
-  ref(false)
+const shakeWinner = ref(false)
 
 function wait(ms) {
-
   return new Promise(resolve =>
     setTimeout(resolve, ms)
   )
@@ -70,50 +42,48 @@ function wait(ms) {
 
 async function startReveal() {
 
-  // #3
+  if (thirdPlace.value) {
 
-  await wait(500)
+    await wait(500)
 
-  revealThird.value = true
+    revealThird.value = true
 
-  await wait(220)
+    await wait(220)
 
-  revealThirdText.value = true
+    revealThirdText.value = true
+  }
 
-  // #2
+  if (secondPlace.value) {
 
-  await wait(650)
+    await wait(650)
 
-  revealSecond.value = true
+    revealSecond.value = true
 
-  await wait(220)
+    await wait(220)
 
-  revealSecondText.value = true
+    revealSecondText.value = true
+  }
 
-  // #1
+  if (firstPlace.value) {
 
-  await wait(850)
+    await wait(850)
 
-  revealFirst.value = true
+    revealFirst.value = true
 
-  // shake
+    await wait(260)
 
-  await wait(260)
+    shakeWinner.value = true
 
-  shakeWinner.value = true
+    await wait(350)
 
-  await wait(350)
+    shakeWinner.value = false
 
-  shakeWinner.value = false
+    await wait(100)
 
-  // winner text
+    revealWinnerText.value = true
+  }
 
-  await wait(100)
-
-  revealWinnerText.value = true
-
-  // leaderboard
-
+  // vždy revealni pravou stranu
   await wait(700)
 
   revealRemaining.value = true
@@ -147,17 +117,21 @@ onMounted(() => {
             class="winner-card"
 
             :class="{
-              shake: shakeWinner
+              shake: shakeWinner,
+              'hidden-style': !revealWinnerText
             }"
           >
 
-            <div class="winner-glow"></div>
+            <div
+              v-if="revealWinnerText"
+              class="winner-glow"
+            ></div>
 
             <div
               v-if="revealWinnerText"
               class="points-badge winner-badge"
             >
-              {{ firstPlace?.score }}
+              {{ firstPlace.score }}
             </div>
 
             <transition name="winner-text">
@@ -175,8 +149,14 @@ onMounted(() => {
                   👑
                 </div>
 
-                <div class="winner-name">
-                  {{ firstPlace?.name }}
+                <div
+                  class="winner-name"
+
+                  :class="{
+                    'host-name': isHost(firstPlace)
+                  }"
+                >
+                  {{ firstPlace.username }}
                 </div>
 
               </div>
@@ -190,6 +170,8 @@ onMounted(() => {
         <!-- #2 -->
 
         <div
+          v-if="secondPlace"
+
           class="podium-card"
 
           :class="{
@@ -201,7 +183,7 @@ onMounted(() => {
             v-if="revealSecondText"
             class="points-badge"
           >
-            {{ secondPlace?.score }}
+            {{ secondPlace.score }}
           </div>
 
           <transition name="podium-text">
@@ -215,8 +197,14 @@ onMounted(() => {
                 #2
               </div>
 
-              <div class="podium-name">
-                {{ secondPlace?.name }}
+              <div
+                class="podium-name"
+
+                :class="{
+                  'host-name': isHost(secondPlace)
+                }"
+              >
+                {{ secondPlace.username }}
               </div>
 
             </div>
@@ -228,6 +216,8 @@ onMounted(() => {
         <!-- #3 -->
 
         <div
+          v-if="thirdPlace"
+
           class="podium-card"
 
           :class="{
@@ -239,7 +229,7 @@ onMounted(() => {
             v-if="revealThirdText"
             class="points-badge"
           >
-            {{ thirdPlace?.score }}
+            {{ thirdPlace.score }}
           </div>
 
           <transition name="podium-text">
@@ -253,8 +243,14 @@ onMounted(() => {
                 #3
               </div>
 
-              <div class="podium-name">
-                {{ thirdPlace?.name }}
+              <div
+                class="podium-name"
+
+                :class="{
+                  'host-name': isHost(thirdPlace)
+                }"
+              >
+                {{ thirdPlace.username }}
               </div>
 
             </div>
@@ -279,30 +275,37 @@ onMounted(() => {
           </div>
 
           <div
-            v-for="
-              (player, index)
-              in remainingPlayers
-            "
-
-            :key="player.name"
-
-            class="leaderboard-player"
+            v-if="remainingPlayers.length > 0"
           >
 
-            <div class="leaderboard-left">
+            <div
+              v-for="(player, index) in remainingPlayers"
 
-              <span class="leaderboard-place">
-                #{{ index + 4 }}
-              </span>
+              :key="player.id"
 
-              <span>
-                {{ player.name }}
-              </span>
+              class="leaderboard-player"
+            >
 
-            </div>
+              <div class="leaderboard-left">
 
-            <div class="leaderboard-score">
-              {{ player.score }} pts
+                <span class="leaderboard-place">
+                  #{{ index + 4 }}
+                </span>
+
+                <span
+                  :class="{
+                    'host-name': isHost(player)
+                  }"
+                >
+                  {{ player.username }}
+                </span>
+
+              </div>
+
+              <div class="leaderboard-score">
+                {{ player.score }} pts
+              </div>
+
             </div>
 
           </div>
@@ -328,8 +331,7 @@ onMounted(() => {
 
   position: relative;
 
-  padding:
-    90px 40px 40px;
+  padding: 90px 40px 40px;
 }
 
 .game-over-phase::before {
@@ -373,8 +375,7 @@ onMounted(() => {
 .winner-wrapper {
   opacity: 0.15;
 
-  transform:
-    scale(0.9);
+  transform: scale(0.9);
 
   transition:
     all 0.7s
@@ -384,8 +385,7 @@ onMounted(() => {
 .winner-wrapper.revealed {
   opacity: 1;
 
-  transform:
-    scale(1);
+  transform: scale(1);
 }
 
 .winner-card {
@@ -404,8 +404,7 @@ onMounted(() => {
       #020202 100%
     );
 
-  border:
-    4px solid #2fe66b;
+  border: 4px solid #2fe66b;
 
   display: flex;
   justify-content: center;
@@ -414,6 +413,12 @@ onMounted(() => {
   box-shadow:
     0 0 26px rgba(47,230,107,0.18),
     0 0 55px rgba(47,230,107,0.06);
+}
+
+.winner-card.hidden-style {
+  border-color: transparent;
+
+  box-shadow: none;
 }
 
 .winner-card.shake {
@@ -463,6 +468,13 @@ onMounted(() => {
   font-weight: bold;
 
   text-align: center;
+}
+
+.host-name {
+  color: #ffd84d;
+
+  text-shadow:
+    0 0 12px rgba(255,216,77,0.22);
 }
 
 .points-badge {
@@ -521,8 +533,7 @@ onMounted(() => {
 
   opacity: 0.15;
 
-  transform:
-    scale(0.92);
+  transform: scale(0.92);
 
   transition:
     all 0.6s
@@ -535,8 +546,7 @@ onMounted(() => {
 .podium-card.revealed {
   opacity: 1;
 
-  transform:
-    scale(1);
+  transform: scale(1);
 }
 
 .podium-content {
@@ -592,8 +602,7 @@ onMounted(() => {
 
   border-radius: 22px;
 
-  padding:
-    18px 22px;
+  padding: 18px 22px;
 
   display: flex;
   justify-content: space-between;
@@ -628,28 +637,24 @@ onMounted(() => {
 
 .winner-text-enter-active,
 .podium-text-enter-active {
-  transition:
-    all 0.4s ease;
+  transition: all 0.4s ease;
 }
 
 .winner-text-enter-from,
 .podium-text-enter-from {
   opacity: 0;
 
-  transform:
-    translateY(10px);
+  transform: translateY(10px);
 }
 
 .leaderboard-fade-enter-active {
-  transition:
-    all 0.7s ease;
+  transition: all 0.7s ease;
 }
 
 .leaderboard-fade-enter-from {
   opacity: 0;
 
-  transform:
-    translateX(30px);
+  transform: translateX(30px);
 }
 
 @keyframes winnerShake {

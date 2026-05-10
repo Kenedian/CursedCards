@@ -89,6 +89,7 @@ const {
 
 .black-card:not(.preview-mode) {
   transform: translateY(-20px);
+  transform: translateX(-80px);
 }
 
 .black-card.preview-mode {
