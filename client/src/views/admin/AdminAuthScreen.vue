@@ -6,7 +6,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits([
-  "authenticate"
+  "authenticate",
+  "leave"
 ])
 
 const password = ref("")
@@ -53,6 +54,16 @@ const password = ref("")
         "
       >
         Authenticate
+      </button>
+
+      <button
+        class="btn btn-secondary auth-button"
+
+        @click="
+          emit('leave')
+        "
+      >
+        Main Menu
       </button>
 
     </div>

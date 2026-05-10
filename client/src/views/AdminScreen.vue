@@ -19,6 +19,10 @@ from "./admin/AdminAuthScreen.vue"
 import AdminPanelScreen
 from "./admin/AdminPanelScreen.vue"
 
+const emit = defineEmits([
+  "leave"
+])
+
 const authenticated =
   ref(false)
 
@@ -89,9 +93,17 @@ onUnmounted(() => {
     :error="error"
 
     @authenticate="authenticate"
+
+    @leave="
+      emit('leave')
+    "
   />
 
   <AdminPanelScreen
     v-else
+
+    @leave="
+      emit('leave')
+    "
   />
 </template>
