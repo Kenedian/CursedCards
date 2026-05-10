@@ -12,18 +12,41 @@ const cors =
 const { Server } =
   require("socket.io")
 
-require("./database")
-
 const registerSocketHandlers =
   require("./socket")
 
 const app =
   express()
 
-app.use(cors())
+const ALLOWED_ORIGINS = [
+
+  "http://localhost:5173",
+
+  process.env.CLIENT_URL
+].filter(Boolean)
+
+app.use(
+  cors({
+
+    origin:
+      ALLOWED_ORIGINS
+  })
+)
 
 app.use(
   express.json()
+)
+
+app.get(
+  "/",
+
+  (req, res) => {
+
+    res.json({
+
+      status: "online"
+    })
+  }
 )
 
 const server =
@@ -31,29 +54,36 @@ const server =
 
 const io =
   new Server(server, {
+
     cors: {
 
-      origin: [
-        "http://localhost:5173",
-        "https://tvujfrontend.vercel.app"
-      ],
+      origin:
+        ALLOWED_ORIGINS,
 
       methods: [
         "GET",
         "POST"
       ]
-    }
+    },
+
+    transports: [
+      "websocket",
+      "polling"
+    ]
   })
 
 registerSocketHandlers(io)
 
+const PORT =
+  process.env.PORT || 3000
+
 server.listen(
-  3000,
+  PORT,
 
   () => {
 
     console.log(
-      "server running on 3000"
+      `server running on ${PORT}`
     )
   }
 )
