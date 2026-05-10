@@ -59,6 +59,10 @@ const emit = defineEmits([
         <div
           v-if="props.currentType === CARD_TYPES.BLACK"
           class="blank-count"
+
+          :class="{
+            invalid: props.blackBlankCount > 3
+          }"
         >
           Blanks {{ props.blackBlankCount }}
         </div>
@@ -142,6 +146,10 @@ const emit = defineEmits([
           "
 
           class="btn btn-warning utility-button"
+
+        :disabled="
+          props.blackBlankCount >= 3
+        "
 
           @click="
             emit('add-blank')
@@ -397,6 +405,20 @@ const emit = defineEmits([
   min-width: 170px;
 
   font-size: 16px;
+}
+
+.blank-count.invalid {
+  border-color:
+    rgba(255,77,97,0.4);
+
+  background:
+    rgba(255,77,97,0.12);
+
+  color:
+    #ff8a98;
+
+  box-shadow:
+    0 0 12px rgba(255,77,97,0.18);
 }
 
 @media (max-width: 1050px) {
