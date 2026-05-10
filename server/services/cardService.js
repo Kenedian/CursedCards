@@ -66,6 +66,28 @@ async function createCard(
     const table =
       getTableName(type)
 
+    const existing =
+      await db.execute({
+
+        sql: `
+          SELECT id
+          FROM ${table}
+
+          WHERE LOWER(text) =
+          LOWER(?)
+        `,
+
+        args: [text]
+      })
+
+    if (existing.rows.length) {
+
+      return {
+        success: false,
+        reason: "duplicate"
+      }
+    }
+
     await db.execute({
 
       sql: `
@@ -85,18 +107,6 @@ async function createCard(
 
   catch (error) {
 
-    if (
-      error.message.includes(
-        "UNIQUE constraint failed"
-      )
-    ) {
-
-      return {
-        success: false,
-        reason: "duplicate"
-      }
-    }
-
     return {
       success: false,
       reason: "unknown"
@@ -114,6 +124,33 @@ async function updateCard(
 
     const table =
       getTableName(type)
+
+    const existing =
+      await db.execute({
+
+        sql: `
+          SELECT id
+          FROM ${table}
+
+          WHERE LOWER(text) =
+          LOWER(?)
+
+          AND id != ?
+        `,
+
+        args: [
+          text,
+          id
+        ]
+      })
+
+    if (existing.rows.length) {
+
+      return {
+        success: false,
+        reason: "duplicate"
+      }
+    }
 
     await db.execute({
 
@@ -137,18 +174,6 @@ async function updateCard(
   }
 
   catch (error) {
-
-    if (
-      error.message.includes(
-        "UNIQUE constraint failed"
-      )
-    ) {
-
-      return {
-        success: false,
-        reason: "duplicate"
-      }
-    }
 
     return {
       success: false,
