@@ -1,6 +1,8 @@
 import {
   ref,
-  computed
+  computed,
+  onMounted,
+  onUnmounted
 }
 from "vue"
 
@@ -71,14 +73,6 @@ export default function useCardsAdmin() {
       )
     })
 
-  function normalize(text) {
-
-    return text
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase()
-  }
-
   function addBlank() {
 
     if (
@@ -114,37 +108,6 @@ export default function useCardsAdmin() {
       return
     }
 
-    const normalizedInput =
-      normalize(
-        trimmedText.value
-      )
-
-    const target =
-      currentType.value ===
-      CARD_TYPES.WHITE
-        ? whiteCards.value
-        : blackCards.value
-
-    const duplicate =
-      target.some(
-        card =>
-          card.id !==
-            editingCard.value?.id &&
-          normalize(card.text) ===
-            normalizedInput
-      )
-
-    if (duplicate) {
-
-      alert(
-        `Duplicate ${
-          currentType.value
-        } card`
-      )
-
-      return
-    }
-
     // UPDATE
 
     if (editingCard.value) {
@@ -163,26 +126,23 @@ export default function useCardsAdmin() {
             trimmedText.value
         }
       )
+
+      return
     }
 
     // CREATE
 
-    else {
+    socket.emit(
+      SOCKET_EVENTS.ADMIN_CREATE_CARD,
 
-      socket.emit(
-        SOCKET_EVENTS.ADMIN_CREATE_CARD,
+      {
+        type:
+          currentType.value,
 
-        {
-          type:
-            currentType.value,
-
-          text:
-            trimmedText.value
-        }
-      )
-    }
-
-    cancelEdit()
+        text:
+          trimmedText.value
+      }
+    )
   }
 
   function handleDeleteCard(
@@ -201,6 +161,29 @@ export default function useCardsAdmin() {
       }
     )
   }
+
+  function handleCardsUpdated() {
+
+    cancelEdit()
+  }
+
+  onMounted(() => {
+
+    socket.on(
+      SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
+
+      handleCardsUpdated
+    )
+  })
+
+  onUnmounted(() => {
+
+    socket.off(
+      SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
+
+      handleCardsUpdated
+    )
+  })
 
   return {
 

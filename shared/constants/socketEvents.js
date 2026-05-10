@@ -48,5 +48,8 @@ export const SOCKET_EVENTS = {
     "admin-update-card",
 
   ADMIN_DELETE_CARD:
-    "admin-delete-card"
+    "admin-delete-card",
+
+  ADMIN_ACTION_FAILED:
+    "admin-action-failed"
 }

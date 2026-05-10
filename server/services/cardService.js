@@ -52,15 +52,42 @@ function createCard(
   text
 ) {
 
-  const table =
-    getTableName(type)
+  try {
 
-  return db.prepare(`
-    INSERT INTO ${table}
-    (text)
+    const table =
+      getTableName(type)
 
-    VALUES (?)
-  `).run(text)
+    db.prepare(`
+      INSERT INTO ${table}
+      (text)
+
+      VALUES (?)
+    `).run(text)
+
+    return {
+      success: true
+    }
+  }
+
+  catch (error) {
+
+    if (
+      error.message.includes(
+        "UNIQUE constraint failed"
+      )
+    ) {
+
+      return {
+        success: false,
+        reason: "duplicate"
+      }
+    }
+
+    return {
+      success: false,
+      reason: "unknown"
+    }
+  }
 }
 
 function updateCard(
@@ -69,19 +96,46 @@ function updateCard(
   text
 ) {
 
-  const table =
-    getTableName(type)
+  try {
 
-  return db.prepare(`
-    UPDATE ${table}
+    const table =
+      getTableName(type)
 
-    SET text = ?
+    db.prepare(`
+      UPDATE ${table}
 
-    WHERE id = ?
-  `).run(
-    text,
-    id
-  )
+      SET text = ?
+
+      WHERE id = ?
+    `).run(
+      text,
+      id
+    )
+
+    return {
+      success: true
+    }
+  }
+
+  catch (error) {
+
+    if (
+      error.message.includes(
+        "UNIQUE constraint failed"
+      )
+    ) {
+
+      return {
+        success: false,
+        reason: "duplicate"
+      }
+    }
+
+    return {
+      success: false,
+      reason: "unknown"
+    }
+  }
 }
 
 function deleteCard(
@@ -89,14 +143,29 @@ function deleteCard(
   id
 ) {
 
-  const table =
-    getTableName(type)
+  try {
 
-  return db.prepare(`
-    DELETE FROM ${table}
+    const table =
+      getTableName(type)
 
-    WHERE id = ?
-  `).run(id)
+    db.prepare(`
+      DELETE FROM ${table}
+
+      WHERE id = ?
+    `).run(id)
+
+    return {
+      success: true
+    }
+  }
+
+  catch (error) {
+
+    return {
+      success: false,
+      reason: "unknown"
+    }
+  }
 }
 
 module.exports = {

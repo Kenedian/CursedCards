@@ -1,8 +1,20 @@
 <script setup>
-import { ref } from "vue"
+import { ref }
+from "vue"
+
+import socket
+from "../../socket"
+
+import {
+  SOCKET_EVENTS
+}
+from "../../../../shared/constants/socketEvents"
 
 import useCardsAdmin
 from "../../composables/admin/useCardsAdmin"
+
+import AppToast
+from "../../components/ui/AppToast.vue"
 
 import CreateCardTab
 from "../../components/admin/CreateCardTab.vue"
@@ -16,6 +28,12 @@ const emit = defineEmits([
 
 const currentTab =
   ref("create")
+
+const toast =
+  ref("")
+
+let toastTimeout =
+  null
 
 const {
 
@@ -38,6 +56,43 @@ const {
 
 } = useCardsAdmin()
 
+function showToast(
+  message
+) {
+
+  toast.value =
+    message
+
+  clearTimeout(
+    toastTimeout
+  )
+
+  toastTimeout =
+    setTimeout(() => {
+
+      toast.value = ""
+
+    }, 3000)
+}
+
+function handleAdminError(
+  message
+) {
+
+  console.log(
+    "ADMIN ERROR:",
+    message
+  )
+
+  showToast(message)
+}
+
+socket.on(
+  SOCKET_EVENTS.ADMIN_ACTION_FAILED,
+
+  handleAdminError
+)
+
 function handleEdit(card) {
 
   startEdit(card)
@@ -49,6 +104,12 @@ function handleEdit(card) {
 
 <template>
   <div class="panel-container">
+
+    <AppToast
+      :visible="toast.length > 0"
+
+      :message="toast"
+    />
 
     <div class="top-bar">
 

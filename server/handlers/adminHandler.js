@@ -41,6 +41,15 @@ module.exports =
       )
     }
 
+    function emitError(message) {
+
+      socket.emit(
+        SOCKET_EVENTS.ADMIN_ACTION_FAILED,
+
+        message
+      )
+    }
+
     // LOGIN
 
     socket.on(
@@ -108,10 +117,26 @@ module.exports =
           return
         }
 
-        createCard(
-          cardData.type,
-          cardData.text
-        )
+        const result =
+          createCard(
+            cardData.type,
+            cardData.text
+          )
+
+        if (!result.success) {
+
+          emitError(
+
+            result.reason ===
+            "duplicate"
+
+              ? "Duplicate card"
+
+              : "Failed to create card"
+          )
+
+          return
+        }
 
         emitCards()
       }
@@ -128,11 +153,27 @@ module.exports =
           return
         }
 
-        updateCard(
-          cardData.type,
-          cardData.id,
-          cardData.text
-        )
+        const result =
+          updateCard(
+            cardData.type,
+            cardData.id,
+            cardData.text
+          )
+
+        if (!result.success) {
+
+          emitError(
+
+            result.reason ===
+            "duplicate"
+
+              ? "Duplicate card"
+
+              : "Failed to update card"
+          )
+
+          return
+        }
 
         emitCards()
       }
