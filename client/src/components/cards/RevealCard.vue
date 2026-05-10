@@ -21,7 +21,7 @@ const props = defineProps({
   selected: Boolean,
   disabled: Boolean,
 
-  votes: Number,
+  voteCount: Number,
   winner: Boolean,
   playerName: String,
   showPlayer: Boolean,

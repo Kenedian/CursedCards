@@ -134,7 +134,7 @@ function clickSubmission(submission) {
           selectedId === submission.id
         "
 
-        :votes="
+        :vote-count="
           showVotes
             ? submission.voteCount
             : undefined
