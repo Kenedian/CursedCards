@@ -39,6 +39,9 @@ export default function useCardsAdmin() {
   const editingCard =
     ref(null)
 
+  const shouldClearDraft =
+    ref(false)
+
   const trimmedText =
     computed(() => {
 
@@ -142,6 +145,9 @@ export default function useCardsAdmin() {
 
       if (editingCard.value) {
 
+        shouldClearDraft.value =
+          true
+
         socket.emit(
           SOCKET_EVENTS.ADMIN_UPDATE_CARD,
 
@@ -161,6 +167,9 @@ export default function useCardsAdmin() {
       }
 
       // CREATE
+
+      shouldClearDraft.value =
+        true
 
       socket.emit(
         SOCKET_EVENTS.ADMIN_CREATE_CARD,
@@ -203,7 +212,15 @@ export default function useCardsAdmin() {
     blackCards.value =
       cards.blackCards
 
-    cancelEdit()
+    if (
+      shouldClearDraft.value
+    ) {
+
+      cancelEdit()
+
+      shouldClearDraft.value =
+        false
+    }
   }
 
   onMounted(() => {
