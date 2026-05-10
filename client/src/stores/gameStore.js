@@ -1,30 +1,32 @@
 import { ref }
 from "vue"
 
+import socket
+from "../socket"
+
+import {
+  SOCKET_EVENTS
+}
+from "../../../shared/constants/socketEvents"
+
 import getBlackCardPickCount
 from "../utils/cards/getBlackCardPickCount"
 
 import {
-  mockWhiteCards,
-  mockBlackCards
-} from "../mocks/cards"
-
-import {
   mockPlayers
-} from "../mocks/players"
+}
+from "../mocks/players"
 
 import {
   mockSubmissions
-} from "../mocks/submissions"
-
-import { CARD_TYPES }
-from "../../../shared/constants/cardTypes"
+}
+from "../mocks/submissions"
 
 const whiteCards =
-  ref([...mockWhiteCards])
+  ref([])
 
 const blackCards =
-  ref([...mockBlackCards])
+  ref([])
 
 const players =
   ref([...mockPlayers])
@@ -32,68 +34,24 @@ const players =
 const submissions =
   ref([...mockSubmissions])
 
+socket.on(
+  SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
+
+  cards => {
+
+    whiteCards.value =
+      cards.whiteCards
+
+    blackCards.value =
+      cards.blackCards
+  }
+)
+
 function shuffle(array) {
 
   return [...array].sort(
     () => Math.random() - 0.5
   )
-}
-
-function getCardCollection(type) {
-
-  return (
-    type === CARD_TYPES.WHITE
-      ? whiteCards.value
-      : blackCards.value
-  )
-}
-
-function createCard(
-  type,
-  text
-) {
-
-  getCardCollection(type)
-    .push({
-      id: Date.now(),
-      text
-    })
-}
-
-function updateCard(
-  type,
-  id,
-  text
-) {
-
-  const card =
-    getCardCollection(type)
-      .find(
-        card => card.id === id
-      )
-
-  if (card) {
-    card.text = text
-  }
-}
-
-function deleteCard(
-  type,
-  id
-) {
-
-  const target =
-    getCardCollection(type)
-
-  const index =
-    target.findIndex(
-      card => card.id === id
-    )
-
-  if (index !== -1) {
-
-    target.splice(index, 1)
-  }
 }
 
 function getRandomWhiteCards(
@@ -127,19 +85,17 @@ export default function useGameStore() {
   return {
 
     // cards
+
     whiteCards,
     blackCards,
 
     // gameplay
+
     players,
     submissions,
 
-    // admin
-    createCard,
-    updateCard,
-    deleteCard,
-
     // helpers
+
     getRandomWhiteCards,
     getRandomBlackCard,
     getBlackCardPickCount

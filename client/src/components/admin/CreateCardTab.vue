@@ -43,7 +43,7 @@ const emit = defineEmits([
 
           :class="
             props.currentType === CARD_TYPES.WHITE
-              ? 'btn-light'
+              ? 'btn-primary'
               : 'btn-secondary'
           "
 
@@ -59,7 +59,7 @@ const emit = defineEmits([
 
           :class="
             props.currentType === CARD_TYPES.BLACK
-              ? 'btn-dark'
+              ? 'btn-primary'
               : 'btn-secondary'
           "
 

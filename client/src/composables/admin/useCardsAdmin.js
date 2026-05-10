@@ -1,10 +1,19 @@
 import {
   ref,
   computed
-} from "vue"
+}
+from "vue"
+
+import socket
+from "../../socket"
 
 import useGameStore
 from "../../stores/gameStore"
+
+import {
+  SOCKET_EVENTS
+}
+from "../../../../shared/constants/socketEvents"
 
 import { CARD_TYPES }
 from "../../../../shared/constants/cardTypes"
@@ -14,11 +23,7 @@ from "../../utils/cards/getBlackCardPickCount"
 
 const {
   whiteCards,
-  blackCards,
-
-  createCard,
-  updateCard,
-  deleteCard
+  blackCards
 } = useGameStore()
 
 export default function useCardsAdmin() {
@@ -140,20 +145,40 @@ export default function useCardsAdmin() {
       return
     }
 
+    // UPDATE
+
     if (editingCard.value) {
 
-      updateCard(
-        currentType.value,
-        editingCard.value.id,
-        trimmedText.value
+      socket.emit(
+        SOCKET_EVENTS.ADMIN_UPDATE_CARD,
+
+        {
+          type:
+            currentType.value,
+
+          id:
+            editingCard.value.id,
+
+          text:
+            trimmedText.value
+        }
       )
     }
 
+    // CREATE
+
     else {
 
-      createCard(
-        currentType.value,
-        trimmedText.value
+      socket.emit(
+        SOCKET_EVENTS.ADMIN_CREATE_CARD,
+
+        {
+          type:
+            currentType.value,
+
+          text:
+            trimmedText.value
+        }
       )
     }
 
@@ -164,9 +189,16 @@ export default function useCardsAdmin() {
     cardData
   ) {
 
-    deleteCard(
-      cardData.type,
-      cardData.id
+    socket.emit(
+      SOCKET_EVENTS.ADMIN_DELETE_CARD,
+
+      {
+        type:
+          cardData.type,
+
+        id:
+          cardData.id
+      }
     )
   }
 

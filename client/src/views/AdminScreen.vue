@@ -39,6 +39,10 @@ socket.on(
       true
 
     error.value = ""
+
+    socket.emit(
+      SOCKET_EVENTS.ADMIN_GET_CARDS
+    )
   }
 )
 
