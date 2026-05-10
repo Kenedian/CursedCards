@@ -36,6 +36,9 @@ const {
 const currentTab =
   ref("create")
 
+const isSubmitting =
+  ref(false)
+
 const {
 
   whiteCards,
@@ -75,6 +78,25 @@ function handleEdit(card) {
 
   currentTab.value =
     "create"
+}
+
+async function handleSubmit() {
+
+  if (isSubmitting.value) {
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+
+    await submitCard()
+  }
+
+  finally {
+
+    isSubmitting.value = false
+  }
 }
 
 onMounted(() => {
@@ -208,6 +230,10 @@ onUnmounted(() => {
           editingCard
         "
 
+        :is-submitting="
+          isSubmitting
+        "
+
         @set-type="
           currentType = $event
         "
@@ -221,7 +247,7 @@ onUnmounted(() => {
         "
 
         @create-card="
-          submitCard
+          handleSubmit
         "
 
         @cancel-edit="

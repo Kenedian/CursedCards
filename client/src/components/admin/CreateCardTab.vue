@@ -19,7 +19,9 @@ const props = defineProps({
 
   canCreate: Boolean,
 
-  editingCard: Object
+  editingCard: Object,
+
+  isSubmitting: Boolean
 })
 
 const emit = defineEmits([
@@ -68,6 +70,10 @@ const emit = defineEmits([
         <button
           class="btn"
 
+          :disabled="
+            props.editingCard
+          "
+
           :class="
             props.currentType === CARD_TYPES.WHITE
               ? 'btn-primary'
@@ -83,6 +89,10 @@ const emit = defineEmits([
 
         <button
           class="btn"
+
+          :disabled="
+            props.editingCard
+          "
 
           :class="
             props.currentType === CARD_TYPES.BLACK
@@ -106,11 +116,21 @@ const emit = defineEmits([
 
         placeholder="Card text..."
 
+        :disabled="
+          props.isSubmitting
+        "
+
         @input="
           emit(
             'update-text',
             $event.target.value
           )
+        "
+
+        @keydown.enter.exact.prevent="
+          props.canCreate &&
+          !props.isSubmitting &&
+          emit('create-card')
         "
       ></textarea>
 
@@ -131,22 +151,6 @@ const emit = defineEmits([
         </button>
 
         <button
-          class="btn btn-success create-button"
-
-          :disabled="!props.canCreate"
-
-          @click="
-            emit('create-card')
-          "
-        >
-          {{
-            props.editingCard
-              ? "Save Edit"
-              : "Create Card"
-          }}
-        </button>
-
-        <button
           v-if="
             props.editingCard
           "
@@ -158,6 +162,29 @@ const emit = defineEmits([
           "
         >
           Cancel
+        </button>
+
+        <button
+          class="btn btn-success create-button"
+
+          :disabled="
+            !props.canCreate ||
+            props.isSubmitting
+          "
+
+          @click="
+            emit('create-card')
+          "
+        >
+          {{
+            props.isSubmitting
+
+              ? 'Saving...'
+
+              : props.editingCard
+                ? "Save Edit"
+                : "Create Card"
+          }}
         </button>
 
       </div>
@@ -354,11 +381,12 @@ const emit = defineEmits([
 }
 
 .action-row {
-  display: grid;
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
+  display: flex;
   gap: 10px;
+}
+
+.create-button {
+  margin-left: auto;
 }
 
 .create-button,
@@ -366,11 +394,9 @@ const emit = defineEmits([
 .utility-button {
   height: 60px;
 
-  font-size: 16px;
-}
+  min-width: 170px;
 
-.create-button:first-child {
-  grid-column: 1 / -1;
+  font-size: 16px;
 }
 
 @media (max-width: 1050px) {

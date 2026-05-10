@@ -104,45 +104,76 @@ export default function useCardsAdmin() {
 
   function submitCard() {
 
-    if (!canCreate.value) {
-      return
-    }
+    return new Promise(resolve => {
 
-    // UPDATE
+      if (!canCreate.value) {
 
-    if (editingCard.value) {
+        resolve()
+
+        return
+      }
+
+      const complete = () => {
+
+        socket.off(
+          SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
+          complete
+        )
+
+        socket.off(
+          SOCKET_EVENTS.ADMIN_ACTION_FAILED,
+          complete
+        )
+
+        resolve()
+      }
+
+      socket.once(
+        SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
+        complete
+      )
+
+      socket.once(
+        SOCKET_EVENTS.ADMIN_ACTION_FAILED,
+        complete
+      )
+
+      // UPDATE
+
+      if (editingCard.value) {
+
+        socket.emit(
+          SOCKET_EVENTS.ADMIN_UPDATE_CARD,
+
+          {
+            type:
+              currentType.value,
+
+            id:
+              editingCard.value.id,
+
+            text:
+              trimmedText.value
+          }
+        )
+
+        return
+      }
+
+      // CREATE
 
       socket.emit(
-        SOCKET_EVENTS.ADMIN_UPDATE_CARD,
+        SOCKET_EVENTS.ADMIN_CREATE_CARD,
 
         {
           type:
             currentType.value,
 
-          id:
-            editingCard.value.id,
-
           text:
             trimmedText.value
         }
       )
-
-      return
-    }
-
-    // CREATE
-
-    socket.emit(
-      SOCKET_EVENTS.ADMIN_CREATE_CARD,
-
-      {
-        type:
-          currentType.value,
-
-        text:
-          trimmedText.value
-      }
-    )
+    })
   }
 
   function handleDeleteCard(
