@@ -10,18 +10,40 @@ const props = defineProps({
   selectedVoteId: [
     String,
     Number
-  ]
+  ],
+
+  currentPlayerId: [
+    String,
+    Number
+  ],
+
+  isReady: Boolean
 })
 
 const emit = defineEmits([
   "select-vote"
 ])
 
-function clickSubmission(id) {
+function isOwnSubmission(submission) {
+
+  return (
+    submission.player.id ===
+    props.currentPlayerId
+  )
+}
+
+function clickSubmission(submission) {
+
+  if (
+    props.isReady ||
+    isOwnSubmission(submission)
+  ) {
+    return
+  }
 
   emit(
     "select-vote",
-    id
+    submission.id
   )
 }
 </script>
@@ -32,7 +54,15 @@ function clickSubmission(id) {
 
     :submissions="props.submissions"
 
-    :clickable="true"
+    :clickable="
+      !props.isReady
+    "
+
+    :disabled-submission-ids="
+      props.submissions
+        .filter(isOwnSubmission)
+        .map(submission => submission.id)
+    "
 
     :selected-id="
       props.selectedVoteId

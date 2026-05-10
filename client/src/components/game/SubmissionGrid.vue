@@ -20,6 +20,11 @@ const props = defineProps({
     Number
   ],
 
+  disabledSubmissionIds: {
+    type: Array,
+    default: () => []
+  },
+
   showVotes: Boolean,
   showPlayer: Boolean,
   highlightWinner: Boolean,
@@ -70,6 +75,28 @@ const highestVotes = computed(() => {
     )
   )
 })
+
+function isDisabled(submission) {
+
+  return props.disabledSubmissionIds.includes(
+    submission.id
+  )
+}
+
+function clickSubmission(submission) {
+
+  if (
+    isDisabled(submission) ||
+    props.revealMode
+  ) {
+    return
+  }
+
+  emit(
+    "card-click",
+    submission
+  )
+}
 </script>
 
 <template>
@@ -95,7 +122,12 @@ const highestVotes = computed(() => {
 
         :clickable="
           clickable &&
-          !revealMode
+          !revealMode &&
+          !isDisabled(submission)
+        "
+
+        :disabled="
+          isDisabled(submission)
         "
 
         :selected="
@@ -132,10 +164,7 @@ const highestVotes = computed(() => {
         "
 
         @click="
-          emit(
-            'card-click',
-            submission.id
-          )
+          clickSubmission(submission)
         "
       />
 

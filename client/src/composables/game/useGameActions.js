@@ -17,6 +17,8 @@ export default function useGameActions({
 
   gamePhase,
 
+  isReady,
+
   selectedCards,
 
   selectedVoteId
@@ -28,7 +30,8 @@ export default function useGameActions({
 
     if (
       gamePhase.value ===
-      GAME_PHASES.PICKING
+      GAME_PHASES.PICKING &&
+      !isReady.value
     ) {
 
       socket.emit(

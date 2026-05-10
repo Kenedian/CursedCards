@@ -10,6 +10,9 @@ import {
 }
 from "../../../../shared/constants/gamePhases"
 
+import getBlackCardPickCount
+from "../../utils/cards/getBlackCardPickCount"
+
 export default function useGameSelections({
   gamePhase,
   blackCard
@@ -22,6 +25,17 @@ export default function useGameSelections({
 
   const selectedVoteId =
     ref(null)
+
+  const pickCount =
+    computed(() => {
+
+      return Math.max(
+        getBlackCardPickCount(
+          blackCard.value?.text || ""
+        ),
+        1
+      )
+    })
 
   function toggleCard(
     instanceId
@@ -47,12 +61,9 @@ export default function useGameSelections({
 
     // max selected
 
-    const maxPickCount =
-      blackCard.value?.pickCount || 1
-
     if (
       selectedCards.value.length >=
-      maxPickCount
+      pickCount.value
     ) {
 
       return
@@ -108,9 +119,6 @@ export default function useGameSelections({
   const canReady =
     computed(() => {
 
-      const pickCount =
-        blackCard.value?.pickCount || 1
-
       // PICKING
 
       if (
@@ -121,7 +129,7 @@ export default function useGameSelections({
         return (
           selectedCards.value.length
           ===
-          pickCount
+          pickCount.value
         )
       }
 

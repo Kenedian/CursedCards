@@ -5,6 +5,10 @@ const {
   SOCKET_EVENTS
 } = require("../../../shared/constants/socketEvents")
 
+const {
+  GAME_PHASES
+} = require("../../../shared/constants/gamePhases")
+
 module.exports =
 function registerSubmitVote(
   io,
@@ -22,7 +26,11 @@ function registerSubmitVote(
       const room =
         rooms.get(code)
 
-      if (!room?.game) {
+      if (
+        !room?.game ||
+        room.game.phase !==
+        GAME_PHASES.VOTING
+      ) {
         return
       }
 
@@ -35,7 +43,25 @@ function registerSubmitVote(
             socket.id
         )
 
-      if (!player) {
+      if (
+        !player ||
+        player.ready
+      ) {
+        return
+      }
+
+      const submission =
+        room.game.submissions.find(
+          submission =>
+            submission.id ===
+            submissionId
+        )
+
+      if (
+        !submission ||
+        submission.player.id ===
+        player.id
+      ) {
         return
       }
 

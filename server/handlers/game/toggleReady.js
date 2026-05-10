@@ -52,8 +52,30 @@ function registerToggleReady(
         return
       }
 
+      const wasReady =
+        player.ready
+
       player.ready =
         !player.ready
+
+      if (
+        room.game.phase ===
+        GAME_PHASES.PICKING &&
+        wasReady
+      ) {
+
+        room.game.submissions =
+          room.game.submissions.filter(
+            submission =>
+              submission.player.id !==
+              player.id
+          )
+
+        player.selectedCards = []
+
+        player.selectedCardInstanceIds =
+          []
+      }
 
       // PICKING → REVEAL
 

@@ -25,6 +25,7 @@ from "../composables/game/useGameActions"
 const {
 
   currentLobby,
+  currentPlayer,
 
   gamePhase,
 
@@ -85,6 +86,8 @@ const {
 
   gamePhase,
 
+  isReady,
+
   selectedCards,
   handCards,
 
@@ -92,6 +95,10 @@ const {
 })
 
 function handleSelectVote(id) {
+
+  if (isReady.value) {
+    return
+  }
 
   selectVote(id)
 
@@ -204,6 +211,14 @@ function handleSelectVote(id) {
 
               :selected-vote-id="
                 selectedVoteId
+              "
+
+              :current-player-id="
+                currentPlayer?.id
+              "
+
+              :is-ready="
+                isReady
               "
 
               @toggle-card="

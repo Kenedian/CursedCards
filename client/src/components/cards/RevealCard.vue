@@ -19,6 +19,7 @@ const props = defineProps({
 
   clickable: Boolean,
   selected: Boolean,
+  disabled: Boolean,
 
   votes: Number,
   winner: Boolean,
@@ -72,6 +73,7 @@ const {
     :class="{
       clickable: props.clickable,
       selected: props.selected,
+      disabled: props.disabled,
       winner: props.winner,
 
       revealed: props.revealed,
@@ -212,6 +214,46 @@ const {
 
 .reveal-card.clickable {
   cursor: pointer;
+}
+
+.reveal-card.disabled {
+  cursor: not-allowed;
+
+  opacity: 0.34;
+  filter:
+    grayscale(1)
+    brightness(0.55);
+
+  box-shadow:
+    0 0 0 2px rgba(255,80,80,0.26),
+    0 0 25px rgba(0,0,0,0.35);
+}
+
+.reveal-card.disabled::after {
+  content: "Locked";
+
+  position: absolute;
+
+  left: 14px;
+  bottom: 12px;
+
+  padding: 4px 8px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,80,80,0.18);
+
+  color:
+    rgba(255,210,210,0.9);
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.reveal-card.disabled:hover {
+  transform:
+    scale(0.98);
 }
 
 .reveal-card.clickable:hover:not(.selected) {

@@ -5,7 +5,8 @@ import WhiteCard from "../../components/cards/WhiteCard.vue"
 const props = defineProps({
   blackCard: Object,
   handCards: Array,
-  selectedCards: Array
+  selectedCards: Array,
+  isReady: Boolean
 })
 
 import getBlackCardPickCount
@@ -14,16 +15,37 @@ from "../../utils/cards/getBlackCardPickCount"
 const emit = defineEmits([
   "toggle-card"
 ])
+
+function clickCard(instanceId) {
+
+  if (props.isReady) {
+    return
+  }
+
+  emit(
+    "toggle-card",
+    instanceId
+  )
+}
 </script>
 
 <template>
-  <div class="picking-phase">
+  <div
+    class="picking-phase"
+
+    :class="{
+      'ready-locked': props.isReady
+    }"
+  >
 
     <div class="center-area">
 
     <BlackCard
-    :text="blackCard.text"
-    :pick-count=getBlackCardPickCount(blackCard.text)
+      :text="blackCard.text"
+
+      :pick-count="
+        getBlackCardPickCount(blackCard.text)
+      "
     />
 
     </div>
@@ -32,16 +54,16 @@ const emit = defineEmits([
 
       <WhiteCard
         v-for="card in handCards"
-        :key="card.text"
+        :key="card.instanceId"
 
         :text="card.text"
 
         :picked-order="
-          selectedCards.indexOf(card.text) + 1 || null
+          selectedCards.indexOf(card.instanceId) + 1 || null
         "
 
         @click="
-          emit('toggle-card', card.text)
+          clickCard(card.instanceId)
         "
       />
 
@@ -74,5 +96,12 @@ const emit = defineEmits([
   align-items: flex-end;
 
   transform: translateX(-60px);
+}
+
+.picking-phase.ready-locked
+.hand-area {
+  pointer-events: none;
+
+  opacity: 0.72;
 }
 </style>

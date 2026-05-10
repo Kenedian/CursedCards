@@ -8,6 +8,10 @@ const {
   SOCKET_EVENTS
 } = require("../../../shared/constants/socketEvents")
 
+const {
+  GAME_PHASES
+} = require("../../../shared/constants/gamePhases")
+
 module.exports =
 function registerSubmitCards(
   io,
@@ -22,7 +26,11 @@ function registerSubmitCards(
       const room =
         rooms.get(data.code)
 
-      if (!room?.game) {
+      if (
+        !room?.game ||
+        room.game.phase !==
+        GAME_PHASES.PICKING
+      ) {
         return
       }
 
@@ -31,7 +39,10 @@ function registerSubmitCards(
           p => p.id === socket.id
         )
 
-      if (!player) {
+      if (
+        !player ||
+        player.ready
+      ) {
         return
       }
 
@@ -53,9 +64,17 @@ function registerSubmitCards(
       player.selectedCardInstanceIds =
         [...selectedInstanceIds]
 
-      room.game.submissions.push({
+      const existingSubmission =
+        room.game.submissions.find(
+          submission =>
+            submission.player.id ===
+            player.id
+        )
+
+      const submission = {
 
         id:
+          existingSubmission?.id ||
           crypto.randomUUID(),
 
         player: {
@@ -71,7 +90,21 @@ function registerSubmitCards(
           [...selectedCards],
 
         voteCount: 0
-      })
+      }
+
+      if (existingSubmission) {
+
+        Object.assign(
+          existingSubmission,
+          submission
+        )
+
+        return
+      }
+
+      room.game.submissions.push(
+        submission
+      )
     }
   )
 }
