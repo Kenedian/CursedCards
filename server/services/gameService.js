@@ -16,6 +16,8 @@ const MAX_PLAYERS = 8
 
 const HAND_SIZE = 6
 
+const MAX_ROUNDS = 10
+
 function shuffle(array) {
 
   return [...array]
@@ -70,7 +72,8 @@ function startGame(room) {
 
     round: 1,
 
-    maxRounds: 10,
+    maxRounds:
+      MAX_ROUNDS,
 
     submissions: [],
 
@@ -171,5 +174,7 @@ module.exports = {
 
   allPlayersReady,
 
-  MAX_PLAYERS
+  MAX_PLAYERS,
+  HAND_SIZE,
+  MAX_ROUNDS
 }

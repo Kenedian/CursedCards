@@ -6,8 +6,15 @@ const {
 } = require("../../../shared/constants/socketEvents")
 
 const {
-  startGame
+  startGame,
+  HAND_SIZE,
+  MAX_ROUNDS
 } = require("../../services/gameService")
+
+const {
+  getWhiteCards,
+  getBlackCards
+} = require("../../services/cardService")
 
 const {
   emitGame
@@ -42,6 +49,47 @@ function registerStartGame(
       if (
         room.players.length < 3
       ) {
+
+        socket.emit(
+          SOCKET_EVENTS.LOBBY_ERROR,
+          "Minimum 3 players required"
+        )
+
+        return
+      }
+
+      const whiteCardCount =
+        getWhiteCards().length
+
+      const requiredWhiteCards =
+        room.players.length *
+        HAND_SIZE
+
+      if (
+        whiteCardCount <
+        requiredWhiteCards
+      ) {
+
+        socket.emit(
+          SOCKET_EVENTS.LOBBY_ERROR,
+          `Not enough white cards. Need ${requiredWhiteCards} for ${room.players.length} players, but only ${whiteCardCount} available.`
+        )
+
+        return
+      }
+
+      const blackCardCount =
+        getBlackCards().length
+
+      if (
+        blackCardCount <
+        MAX_ROUNDS
+      ) {
+
+        socket.emit(
+          SOCKET_EVENTS.LOBBY_ERROR,
+          `Not enough black cards. Need ${MAX_ROUNDS} for all rounds, but only ${blackCardCount} available.`
+        )
 
         return
       }

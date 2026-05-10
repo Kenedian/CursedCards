@@ -1,7 +1,9 @@
 <script setup>
 import {
   ref,
-  computed
+  computed,
+  onMounted,
+  onUnmounted
 } from "vue"
 
 import socket
@@ -15,10 +17,17 @@ from "../../../shared/constants/socketEvents"
 import useGameStore
 from "../stores/gameStore"
 
+import useToast
+from "../composables/useToast"
+
 const {
   currentLobby,
   currentPlayer
 } = useGameStore()
+
+const {
+  toastError
+} = useToast()
 
 const copied =
   ref(false)
@@ -100,6 +109,27 @@ function kickPlayer(playerId) {
     }
   )
 }
+
+function handleLobbyError(message) {
+
+  toastError(message)
+}
+
+onMounted(() => {
+
+  socket.on(
+    SOCKET_EVENTS.LOBBY_ERROR,
+    handleLobbyError
+  )
+})
+
+onUnmounted(() => {
+
+  socket.off(
+    SOCKET_EVENTS.LOBBY_ERROR,
+    handleLobbyError
+  )
+})
 </script>
 
 <template>
