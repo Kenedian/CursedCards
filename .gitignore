@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 client/.env
 server/.env
+
+# Local card database
+server/database/cards.db
