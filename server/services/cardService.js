@@ -16,38 +16,47 @@ function getTableName(type) {
   )
 }
 
-function getWhiteCards() {
+async function getWhiteCards() {
 
-  return db.prepare(`
-    SELECT *
-    FROM WhiteCards
+  const result =
+    await db.execute(`
 
-    ORDER BY id DESC
-  `).all()
+      SELECT *
+      FROM WhiteCards
+
+      ORDER BY id DESC
+    `)
+
+  return result.rows
 }
 
-function getBlackCards() {
+async function getBlackCards() {
 
-  return db.prepare(`
-    SELECT *
-    FROM BlackCards
+  const result =
+    await db.execute(`
 
-    ORDER BY id DESC
-  `).all()
+      SELECT *
+      FROM BlackCards
+
+      ORDER BY id DESC
+    `)
+
+  return result.rows
 }
 
-function getAllCards() {
+async function getAllCards() {
 
   return {
+
     whiteCards:
-      getWhiteCards(),
+      await getWhiteCards(),
 
     blackCards:
-      getBlackCards()
+      await getBlackCards()
   }
 }
 
-function createCard(
+async function createCard(
   type,
   text
 ) {
@@ -57,12 +66,17 @@ function createCard(
     const table =
       getTableName(type)
 
-    db.prepare(`
-      INSERT INTO ${table}
-      (text)
+    await db.execute({
 
-      VALUES (?)
-    `).run(text)
+      sql: `
+        INSERT INTO ${table}
+        (text)
+
+        VALUES (?)
+      `,
+
+      args: [text]
+    })
 
     return {
       success: true
@@ -90,7 +104,7 @@ function createCard(
   }
 }
 
-function updateCard(
+async function updateCard(
   type,
   id,
   text
@@ -101,16 +115,21 @@ function updateCard(
     const table =
       getTableName(type)
 
-    db.prepare(`
-      UPDATE ${table}
+    await db.execute({
 
-      SET text = ?
+      sql: `
+        UPDATE ${table}
 
-      WHERE id = ?
-    `).run(
-      text,
-      id
-    )
+        SET text = ?
+
+        WHERE id = ?
+      `,
+
+      args: [
+        text,
+        id
+      ]
+    })
 
     return {
       success: true
@@ -138,7 +157,7 @@ function updateCard(
   }
 }
 
-function deleteCard(
+async function deleteCard(
   type,
   id
 ) {
@@ -148,11 +167,16 @@ function deleteCard(
     const table =
       getTableName(type)
 
-    db.prepare(`
-      DELETE FROM ${table}
+    await db.execute({
 
-      WHERE id = ?
-    `).run(id)
+      sql: `
+        DELETE FROM ${table}
+
+        WHERE id = ?
+      `,
+
+      args: [id]
+    })
 
     return {
       success: true

@@ -28,7 +28,7 @@ function registerDeleteCard(
   socket.on(
     SOCKET_EVENTS.ADMIN_DELETE_CARD,
 
-    cardData => {
+    async cardData => {
 
       if (
         !isAdmin(socket.id)
@@ -38,7 +38,7 @@ function registerDeleteCard(
       }
 
       const result =
-        deleteCard(
+        await deleteCard(
           cardData.type,
           cardData.id
         )
@@ -57,7 +57,7 @@ function registerDeleteCard(
       io.emit(
         SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
 
-        getAllCards()
+        await getAllCards()
       )
     }
   )

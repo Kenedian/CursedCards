@@ -25,7 +25,7 @@ function registerGetCards(
   socket.on(
     SOCKET_EVENTS.ADMIN_GET_CARDS,
 
-    () => {
+    async () => {
 
       if (
         !isAdmin(socket.id)
@@ -37,7 +37,7 @@ function registerGetCards(
       socket.emit(
         SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
 
-        getAllCards()
+        await getAllCards() 
       )
     }
   )

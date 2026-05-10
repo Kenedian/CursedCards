@@ -29,7 +29,7 @@ function registerStartGame(
   socket.on(
     SOCKET_EVENTS.START_GAME,
 
-    code => {
+    async code => {
 
       const room =
         rooms.get(code)
@@ -58,8 +58,11 @@ function registerStartGame(
         return
       }
 
+      const whiteCards =
+        await getWhiteCards()
+
       const whiteCardCount =
-        getWhiteCards().length
+        whiteCards.length
 
       const requiredWhiteCards =
         room.players.length *
@@ -78,8 +81,11 @@ function registerStartGame(
         return
       }
 
+      const blackCards =
+        await getBlackCards()
+
       const blackCardCount =
-        getBlackCards().length
+        blackCards.length
 
       if (
         blackCardCount <
@@ -94,7 +100,7 @@ function registerStartGame(
         return
       }
 
-      startGame(room)
+      await startGame(room)
 
       emitGame(io, room)
 

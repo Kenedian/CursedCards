@@ -27,7 +27,7 @@ function registerAdminLogin(
   socket.on(
     SOCKET_EVENTS.ADMIN_LOGIN,
 
-    password => {
+    async password => {
 
       const success =
 
@@ -57,7 +57,7 @@ function registerAdminLogin(
       socket.emit(
         SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
 
-        getAllCards()
+        await getAllCards()
       )
 
       console.log(

@@ -28,7 +28,7 @@ function registerCreateCard(
   socket.on(
     SOCKET_EVENTS.ADMIN_CREATE_CARD,
 
-    cardData => {
+    async cardData => {
 
       if (
         !isAdmin(socket.id)
@@ -38,7 +38,7 @@ function registerCreateCard(
       }
 
       const result =
-        createCard(
+        await createCard(
           cardData.type,
           cardData.text
         )
@@ -62,7 +62,7 @@ function registerCreateCard(
       io.emit(
         SOCKET_EVENTS.ADMIN_CARDS_UPDATED,
 
-        getAllCards()
+        await getAllCards()
       )
     }
   )

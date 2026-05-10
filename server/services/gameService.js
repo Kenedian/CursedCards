@@ -39,7 +39,26 @@ function createCardInstance(card) {
   }
 }
 
-function drawCards(deck, count) {
+function drawCards(
+  room,
+  count
+) {
+
+  const deck =
+    room.game.whiteDeck
+
+  if (deck.length < count) {
+
+    const refillDeck =
+      shuffle(
+
+        room.game.allWhiteCards
+      )
+
+    deck.push(
+      ...refillDeck
+    )
+  }
 
   return deck
     .splice(0, count)
@@ -53,17 +72,19 @@ function allPlayersReady(room) {
   )
 }
 
-function startGame(room) {
+async function startGame(room) {
 
-    const shuffledWhiteCards =
-        shuffle(
-            getWhiteCards()
-        )
+  const shuffledWhiteCards =
+    shuffle(
 
-    const shuffledBlackCards =
-        shuffle(
-            getBlackCards()
-        )
+      await getWhiteCards()
+    )
+
+  const shuffledBlackCards =
+    shuffle(
+
+      await getBlackCards()
+    )
 
   room.game = {
 
@@ -78,10 +99,13 @@ function startGame(room) {
     submissions: [],
 
     blackDeck:
-      shuffledBlackCards,
+      [...shuffledBlackCards],
 
     whiteDeck:
-      shuffledWhiteCards,
+      [...shuffledWhiteCards],
+
+    allWhiteCards:
+      [...shuffledWhiteCards],
 
     blackCard:
       shuffledBlackCards.shift()
@@ -101,7 +125,7 @@ function startGame(room) {
 
     player.hand = drawCards(
 
-      room.game.whiteDeck,
+      room,
 
       HAND_SIZE
     )
@@ -122,8 +146,6 @@ function nextRound(room) {
 
   room.players.forEach(player => {
 
-    // remove used cards
-
     player.hand =
       player.hand.filter(
 
@@ -136,8 +158,6 @@ function nextRound(room) {
             )
       )
 
-    // refill hand
-
     const missingCards =
       HAND_SIZE -
       player.hand.length
@@ -147,13 +167,11 @@ function nextRound(room) {
       player.hand.push(
 
         ...drawCards(
-          room.game.whiteDeck,
+          room,
           missingCards
         )
       )
     }
-
-    // reset state
 
     player.ready = false
 
