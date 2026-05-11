@@ -106,6 +106,19 @@ export default function useGameActions({
     clearReconnectInfo()
   }
 
+  function kickPlayer(playerId) {
+    socket.emit(
+      SOCKET_EVENTS.KICK_PLAYER,
+
+      {
+        code:
+          currentLobby.value.code,
+
+        playerId
+      }
+    )
+  }
+
   return {
 
     toggleReady,
@@ -115,6 +128,7 @@ export default function useGameActions({
     nextRound,
     backToLobby,
 
-    leaveGame
+    leaveGame,
+    kickPlayer
   }
 }

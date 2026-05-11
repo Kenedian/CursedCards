@@ -86,7 +86,8 @@ const {
   nextRound,
   backToLobby,
 
-  leaveGame
+  leaveGame,
+  kickPlayer
 
 } = useGameActions({
 
@@ -188,6 +189,18 @@ function handleSelectVote(id) {
 
             :players="
               sortedPlayers
+            "
+
+            :is-host="
+              isHost
+            "
+
+            :current-player-id="
+              currentPlayer?.id
+            "
+
+            @kick-player="
+              kickPlayer
             "
           />
 

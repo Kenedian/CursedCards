@@ -1,7 +1,24 @@
 <script setup>
 defineProps({
-  players: Array
+  players: Array,
+
+  isHost: {
+    type: Boolean,
+    default: false
+  },
+
+  currentPlayerId: {
+    type: [
+      String,
+      Number
+    ],
+    default: null
+  }
 })
+
+defineEmits([
+  "kick-player"
+])
 </script>
 
 <template>
@@ -25,14 +42,18 @@ defineProps({
 
             <div
               class="ready-dot"
-              :class="{ ready: player.ready }"
+              :class="{
+                ready: player.ready,
+                offline: player.connected === false
+              }"
             ></div>
 
             <div
               class="player-name"
 
               :class="{
-                host: player.isHost
+                host: player.isHost,
+                offline: player.connected === false
               }"
             >
               {{ player.username }}
@@ -43,6 +64,26 @@ defineProps({
           <div class="player-score">
             {{ player.score }}
           </div>
+
+          <button
+            v-if="
+              isHost &&
+              player.id !== currentPlayerId &&
+              !player.isHost
+            "
+            class="kick-button"
+            type="button"
+            :aria-label="`Kick ${player.username}`"
+            title="Kick player"
+            @click="
+              $emit(
+                'kick-player',
+                player.id
+              )
+            "
+          >
+            <i class="fa-solid fa-user-minus"></i>
+          </button>
 
         </div>
 
@@ -91,9 +132,11 @@ defineProps({
 }
 
 .player-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
+
+  column-gap: 8px;
 
   min-height: 38px;
 
@@ -111,6 +154,10 @@ defineProps({
     transform 0.18s ease,
     opacity 0.18s ease,
     background 0.18s ease;
+}
+
+.player-row:has(.kick-button) {
+  padding-right: 4px;
 }
 
 .player-row:hover {
@@ -142,6 +189,14 @@ defineProps({
       0 0 12px rgba(255,216,77,0.18);
   }
 
+  .player-name.offline {
+    color:
+      rgba(255,255,255,0.46);
+
+    text-decoration:
+      line-through;
+  }
+
 .player-score {
   color:
     var(--game-yellow);
@@ -150,6 +205,50 @@ defineProps({
   font-weight: 900;
 
   flex-shrink: 0;
+}
+
+.kick-button {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background:
+    rgba(255,77,97,0.14);
+
+  color:
+    #ff8391;
+
+  font-size: 13px;
+
+  opacity: 0.72;
+
+  transition:
+    transform 0.16s ease,
+    opacity 0.16s ease,
+    background 0.16s ease,
+    color 0.16s ease;
+}
+
+.kick-button:hover,
+.kick-button:focus {
+  transform:
+    translateY(-1px);
+
+  opacity: 1;
+
+  background:
+    rgba(255,77,97,0.26);
+
+  color:
+    white;
 }
 
 .ready-dot {
@@ -172,6 +271,14 @@ defineProps({
 
   box-shadow:
     0 0 10px #2fe66b;
+}
+
+.ready-dot.offline {
+  background:
+    var(--game-red);
+
+  box-shadow:
+    0 0 10px rgba(255,77,97,0.6);
 }
 
 /* PLAYER LIST ANIM */
