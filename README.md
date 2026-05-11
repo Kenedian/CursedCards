@@ -1,10 +1,14 @@
 # Cursed Cards
 
 Browser based game similar to Cards against Humanity with the option to:
-- Adding custom cards
+- Adding / editing custom cards
 - TTS reveal of submissions
 - Lobby system
 - Winning Screen
+- 2 minutes timer for reconnect if server issues / accidental page refresh
+- Mobile and big screens friendly
+- Kicking players
+- Volume controls
 
 if cloning create .env inside server and client folder (according to .env.template)
 VITE_API_URL= is url to server
