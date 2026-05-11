@@ -61,7 +61,7 @@ const emit = defineEmits([
           class="blank-count"
 
           :class="{
-            invalid: props.blackBlankCount > 3
+            invalid: (props.blackBlankCount > 3 || props.blackBlankCount < 1) 
           }"
         >
           Blanks {{ props.blackBlankCount }}
