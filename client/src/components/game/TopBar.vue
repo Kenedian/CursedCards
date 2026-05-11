@@ -37,6 +37,7 @@ const emit = defineEmits([
   "next-round",
   "back-to-lobby",
   "reconnect",
+  "open-settings",
   "toggle-ready"
 ])
 
@@ -251,6 +252,18 @@ function handleAction() {
         "
       >
         Leave
+      </button>
+
+      <button
+        class="settings-button"
+        type="button"
+        aria-label="Open audio settings"
+        title="Settings"
+        @click="
+          emit('open-settings')
+        "
+      >
+        <i class="fa-solid fa-gear"></i>
       </button>
 
       <transition
@@ -526,6 +539,58 @@ function handleAction() {
 
   box-shadow:
     0 0 24px rgba(255,80,80,0.18);
+}
+
+.settings-button {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border:
+    1px solid rgba(255,255,255,0.12);
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #777f78,
+      #515a53 58%,
+      #323833
+    );
+
+  color:
+    white;
+
+  box-shadow:
+    0 10px 0 rgba(0,0,0,0.28),
+    0 18px 30px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+
+  transition:
+    transform 0.16s ease,
+    filter 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.settings-button:hover {
+  transform:
+    translateY(-2px);
+
+  filter:
+    brightness(1.05);
+
+  box-shadow:
+    0 0 22px rgba(255,255,255,0.12);
+}
+
+.settings-button i {
+  font-size: 18px;
 }
 
 .capsule {

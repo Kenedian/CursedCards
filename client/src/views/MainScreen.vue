@@ -17,6 +17,9 @@ from "../../../shared/constants/socketEvents"
 import useToast
 from "../composables/useToast"
 
+import AudioSettingsModal
+from "../components/modals/AudioSettingsModal.vue"
+
 import {
   getClientSessionId,
   getReconnectInfo,
@@ -44,6 +47,9 @@ const joinCode =
 
 const reconnectInfo =
   ref(getReconnectInfo())
+
+const settingsOpen =
+  ref(false)
 
 const canReconnect =
   computed(() => {
@@ -210,13 +216,26 @@ onUnmounted(() => {
 
 <template>
 
-  <button
-    class="btn btn-danger admin-button"
+  <div class="corner-actions">
+    <button
+      class="btn settings-button"
 
-    @click="emit('open-admin')"
-  >
-    Admin
-  </button>
+      aria-label="Open audio settings"
+      title="Settings"
+
+      @click="settingsOpen = true"
+    >
+      <i class="fa-solid fa-gear"></i>
+    </button>
+
+    <button
+      class="btn btn-danger admin-button"
+
+      @click="emit('open-admin')"
+    >
+      Admin
+    </button>
+  </div>
 
   <div class="main-container">
 
@@ -330,6 +349,11 @@ onUnmounted(() => {
     </div>
 
   </div>
+
+  <AudioSettingsModal
+    v-if="settingsOpen"
+    @close="settingsOpen = false"
+  />
 </template>
 
 <style scoped>
@@ -505,10 +529,38 @@ onUnmounted(() => {
     rgba(255,255,255,0.1);
 }
 
-.admin-button {
+.corner-actions {
   position: absolute;
 
   top: 20px;
   right: 20px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.settings-button {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #777f78,
+      #515a53 58%,
+      #323833
+    );
+}
+
+.settings-button i {
+  font-size: 20px;
 }
 </style>

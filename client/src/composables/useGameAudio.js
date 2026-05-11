@@ -1,3 +1,6 @@
+import useAudioSettings
+from "./useAudioSettings"
+
 const SOUND_FILES = {
   uiHover: "/sounds/ui-hover.mp3",
   uiClick: "/sounds/ui-click.mp3",
@@ -63,7 +66,6 @@ const SYNTHS = {
 }
 
 const volumes = {
-  master: 0.55,
   uiHover: 0.55,
   uiClick: 0.75,
   cardHover: 0.55,
@@ -209,8 +211,14 @@ export function playSound(name) {
     return
   }
 
+  const {
+    masterVolume,
+    effectsVolume
+  } = useAudioSettings()
+
   const volume =
-    volumes.master *
+    masterVolume.value *
+    effectsVolume.value *
     (volumes[name] || 1)
 
   const src =

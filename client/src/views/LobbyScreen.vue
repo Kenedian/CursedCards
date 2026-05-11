@@ -20,6 +20,9 @@ from "../stores/gameStore"
 import useToast
 from "../composables/useToast"
 
+import AudioSettingsModal
+from "../components/modals/AudioSettingsModal.vue"
+
 import {
   clearReconnectInfo
 }
@@ -35,6 +38,9 @@ const {
 } = useToast()
 
 const copied =
+  ref(false)
+
+const settingsOpen =
   ref(false)
 
 const maxPlayers = 8
@@ -141,6 +147,15 @@ onUnmounted(() => {
 
 <template>
   <div class="lobby-container">
+    <button
+      class="btn settings-button"
+      type="button"
+      aria-label="Open audio settings"
+      title="Settings"
+      @click="settingsOpen = true"
+    >
+      <i class="fa-solid fa-gear"></i>
+    </button>
 
     <div class="lobby-wrapper">
 
@@ -305,6 +320,11 @@ onUnmounted(() => {
     </div>
 
   </div>
+
+  <AudioSettingsModal
+    v-if="settingsOpen"
+    @close="settingsOpen = false"
+  />
 </template>
 
 <style scoped>
@@ -318,6 +338,34 @@ onUnmounted(() => {
 
   padding: 30px;
   box-sizing: border-box;
+}
+
+.settings-button {
+  position: absolute;
+
+  top: 20px;
+  right: 20px;
+
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #777f78,
+      #515a53 58%,
+      #323833
+    );
+}
+
+.settings-button i {
+  font-size: 20px;
 }
 
 .lobby-wrapper {

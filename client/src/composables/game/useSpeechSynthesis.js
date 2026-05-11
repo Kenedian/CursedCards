@@ -3,6 +3,9 @@ import {
 }
 from "vue"
 
+import useAudioSettings
+from "../useAudioSettings"
+
 function getBestVoice() {
   if (!window.speechSynthesis) {
     return null
@@ -59,6 +62,11 @@ function getBestVoice() {
 }
 
 export default function useSpeechSynthesis() {
+  const {
+    masterVolume,
+    ttsVolume,
+    ttsEnabled
+  } = useAudioSettings()
 
   function loadVoices() {
     if (!window.speechSynthesis) {
@@ -71,6 +79,21 @@ export default function useSpeechSynthesis() {
   function speak(text) {
 
     return new Promise(resolve => {
+      if (!ttsEnabled.value) {
+        setTimeout(
+          resolve,
+          Math.min(
+            Math.max(
+              1800,
+              text.length * 35
+            ),
+            5000
+          )
+        )
+
+        return
+      }
+
       if (!window.speechSynthesis) {
         resolve()
 
@@ -102,7 +125,14 @@ export default function useSpeechSynthesis() {
         1
 
       utterance.volume =
-        0.35
+        Math.min(
+          Math.max(
+            masterVolume.value *
+            ttsVolume.value,
+            0
+          ),
+          1
+        )
 
       const voice =
         getBestVoice()

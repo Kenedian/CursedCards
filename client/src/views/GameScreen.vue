@@ -1,5 +1,10 @@
 <script setup>
 import {
+  ref
+}
+from "vue"
+
+import {
   GAME_PHASES
 }
 from "../../../shared/constants/gamePhases"
@@ -9,6 +14,9 @@ from "../components/game/TopBar.vue"
 
 import PlayersSideBar
 from "../components/game/PlayersSideBar.vue"
+
+import AudioSettingsModal
+from "../components/modals/AudioSettingsModal.vue"
 
 import useGameState
 from "../composables/game/useGameState"
@@ -94,6 +102,9 @@ const {
   selectedVoteId
 })
 
+const settingsOpen =
+  ref(false)
+
 function handleSelectVote(id) {
 
   if (isReady.value) {
@@ -154,6 +165,10 @@ function handleSelectVote(id) {
 
       @reconnect="
         reconnectGame
+      "
+
+      @open-settings="
+        settingsOpen = true
       "
     />
 
@@ -247,6 +262,11 @@ function handleSelectVote(id) {
     </div>
 
   </div>
+
+  <AudioSettingsModal
+    v-if="settingsOpen"
+    @close="settingsOpen = false"
+  />
 </template>
 
 <style scoped>
