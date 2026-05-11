@@ -7,8 +7,8 @@ const {
 } = require("../../emitters/gameEmitter")
 
 const {
-  removePlayerFromRoom
-} = require("../../services/lobby/playerLifecycleService")
+  schedulePlayerRemoval
+} = require("../../services/lobby/reconnectService")
 
 module.exports =
 function registerDisconnect(
@@ -40,19 +40,14 @@ function registerDisconnect(
           continue
         }
 
-        removePlayerFromRoom(
+        exists.connected =
+          false
+
+        schedulePlayerRemoval(
+          io,
           room,
-          socket.id
+          exists
         )
-
-        if (
-          room.players.length === 0
-        ) {
-
-          rooms.delete(code)
-
-          continue
-        }
 
         emitLobby(io, room)
 

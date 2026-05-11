@@ -21,6 +21,10 @@ const {
   calculateResults
 } = require("../../services/lobby/playerLifecycleService")
 
+const {
+  scheduleRevealFallback
+} = require("../../services/game/revealPhaseService")
+
 module.exports =
 function registerToggleReady(
   io,
@@ -97,6 +101,11 @@ function registerToggleReady(
 
         room.game.phase =
           GAME_PHASES.REVEAL
+
+        scheduleRevealFallback(
+          io,
+          room
+        )
 
         console.log(
           "phase switched to REVEAL"

@@ -49,14 +49,22 @@ function registerSubmitCards(
       const selectedInstanceIds =
         data.cards || []
 
-      const selectedCards =
-        player.hand.filter(
-          card =>
-
-            selectedInstanceIds.includes(
-              card.instanceId
-            )
+      const handCardsByInstanceId =
+        new Map(
+          player.hand.map(card => [
+            card.instanceId,
+            card
+          ])
         )
+
+      const selectedCards =
+        selectedInstanceIds
+          .map(instanceId =>
+            handCardsByInstanceId.get(
+              instanceId
+            )
+          )
+          .filter(Boolean)
 
       player.selectedCards =
         [...selectedCards]

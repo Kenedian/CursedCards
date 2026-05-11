@@ -9,8 +9,17 @@ from "../../../shared/constants/socketEvents"
 import useGameStore
 from "../stores/gameStore"
 
+import {
+  getClientSessionId,
+  getReconnectInfo,
+  saveReconnectInfo,
+  clearReconnectInfo
+}
+from "../utils/reconnectSession"
+
 const {
 
+  currentLobby,
   setLobby,
   clearLobby,
   setCurrentPlayerId
@@ -18,6 +27,28 @@ const {
 } = useGameStore()
 
 export default function registerGameSocketListeners() {
+
+  function reconnectToSavedLobby() {
+    const reconnectInfo =
+      getReconnectInfo()
+
+    if (
+      !reconnectInfo?.code ||
+      !reconnectInfo?.username
+    ) {
+      return
+    }
+
+    socket.emit(
+      SOCKET_EVENTS.RECONNECT_LOBBY,
+
+      {
+        ...reconnectInfo,
+        sessionId:
+          getClientSessionId()
+      }
+    )
+  }
 
   socket.on(
     SOCKET_EVENTS.CREATE_LOBBY_SUCCESS,
@@ -29,6 +60,18 @@ export default function registerGameSocketListeners() {
       setCurrentPlayerId(
         socket.id
       )
+
+      saveReconnectInfo({
+        code:
+          room.code,
+
+        username:
+          room.players.find(
+            player =>
+              player.id ===
+              socket.id
+          )?.username
+      })
 
       console.log(
         "created lobby",
@@ -48,8 +91,50 @@ export default function registerGameSocketListeners() {
         socket.id
       )
 
+      saveReconnectInfo({
+        code:
+          room.code,
+
+        username:
+          room.players.find(
+            player =>
+              player.id ===
+              socket.id
+          )?.username
+      })
+
       console.log(
         "joined lobby",
+        room
+      )
+    }
+  )
+
+  socket.on(
+    SOCKET_EVENTS.RECONNECT_LOBBY_SUCCESS,
+
+    room => {
+
+      setLobby(room)
+
+      setCurrentPlayerId(
+        socket.id
+      )
+
+      saveReconnectInfo({
+        code:
+          room.code,
+
+        username:
+          room.players.find(
+            player =>
+              player.id ===
+              socket.id
+          )?.username
+      })
+
+      console.log(
+        "reconnected lobby",
         room
       )
     }
@@ -90,7 +175,19 @@ export default function registerGameSocketListeners() {
 
       clearLobby()
 
+      clearReconnectInfo()
+
       window.location.reload()
+    }
+  )
+
+  socket.on(
+    "connect",
+
+    () => {
+      if (currentLobby.value) {
+        reconnectToSavedLobby()
+      }
     }
   )
 }

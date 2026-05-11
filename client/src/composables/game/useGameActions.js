@@ -11,6 +11,11 @@ import {
 }
 from "../../../../shared/constants/gamePhases"
 
+import {
+  clearReconnectInfo
+}
+from "../../utils/reconnectSession"
+
 export default function useGameActions({
 
   currentLobby,
@@ -97,6 +102,8 @@ export default function useGameActions({
     )
 
     currentLobby.value = null
+
+    clearReconnectInfo()
   }
 
   return {

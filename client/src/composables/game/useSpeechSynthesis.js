@@ -4,6 +4,9 @@ import {
 from "vue"
 
 function getBestVoice() {
+  if (!window.speechSynthesis) {
+    return null
+  }
 
   const voices =
     speechSynthesis.getVoices()
@@ -58,6 +61,9 @@ function getBestVoice() {
 export default function useSpeechSynthesis() {
 
   function loadVoices() {
+    if (!window.speechSynthesis) {
+      return
+    }
 
     speechSynthesis.getVoices()
   }
@@ -65,6 +71,18 @@ export default function useSpeechSynthesis() {
   function speak(text) {
 
     return new Promise(resolve => {
+      if (!window.speechSynthesis) {
+        resolve()
+
+        return
+      }
+
+      let finished = false
+
+      const fallbackTimer =
+        setTimeout(() => {
+          finish()
+        }, Math.max(6000, text.length * 90))
 
       speechSynthesis.cancel()
 
@@ -95,7 +113,14 @@ export default function useSpeechSynthesis() {
           voice
       }
 
-      const finish = () => {
+      function finish() {
+        if (finished) {
+          return
+        }
+
+        finished = true
+
+        clearTimeout(fallbackTimer)
 
         resolve()
       }
@@ -113,14 +138,19 @@ export default function useSpeechSynthesis() {
   }
 
   function cancelSpeech() {
+    if (!window.speechSynthesis) {
+      return
+    }
 
     speechSynthesis.cancel()
   }
 
   loadVoices()
 
-  speechSynthesis.onvoiceschanged =
-    loadVoices
+  if (window.speechSynthesis) {
+    speechSynthesis.onvoiceschanged =
+      loadVoices
+  }
 
   onUnmounted(() => {
 

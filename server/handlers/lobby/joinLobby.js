@@ -24,7 +24,8 @@ function registerJoinLobby(
 
     ({
       username,
-      code
+      code,
+      sessionId
     }) => {
 
       const room =
@@ -85,6 +86,10 @@ function registerJoinLobby(
       room.players.push({
 
         id: socket.id,
+
+        sessionId,
+
+        connected: true,
 
         username,
 

@@ -20,6 +20,11 @@ from "../stores/gameStore"
 import useToast
 from "../composables/useToast"
 
+import {
+  clearReconnectInfo
+}
+from "../utils/reconnectSession"
+
 const {
   currentLobby,
   currentPlayer
@@ -94,6 +99,8 @@ function leaveLobby() {
   )
 
   currentLobby.value = null
+
+  clearReconnectInfo()
 }
 
 function kickPlayer(playerId) {

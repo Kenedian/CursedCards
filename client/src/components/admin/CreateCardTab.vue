@@ -1,4 +1,9 @@
 <script setup>
+import {
+  ref,
+  onMounted
+} from "vue"
+
 import WhiteCard
 from "../cards/WhiteCard.vue"
 
@@ -31,6 +36,21 @@ const emit = defineEmits([
   "create-card",
   "cancel-edit"
 ])
+
+const inputRef =
+  ref(null)
+
+function focusInput() {
+  inputRef.value?.focus()
+}
+
+onMounted(() => {
+  focusInput()
+})
+
+defineExpose({
+  focusInput
+})
 </script>
 
 <template>
@@ -114,11 +134,15 @@ const emit = defineEmits([
       </div>
 
       <textarea
+        ref="inputRef"
+
         :value="props.cardText"
 
         class="card-input"
 
         placeholder="Card text..."
+
+        autofocus
 
         :disabled="
           props.isSubmitting

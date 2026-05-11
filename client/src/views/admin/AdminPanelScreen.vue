@@ -1,6 +1,7 @@
 <script setup>
 import {
   ref,
+  nextTick,
   onMounted,
   onUnmounted
 } from "vue"
@@ -35,6 +36,9 @@ const {
 
 const currentTab =
   ref("create")
+
+const createCardTab =
+  ref(null)
 
 const isSubmitting =
   ref(false)
@@ -80,22 +84,65 @@ function handleEdit(card) {
     "create"
 }
 
+async function focusCreateInput() {
+
+  await nextTick()
+
+  createCardTab.value?.focusInput()
+}
+
+function handleAddBlank() {
+
+  addBlank()
+
+  focusCreateInput()
+}
+
 async function handleSubmit() {
 
   if (isSubmitting.value) {
     return
   }
 
+  const wasEditing =
+    !!editingCard.value
+
+  let shouldReturnToBrowse = false
+  let shouldFocusInput = false
+
   isSubmitting.value = true
 
   try {
 
     await submitCard()
+
+    if (
+      wasEditing &&
+      !editingCard.value
+    ) {
+      shouldReturnToBrowse = true
+    }
+
+    if (!wasEditing) {
+      shouldFocusInput = true
+    }
   }
 
   finally {
 
     isSubmitting.value = false
+  }
+
+  if (shouldReturnToBrowse) {
+
+    currentTab.value =
+      "browse"
+
+    return
+  }
+
+  if (shouldFocusInput) {
+    await focusCreateInput()
   }
 }
 
@@ -206,6 +253,8 @@ onUnmounted(() => {
           currentTab === 'create'
         "
 
+        ref="createCardTab"
+
         :current-type="
           currentType
         "
@@ -243,7 +292,7 @@ onUnmounted(() => {
         "
 
         @add-blank="
-          addBlank
+          handleAddBlank
         "
 
         @create-card="

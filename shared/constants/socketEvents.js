@@ -14,6 +14,12 @@ export const SOCKET_EVENTS = {
   JOIN_LOBBY_SUCCESS:
     "join-lobby-success",
 
+  RECONNECT_LOBBY:
+    "reconnect-lobby",
+
+  RECONNECT_LOBBY_SUCCESS:
+    "reconnect-lobby-success",
+
   LEAVE_LOBBY:
     "leave-lobby",
 

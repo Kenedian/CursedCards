@@ -9,7 +9,17 @@ const HAND_SIZE = 6
 const MAX_ROUNDS = 10
 
 function shuffle(array) {
-  return [...array].sort(() => Math.random() - 0.5)
+  const shuffled = [...array]
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const card = shuffled[i]
+
+    shuffled[i] = shuffled[j]
+    shuffled[j] = card
+  }
+
+  return shuffled
 }
 
 function createCardInstance(card) {
@@ -39,16 +49,17 @@ function allPlayersReady(room) {
 async function startGame(room) {
   const shuffledWhiteCards = shuffle(await getWhiteCards())
   const shuffledBlackCards = shuffle(await getBlackCards())
+  const blackCard = shuffledBlackCards.shift()
 
   room.game = {
     phase: GAME_PHASES.PICKING,
     round: 1,
     maxRounds: MAX_ROUNDS,
     submissions: [],
-    blackDeck: [...shuffledBlackCards],
+    blackDeck: shuffledBlackCards,
     whiteDeck: [...shuffledWhiteCards],
     allWhiteCards: [...shuffledWhiteCards],
-    blackCard: shuffledBlackCards.shift()
+    blackCard
   }
 
   room.players.forEach(player => {

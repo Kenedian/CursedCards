@@ -1,6 +1,7 @@
 <script setup>
 import {
   ref,
+  computed,
   onMounted,
   onUnmounted
 } from "vue"
@@ -15,6 +16,13 @@ from "../../../shared/constants/socketEvents"
 
 import useToast
 from "../composables/useToast"
+
+import {
+  getClientSessionId,
+  getReconnectInfo,
+  clearReconnectInfo
+}
+from "../utils/reconnectSession"
 
 const emit = defineEmits([
   "open-lobby",
@@ -34,6 +42,17 @@ const joinUsername =
 const joinCode =
   ref("")
 
+const reconnectInfo =
+  ref(getReconnectInfo())
+
+const canReconnect =
+  computed(() => {
+    return (
+      reconnectInfo.value?.code &&
+      reconnectInfo.value?.username
+    )
+  })
+
 function createLobby() {
 
   if (
@@ -52,7 +71,10 @@ function createLobby() {
 
     {
       username:
-        createUsername.value.trim()
+        createUsername.value.trim(),
+
+      sessionId:
+        getClientSessionId()
     }
   )
 }
@@ -91,9 +113,40 @@ function joinLobby() {
       code:
         joinCode.value
           .trim()
-          .toUpperCase()
+          .toUpperCase(),
+
+      sessionId:
+        getClientSessionId()
     }
   )
+}
+
+function reconnectLobby() {
+  if (!canReconnect.value) {
+    return
+  }
+
+  socket.emit(
+    SOCKET_EVENTS.RECONNECT_LOBBY,
+
+    {
+      code:
+        reconnectInfo.value.code,
+
+      username:
+        reconnectInfo.value.username,
+
+      sessionId:
+        getClientSessionId()
+    }
+  )
+}
+
+function forgetReconnect() {
+  clearReconnectInfo()
+
+  reconnectInfo.value =
+    null
 }
 
 function handleLobbySuccess() {
@@ -121,6 +174,11 @@ onMounted(() => {
   )
 
   socket.on(
+    SOCKET_EVENTS.RECONNECT_LOBBY_SUCCESS,
+    handleLobbySuccess
+  )
+
+  socket.on(
     SOCKET_EVENTS.LOBBY_ERROR,
     handleLobbyError
   )
@@ -135,6 +193,11 @@ onUnmounted(() => {
 
   socket.off(
     SOCKET_EVENTS.JOIN_LOBBY_SUCCESS,
+    handleLobbySuccess
+  )
+
+  socket.off(
+    SOCKET_EVENTS.RECONNECT_LOBBY_SUCCESS,
     handleLobbySuccess
   )
 
@@ -164,6 +227,35 @@ onUnmounted(() => {
       </h1>
 
       <div class="menu-box">
+
+        <div
+          v-if="canReconnect"
+          class="reconnect-panel"
+        >
+          <div>
+            <strong>
+              {{ reconnectInfo.username }}
+            </strong>
+
+            <span>
+              {{ reconnectInfo.code }}
+            </span>
+          </div>
+
+          <button
+            class="btn btn-warning"
+            @click="reconnectLobby"
+          >
+            Reconnect
+          </button>
+
+          <button
+            class="btn btn-outline-light"
+            @click="forgetReconnect"
+          >
+            Forget
+          </button>
+        </div>
 
         <!-- JOIN -->
 
@@ -286,6 +378,7 @@ onUnmounted(() => {
   width: 900px;
 
   display: flex;
+  flex-wrap: wrap;
 
   gap: 40px;
 
@@ -293,6 +386,42 @@ onUnmounted(() => {
     var(--game-shadow),
     inset 0 1px 0 rgba(255,255,255,0.08),
     0 0 0 4px rgba(0,0,0,0.22);
+}
+
+.reconnect-panel {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding-bottom: 22px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,0.1);
+}
+
+.reconnect-panel div {
+  flex: 1;
+
+  display: flex;
+  align-items: baseline;
+
+  gap: 12px;
+}
+
+.reconnect-panel strong {
+  color: var(--game-yellow);
+
+  font-size: 18px;
+}
+
+.reconnect-panel span {
+  color: rgba(255,255,255,0.7);
+
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .menu-side {

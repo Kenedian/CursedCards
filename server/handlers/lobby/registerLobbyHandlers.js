@@ -4,6 +4,9 @@ const registerCreateLobby =
 const registerJoinLobby =
   require("./joinLobby")
 
+const registerReconnectLobby =
+  require("./reconnectLobby")
+
 const registerLeaveLobby =
   require("./leaveLobby")
 
@@ -25,6 +28,11 @@ function registerLobbyHandlers(
   )
 
   registerJoinLobby(
+    io,
+    socket
+  )
+
+  registerReconnectLobby(
     io,
     socket
   )

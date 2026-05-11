@@ -17,7 +17,10 @@ function registerCreateLobby(
   socket.on(
     SOCKET_EVENTS.CREATE_LOBBY,
 
-    ({ username }) => {
+    ({
+      username,
+      sessionId
+    }) => {
 
       const code =
         generateCode()
@@ -35,6 +38,10 @@ function registerCreateLobby(
 
           {
             id: socket.id,
+
+            sessionId,
+
+            connected: true,
 
             username,
 
