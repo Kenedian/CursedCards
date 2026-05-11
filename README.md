@@ -50,6 +50,15 @@ Clone the repository and create `.env` files inside both the `client` and `serve
 # Game (Picking Phase)
 <img width="1918" height="868" alt="image" src="https://github.com/user-attachments/assets/e33b3258-fc74-4054-9c90-4a8609b8bb05" />
 
+# Game (Voting Phase)
+<img width="1917" height="862" alt="image" src="https://github.com/user-attachments/assets/a3107101-40c7-4071-8712-52336b3e87b1" />
+
+# Game (Results Phase)
+<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/11fd6069-9ad1-461b-bc7b-afb0e3519cd1" />
+
+# Game (Game-over Screen)
+- To be added
+
 # Admin Panel (Create Card)
 <img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/fe13023e-e4a6-4f59-b564-930a59bfcc76" />
 
