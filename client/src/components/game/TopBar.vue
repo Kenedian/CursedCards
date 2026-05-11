@@ -24,6 +24,11 @@ const props = defineProps({
   canReady: {
     type: Boolean,
     default: true
+  },
+
+  needsReconnect: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -31,6 +36,7 @@ const emit = defineEmits([
   "leave",
   "next-round",
   "back-to-lobby",
+  "reconnect",
   "toggle-ready"
 ])
 
@@ -314,6 +320,20 @@ function handleAction() {
 
           </button>
 
+          <button
+            v-if="props.needsReconnect"
+            class="
+              btn
+              reconnect-button
+            "
+
+            @click="
+              emit('reconnect')
+            "
+          >
+            Reconnect
+          </button>
+
         </div>
 
       </transition>
@@ -390,6 +410,8 @@ function handleAction() {
 
 .top-right-content {
   display: flex;
+
+  gap: 10px;
 }
 
 .ready-button {
@@ -427,6 +449,54 @@ function handleAction() {
 .ready-button.btn-danger {
   box-shadow:
     0 0 24px rgba(255,80,80,0.22);
+}
+
+.reconnect-button {
+  height: 42px;
+
+  padding: 0 14px;
+
+  border:
+    1px solid rgba(255,216,77,0.34);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,216,77,0.14);
+
+  color:
+    var(--game-yellow);
+
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 0 20px rgba(255,216,77,0.12);
+
+  transition:
+    transform 0.16s,
+    background 0.16s,
+    border-color 0.16s,
+    box-shadow 0.16s;
+}
+
+.reconnect-button:hover,
+.reconnect-button:focus {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(255,216,77,0.52);
+
+  background:
+    rgba(255,216,77,0.22);
+
+  color:
+    #ffe680;
+
+  box-shadow:
+    0 0 28px rgba(255,216,77,0.2);
 }
 
 .leave-button {

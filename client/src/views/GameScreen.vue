@@ -132,6 +132,10 @@ function handleSelectVote(id) {
         totalPlayers
       "
 
+      :needs-reconnect="
+        showConnectionWarning
+      "
+
       @toggle-ready="
         toggleReady
       "
@@ -146,6 +150,10 @@ function handleSelectVote(id) {
 
       @leave="
         leaveGame
+      "
+
+      @reconnect="
+        reconnectGame
       "
     />
 

@@ -250,7 +250,7 @@ onUnmounted(() => {
           </button>
 
           <button
-            class="btn btn-outline-light"
+            class="btn forget-button"
             @click="forgetReconnect"
           >
             Forget
@@ -422,6 +422,56 @@ onUnmounted(() => {
 
   font-weight: 800;
   letter-spacing: 1px;
+}
+
+.forget-button {
+  border:
+    1px solid rgba(255,255,255,0.14);
+
+  background:
+    rgba(255,255,255,0.04);
+
+  color:
+    rgba(255,255,255,0.72);
+
+  font-weight: 800;
+
+  box-shadow: none;
+
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.forget-button:hover,
+.forget-button:focus {
+  border-color:
+    rgba(255,255,255,0.22);
+
+  background:
+    rgba(255,255,255,0.075);
+
+  color:
+    rgba(255,255,255,0.9);
+
+  box-shadow:
+    0 0 0 3px rgba(255,255,255,0.04);
+
+  transform:
+    translateY(-1px);
+}
+
+.forget-button:active {
+  background:
+    rgba(255,255,255,0.1);
+
+  color:
+    rgba(255,255,255,0.96);
+
+  transform:
+    translateY(0);
 }
 
 .menu-side {
