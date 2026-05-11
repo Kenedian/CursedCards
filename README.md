@@ -11,6 +11,15 @@ Browser based game similar to Cards against Humanity with the option to:
 - Kicking players
 - Volume controls
 
+<img width="1918" height="860" alt="image" src="https://github.com/user-attachments/assets/2fa8791f-e306-44db-bd26-cfabc82325d8" />
+<img width="1918" height="871" alt="image" src="https://github.com/user-attachments/assets/130687ad-6a25-4cb1-a464-b9ad4b3bf456" />
+<img width="1918" height="868" alt="image" src="https://github.com/user-attachments/assets/e33b3258-fc74-4054-9c90-4a8609b8bb05" />
+<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/fe13023e-e4a6-4f59-b564-930a59bfcc76" />
+<img width="1918" height="861" alt="image" src="https://github.com/user-attachments/assets/3416177e-6194-4eac-b265-8c3bf00dd04e" />
+<img width="677" height="612" alt="image" src="https://github.com/user-attachments/assets/ebdec994-d250-49a7-91f1-eb46e396b1e0" />
+
+
+
 if cloning create .env inside server and client folder (according to .env.template)
 VITE_API_URL= is url to server
 
