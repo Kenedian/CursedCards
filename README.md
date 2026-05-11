@@ -4,7 +4,8 @@ Browser based game similar to Cards against Humanity with the option to:
 - Adding / editing custom cards
 - TTS reveal of submissions
 - Lobby system
-- Winning Screen
+- Winning Screen with points system
+- Voting for best submissions
 - 2 minutes timer for reconnect if server issues / accidental page refresh
 - Mobile and big screens friendly
 - Kicking players
