@@ -96,7 +96,7 @@ defineEmits([
 
 <style scoped>
 .players-side {
-  width: 240px;
+  width: clamp(220px, 12.5vw, 320px);
 
   flex-shrink: 0;
 
@@ -105,7 +105,7 @@ defineEmits([
 
   justify-content: center;
 
-  padding: 16px;
+  padding: clamp(14px, 0.95vw, 24px);
 
   border:
     1px solid rgba(255,255,255,0.08);
@@ -128,7 +128,7 @@ defineEmits([
   display: flex;
   flex-direction: column;
 
-  gap: 18px;
+  gap: clamp(12px, 0.9vw, 24px);
 }
 
 .player-row {
@@ -138,16 +138,16 @@ defineEmits([
 
   column-gap: 8px;
 
-  min-height: 38px;
+  min-height: clamp(36px, 2.3vw, 58px);
 
-  padding: 0 8px;
+  padding: 0 clamp(8px, 0.7vw, 16px);
 
   border-radius: 8px;
 
   background:
     rgba(255,255,255,0.025);
 
-  font-size: 16px;
+  font-size: clamp(15px, 0.9vw, 22px);
   font-weight: 800;
 
   transition:
@@ -169,7 +169,7 @@ defineEmits([
   display: flex;
   align-items: center;
 
-  gap: 8px;
+  gap: clamp(8px, 0.55vw, 14px);
 
   min-width: 0;
 }
@@ -201,15 +201,15 @@ defineEmits([
   color:
     var(--game-yellow);
 
-  font-size: 15px;
+  font-size: clamp(14px, 0.85vw, 20px);
   font-weight: 900;
 
   flex-shrink: 0;
 }
 
 .kick-button {
-  width: 30px;
-  height: 30px;
+  width: clamp(28px, 1.7vw, 42px);
+  height: clamp(28px, 1.7vw, 42px);
 
   display: flex;
   align-items: center;
@@ -226,7 +226,7 @@ defineEmits([
   color:
     #ff8391;
 
-  font-size: 13px;
+  font-size: clamp(12px, 0.75vw, 17px);
 
   opacity: 0.72;
 
@@ -252,8 +252,8 @@ defineEmits([
 }
 
 .ready-dot {
-  width: 10px;
-  height: 10px;
+  width: clamp(9px, 0.55vw, 14px);
+  height: clamp(9px, 0.55vw, 14px);
 
   border-radius: 999px;
 
@@ -296,5 +296,134 @@ defineEmits([
 
   transform:
     translateY(8px);
+}
+
+@media (max-width: 1100px) {
+  .players-side {
+    width: 190px;
+
+    padding: 10px;
+  }
+
+  .players-list {
+    gap: 8px;
+  }
+
+  .player-row {
+    min-height: 32px;
+
+    padding: 0 6px;
+
+    column-gap: 6px;
+
+    font-size: 13px;
+  }
+
+  .player-score {
+    font-size: 13px;
+  }
+
+  .ready-dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .kick-button {
+    width: 25px;
+    height: 25px;
+
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 900px) {
+  .players-side {
+    width: 166px;
+  }
+}
+
+@media (max-width: 760px) {
+  .players-side {
+    width: 100%;
+    max-height: 142px;
+
+    padding: 8px;
+
+    overflow-y: auto;
+  }
+
+  .players-list {
+    overflow: visible;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    padding-bottom: 0;
+  }
+
+  .players-list > :deep(div) {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+  .player-row {
+    width: 100%;
+    min-height: 32px;
+
+    font-size: 12px;
+  }
+
+  .player-left {
+    min-width: 0;
+  }
+
+  .player-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 420px) and (max-height: 720px) {
+  .players-side {
+    max-height: 88px;
+
+    padding: 6px;
+  }
+
+  .players-list > :deep(div) {
+    gap: 6px;
+  }
+
+  .player-row {
+    min-height: 26px;
+
+    padding: 0 5px;
+
+    column-gap: 4px;
+
+    font-size: 10px;
+  }
+
+  .player-score {
+    font-size: 10px;
+  }
+
+  .ready-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .kick-button {
+    width: 21px;
+    height: 21px;
+
+    font-size: 9px;
+  }
 }
 </style>

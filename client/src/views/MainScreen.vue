@@ -239,7 +239,7 @@ onUnmounted(() => {
 
   <div class="main-container">
 
-    <div>
+    <div class="main-wrapper">
 
       <h1 class="title">
         Cursed Cards
@@ -364,17 +364,24 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  padding:
+    clamp(18px, 3vw, 56px);
+}
+
+.main-wrapper {
+  width: min(92vw, 2600px);
 }
 
 .title {
   text-align: center;
 
-  font-size: 74px;
+  font-size: clamp(52px, 4.7vw, 180px);
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
 
-  margin-bottom: 25px;
+  margin-bottom: clamp(18px, 1.5vw, 62px);
 
   color:
     #f9fff9;
@@ -397,14 +404,15 @@ onUnmounted(() => {
 
   border-radius: 14px;
 
-  padding: 40px;
+  padding:
+    clamp(26px, 2.4vw, 92px);
 
-  width: 900px;
+  width: 100%;
 
   display: flex;
   flex-wrap: wrap;
 
-  gap: 40px;
+  gap: clamp(24px, 2.2vw, 88px);
 
   box-shadow:
     var(--game-shadow),
@@ -418,9 +426,9 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: clamp(10px, 0.9vw, 32px);
 
-  padding-bottom: 22px;
+  padding-bottom: clamp(16px, 1.25vw, 48px);
 
   border-bottom:
     1px solid rgba(255,255,255,0.1);
@@ -432,13 +440,13 @@ onUnmounted(() => {
   display: flex;
   align-items: baseline;
 
-  gap: 12px;
+  gap: clamp(12px, 0.9vw, 34px);
 }
 
 .reconnect-panel strong {
   color: var(--game-yellow);
 
-  font-size: 18px;
+  font-size: clamp(16px, 1vw, 36px);
 }
 
 .reconnect-panel span {
@@ -446,6 +454,8 @@ onUnmounted(() => {
 
   font-weight: 800;
   letter-spacing: 1px;
+
+  font-size: clamp(14px, 0.8vw, 28px);
 }
 
 .forget-button {
@@ -500,11 +510,12 @@ onUnmounted(() => {
 
 .menu-side {
   flex: 1;
+  min-width: 0;
 
   display: flex;
   flex-direction: column;
 
-  gap: 20px;
+  gap: clamp(16px, 1.2vw, 50px);
 }
 
 .menu-side h2 {
@@ -513,7 +524,7 @@ onUnmounted(() => {
   color:
     var(--game-yellow);
 
-  font-size: 24px;
+  font-size: clamp(21px, 1.35vw, 52px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.6px;
@@ -532,18 +543,18 @@ onUnmounted(() => {
 .corner-actions {
   position: absolute;
 
-  top: 20px;
-  right: 20px;
+  top: clamp(14px, 1.2vw, 28px);
+  right: clamp(14px, 1.2vw, 28px);
 
   display: flex;
   align-items: center;
 
-  gap: 12px;
+  gap: clamp(10px, 0.8vw, 18px);
 }
 
 .settings-button {
-  width: 46px;
-  height: 46px;
+  width: clamp(42px, 2.4vw, 96px);
+  height: clamp(42px, 2.4vw, 96px);
 
   display: flex;
   align-items: center;
@@ -561,6 +572,86 @@ onUnmounted(() => {
 }
 
 .settings-button i {
-  font-size: 20px;
+  font-size: clamp(18px, 1vw, 38px);
+}
+
+.admin-button {
+  min-height: clamp(42px, 2.4vw, 96px);
+
+  padding:
+    0
+    clamp(14px, 1vw, 40px);
+
+  font-size: clamp(14px, 0.85vw, 32px);
+}
+
+.menu-box .form-control {
+  height: clamp(46px, 3.1vw, 96px);
+
+  padding:
+    0
+    clamp(14px, 1vw, 34px);
+
+  font-size: clamp(16px, 1.05vw, 34px);
+}
+
+.menu-box .btn {
+  min-height: clamp(46px, 3.1vw, 96px);
+
+  font-size: clamp(15px, 0.95vw, 32px);
+}
+
+@media (max-width: 1100px) {
+  .main-container {
+    align-items: center;
+
+    padding: 22px;
+  }
+
+  .title {
+    font-size: clamp(42px, 6vw, 62px);
+
+    margin-bottom: 16px;
+  }
+
+  .main-wrapper {
+    width: min(92vw, 760px);
+  }
+
+  .menu-box {
+    width: 100%;
+
+    padding: 26px;
+
+    gap: 24px;
+  }
+
+  .menu-side {
+    gap: 16px;
+  }
+
+  .menu-box .form-control,
+  .menu-box .btn {
+    min-height: 46px;
+    height: 46px;
+
+    font-size: 15px;
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .title {
+    font-size: clamp(40px, 5vw, 64px);
+
+    margin-bottom: 12px;
+  }
+
+  .menu-box {
+    padding: 24px;
+  }
 }
 </style>

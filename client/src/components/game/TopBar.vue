@@ -389,12 +389,15 @@ function handleAction() {
   align-items: center;
 
   padding:
-    12px 14px 16px;
+    clamp(8px, 0.65vw, 18px)
+    clamp(10px, 0.9vw, 24px)
+    clamp(10px, 0.8vw, 20px);
 
   border-bottom:
     1px solid rgba(47,230,107,0.18);
 
-  margin-bottom: 12px;
+  margin-bottom:
+    clamp(8px, 0.8vw, 20px);
 
   z-index: 50;
 
@@ -418,25 +421,25 @@ function handleAction() {
 
   align-items: center;
 
-  gap: 12px;
+  gap: clamp(10px, 0.75vw, 20px);
 }
 
 .top-right-content {
   display: flex;
 
-  gap: 10px;
+  gap: clamp(8px, 0.65vw, 18px);
 }
 
 .ready-button {
-  width: 160px;
-  height: 42px;
+  width: clamp(150px, 8.5vw, 230px);
+  height: clamp(38px, 2.35vw, 60px);
 
   padding: 0;
 
   border: none;
   border-radius: 10px;
 
-  font-size: 17px;
+  font-size: clamp(15px, 0.9vw, 22px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -465,9 +468,9 @@ function handleAction() {
 }
 
 .reconnect-button {
-  height: 42px;
+  height: clamp(38px, 2.35vw, 60px);
 
-  padding: 0 14px;
+  padding: 0 clamp(12px, 0.8vw, 22px);
 
   border:
     1px solid rgba(255,216,77,0.34);
@@ -480,7 +483,7 @@ function handleAction() {
   color:
     var(--game-yellow);
 
-  font-size: 15px;
+  font-size: clamp(13px, 0.8vw, 20px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -513,14 +516,14 @@ function handleAction() {
 }
 
 .leave-button {
-  height: 42px;
+  height: clamp(38px, 2.35vw, 60px);
 
-  padding: 0 18px;
+  padding: 0 clamp(16px, 1vw, 28px);
 
   border: none;
   border-radius: 10px;
 
-  font-size: 17px;
+  font-size: clamp(15px, 0.9vw, 22px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -542,8 +545,8 @@ function handleAction() {
 }
 
 .settings-button {
-  width: 42px;
-  height: 42px;
+  width: clamp(38px, 2.35vw, 60px);
+  height: clamp(38px, 2.35vw, 60px);
 
   display: flex;
   align-items: center;
@@ -590,13 +593,13 @@ function handleAction() {
 }
 
 .settings-button i {
-  font-size: 18px;
+  font-size: clamp(16px, 1vw, 24px);
 }
 
 .capsule {
-  height: 42px;
+  height: clamp(38px, 2.35vw, 60px);
 
-  padding: 0 18px;
+  padding: 0 clamp(16px, 1vw, 30px);
 
   display: flex;
 
@@ -618,7 +621,7 @@ function handleAction() {
   backdrop-filter:
     blur(10px);
 
-  font-size: 15px;
+  font-size: clamp(13px, 0.8vw, 20px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -660,5 +663,165 @@ function handleAction() {
 .capsule-fade-enter-from,
 .capsule-fade-leave-to {
   opacity: 0;
+}
+
+@media (max-width: 1100px) {
+  .top-bar {
+    padding: 8px 10px 10px;
+  }
+
+  .top-left,
+  .top-right {
+    gap: 8px;
+  }
+
+  .top-right-content {
+    gap: 8px;
+  }
+
+  .leave-button {
+    height: 34px;
+
+    padding: 0 12px;
+
+    font-size: 13px;
+  }
+
+  .settings-button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .settings-button i {
+    font-size: 15px;
+  }
+
+  .ready-button {
+    width: 118px;
+    height: 34px;
+
+    font-size: 13px;
+  }
+
+  .reconnect-button {
+    height: 34px;
+
+    padding: 0 10px;
+
+    font-size: 12px;
+  }
+
+  .capsule {
+    min-width: 70px;
+    height: 34px;
+
+    padding: 0 12px;
+
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .ready-button {
+    width: 104px;
+  }
+
+  .capsule {
+    padding: 0 9px;
+  }
+}
+
+@media (max-width: 760px) {
+  .top-bar {
+    align-items: stretch;
+    flex-direction: column;
+
+    gap: 8px;
+
+    padding: 8px;
+  }
+
+  .top-left,
+  .top-right {
+    justify-content: space-between;
+
+    gap: 6px;
+  }
+
+  .top-right-content {
+    flex: 1;
+  }
+
+  .leave-button,
+  .ready-button,
+  .reconnect-button,
+  .capsule {
+    height: 32px;
+
+    font-size: 11px;
+  }
+
+  .leave-button {
+    padding: 0 10px;
+  }
+
+  .ready-button {
+    flex: 1;
+    width: auto;
+  }
+
+  .settings-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .settings-button i {
+    font-size: 14px;
+  }
+
+  .capsule {
+    min-width: 0;
+
+    padding: 0 8px;
+
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 420px) and (max-height: 720px) {
+  .top-bar {
+    gap: 6px;
+
+    padding: 6px;
+
+    margin-bottom: 6px;
+  }
+
+  .top-left,
+  .top-right {
+    gap: 5px;
+  }
+
+  .leave-button,
+  .ready-button,
+  .reconnect-button,
+  .capsule {
+    height: 28px;
+
+    font-size: 10px;
+  }
+
+  .settings-button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .settings-button i {
+    font-size: 12px;
+  }
+
+  .capsule {
+    padding: 0 6px;
+  }
 }
 </style>

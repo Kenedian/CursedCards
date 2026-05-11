@@ -26,7 +26,7 @@ const {
   fontSize
 } = useFitText(
   () => props.text,
-  34
+  44
 )
 </script>
 
@@ -63,8 +63,8 @@ const {
 
 <style scoped>
 .black-card {
-  width: 280px;
-  height: 380px;
+  width: clamp(220px, 14.6vw, 380px);
+  height: clamp(300px, 19.8vw, 516px);
 
   background:
     linear-gradient(
@@ -79,12 +79,12 @@ const {
 
   border-radius: 18px;
 
-  padding: 26px;
+  padding: clamp(20px, 1.8vw, 26px);
 
   display: flex;
   flex-direction: column;
 
-  margin-bottom: 120px;
+  margin-bottom: clamp(46px, 11vh, 120px);
 
   box-shadow:
     0 24px 0 rgba(0,0,0,0.28),
@@ -99,8 +99,11 @@ const {
 }
 
 .black-card:not(.preview-mode) {
-  transform: translateY(-20px);
-  transform: translateX(-80px);
+  transform:
+    translate(
+      clamp(-80px, -5vw, -34px),
+      clamp(-20px, -2vh, -8px)
+    );
 }
 
 .black-card.preview-mode {
@@ -130,7 +133,7 @@ const {
 }
 
 .black-card-picks {
-  height: 36px;
+  height: clamp(30px, 4vh, 36px);
 
   padding: 0 14px;
 
@@ -149,12 +152,51 @@ const {
   align-items: center;
   justify-content: center;
 
-  font-size: 16px;
+  font-size: clamp(13px, 1.1vw, 16px);
   font-weight: 900;
   text-transform: uppercase;
 
   box-shadow:
     0 0 18px rgba(47,230,107,0.35),
     0 0 0 3px rgba(255,255,255,0.04);
+}
+
+@media (max-width: 1100px) {
+  .black-card {
+    width: clamp(184px, 20vw, 220px);
+    height: clamp(250px, 27vw, 300px);
+
+    padding: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .black-card {
+    width: 168px;
+    height: 228px;
+
+    padding: 16px;
+  }
+}
+
+@media (max-width: 420px) and (max-height: 720px) {
+  .black-card {
+    width: 136px;
+    height: 184px;
+
+    padding: 12px;
+  }
+
+  .black-card-footer {
+    padding-top: 8px;
+  }
+
+  .black-card-picks {
+    height: 24px;
+
+    padding: 0 9px;
+
+    font-size: 10px;
+  }
 }
 </style>

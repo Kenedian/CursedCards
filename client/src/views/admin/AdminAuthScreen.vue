@@ -7,6 +7,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   "authenticate",
+  "open-settings",
   "leave"
 ])
 
@@ -15,6 +16,17 @@ const password = ref("")
 
 <template>
   <div class="auth-container">
+    <button
+      class="btn settings-button"
+      type="button"
+      aria-label="Open audio settings"
+      title="Settings"
+      @click="
+        emit('open-settings')
+      "
+    >
+      <i class="fa-solid fa-gear"></i>
+    </button>
 
     <div class="auth-box">
 
@@ -80,11 +92,40 @@ const password = ref("")
   justify-content: center;
   align-items: center;
 
-  padding: 24px;
+  padding:
+    clamp(24px, 2vw, 72px);
+}
+
+.settings-button {
+  position: absolute;
+
+  top: clamp(16px, 1.2vw, 36px);
+  right: clamp(16px, 1.2vw, 36px);
+
+  width: clamp(46px, 2.4vw, 92px);
+  height: clamp(46px, 2.4vw, 92px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #777f78,
+      #515a53 58%,
+      #323833
+    );
+}
+
+.settings-button i {
+  font-size: clamp(20px, 1vw, 38px);
 }
 
 .auth-box {
-  width: 420px;
+  width: min(82vw, 920px);
 
   background:
     linear-gradient(
@@ -98,11 +139,12 @@ const password = ref("")
 
   border-radius: 14px;
 
-  padding: 40px;
+  padding:
+    clamp(36px, 2.6vw, 96px);
 
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: clamp(18px, 1.25vw, 48px);
 
   box-shadow:
     var(--game-shadow),
@@ -114,7 +156,7 @@ const password = ref("")
   color:
     var(--game-green);
 
-  font-size: 13px;
+  font-size: clamp(13px, 0.72vw, 26px);
   font-weight: 900;
   letter-spacing: 1.4px;
   text-transform: uppercase;
@@ -123,7 +165,7 @@ const password = ref("")
 .auth-box h1 {
   margin: 0;
 
-  font-size: 38px;
+  font-size: clamp(38px, 2.6vw, 96px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -133,9 +175,19 @@ const password = ref("")
 }
 
 .auth-button {
-  height: 52px;
+  height: clamp(52px, 3.2vw, 118px);
 
-  font-size: 18px;
+  font-size: clamp(18px, 1vw, 38px);
+}
+
+.auth-box .form-control {
+  height: clamp(50px, 3vw, 110px);
+
+  padding:
+    0
+    clamp(14px, 1vw, 36px);
+
+  font-size: clamp(17px, 1vw, 36px);
 }
 
 .error-text {
@@ -152,7 +204,15 @@ const password = ref("")
   color:
     #ff9aa6;
 
-  font-size: 14px;
+  font-size: clamp(14px, 0.8vw, 28px);
   font-weight: 800;
+}
+
+@media (max-width: 1100px) {
+  .auth-box {
+    width: min(88vw, 620px);
+
+    padding: 34px;
+  }
 }
 </style>

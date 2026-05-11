@@ -62,20 +62,20 @@ defineProps({
 .toast-container {
   position: fixed;
 
-  top: 92px;
-  right: 24px;
+  top: clamp(72px, 5vw, 150px);
+  right: clamp(16px, 1.5vw, 52px);
 
-  min-width: 320px;
-  max-width: 420px;
+  width: clamp(320px, 24vw, 760px);
 
   color: white;
 
   padding:
-    14px 16px;
+    clamp(14px, 0.9vw, 30px)
+    clamp(16px, 1vw, 34px);
 
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: clamp(12px, 0.8vw, 26px);
 
   border:
     1px solid rgba(255,255,255,0.1);
@@ -113,8 +113,8 @@ defineProps({
 }
 
 .toast-icon {
-  width: 34px;
-  height: 34px;
+  width: clamp(34px, 2.2vw, 70px);
+  height: clamp(34px, 2.2vw, 70px);
 
   display: flex;
   justify-content: center;
@@ -134,6 +134,10 @@ defineProps({
     inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
+.toast-icon i {
+  font-size: clamp(16px, 1vw, 32px);
+}
+
 .toast-container.success
 .toast-icon {
   background:
@@ -148,13 +152,13 @@ defineProps({
 }
 
 .toast-title {
-  font-size: 12px;
+  font-size: clamp(12px, 0.7vw, 22px);
   font-weight: 900;
 
   color:
     #ff9aa6;
 
-  margin-bottom: 4px;
+  margin-bottom: clamp(4px, 0.35vw, 12px);
 
   text-transform: uppercase;
   letter-spacing: 1.2px;
@@ -170,7 +174,7 @@ defineProps({
   color:
     rgba(255,255,255,0.9);
 
-  font-size: 16px;
+  font-size: clamp(16px, 0.95vw, 30px);
   font-weight: 800;
 
   line-height: 1.32;
@@ -218,5 +222,14 @@ defineProps({
   transform:
     translateX(26px)
     scale(0.98);
+}
+
+@media (max-width: 720px) {
+  .toast-container {
+    left: 16px;
+    right: 16px;
+
+    width: auto;
+  }
 }
 </style>

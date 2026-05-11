@@ -336,18 +336,19 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
 
-  padding: 30px;
+  padding:
+    clamp(18px, 1.6vw, 70px);
   box-sizing: border-box;
 }
 
 .settings-button {
   position: absolute;
 
-  top: 20px;
-  right: 20px;
+  top: clamp(14px, 1.2vw, 28px);
+  right: clamp(14px, 1.2vw, 28px);
 
-  width: 46px;
-  height: 46px;
+  width: clamp(42px, 2.4vw, 96px);
+  height: clamp(42px, 2.4vw, 96px);
 
   display: flex;
   align-items: center;
@@ -365,14 +366,14 @@ onUnmounted(() => {
 }
 
 .settings-button i {
-  font-size: 20px;
+  font-size: clamp(18px, 1vw, 38px);
 }
 
 .lobby-wrapper {
   width: 100%;
-  max-width: 1500px;
+  max-width: min(94vw, 3200px);
 
-  height: 90vh;
+  height: min(91vh, 1600px);
 
   display: flex;
   flex-direction: column;
@@ -381,12 +382,12 @@ onUnmounted(() => {
 .lobby-title {
   text-align: center;
 
-  font-size: 72px;
+  font-size: clamp(50px, 4.2vw, 180px);
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
 
-  margin-bottom: 12px;
+  margin-bottom: clamp(10px, 0.9vw, 44px);
 
   flex-shrink: 0;
 
@@ -400,9 +401,10 @@ onUnmounted(() => {
   min-height: 0;
 
   display: flex;
-  gap: 40px;
+  gap: clamp(28px, 2.2vw, 96px);
 
-  padding: 42px;
+  padding:
+    clamp(28px, 2.2vw, 96px);
 
   border-radius: 14px;
 
@@ -428,18 +430,18 @@ onUnmounted(() => {
 /* LEFT */
 
 .left-side {
-  width: 430px;
+  width: clamp(360px, 25vw, 860px);
 
   display: flex;
   flex-direction: column;
 
-  gap: 22px;
+  gap: clamp(18px, 1.25vw, 52px);
 }
 
 .left-side h1 {
   margin: 0;
 
-  font-size: 48px;
+  font-size: clamp(38px, 2.6vw, 96px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -475,13 +477,13 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: clamp(12px, 0.8vw, 34px);
 }
 
 .lobby-code {
   flex: 1;
 
-  height: 110px;
+  height: clamp(88px, 5.7vw, 220px);
 
   display: flex;
   justify-content: center;
@@ -499,10 +501,10 @@ onUnmounted(() => {
   border:
     1px solid var(--game-line-strong);
 
-  font-size: 58px;
+  font-size: clamp(44px, 3.2vw, 124px);
   font-weight: bold;
 
-  letter-spacing: 10px;
+  letter-spacing: clamp(7px, 0.45vw, 22px);
 
   box-shadow:
     inset 0 0 30px rgba(0,0,0,0.45),
@@ -516,12 +518,12 @@ onUnmounted(() => {
 /* BUTTONS */
 
 .lobby-button {
-  height: 68px;
+  height: clamp(56px, 3.2vw, 124px);
 
   border: none;
   border-radius: 10px;
 
-  font-size: 24px;
+  font-size: clamp(20px, 1.25vw, 48px);
 
   font-family: inherit;
 
@@ -552,8 +554,8 @@ onUnmounted(() => {
 }
 
 .copy-button {
-  width: 68px;
-  height: 68px;
+  width: clamp(56px, 3.2vw, 124px);
+  height: clamp(56px, 3.2vw, 124px);
 
   border: none;
   border-radius: 10px;
@@ -599,7 +601,7 @@ onUnmounted(() => {
 }
 
 .copy-button i {
-  font-size: 28px;
+  font-size: clamp(24px, 1.45vw, 56px);
 }
 
 .minimum-text {
@@ -609,7 +611,7 @@ onUnmounted(() => {
 
   opacity: 0.65;
 
-  font-size: 18px;
+  font-size: clamp(15px, 0.9vw, 34px);
 }
 
 /* PLAYERS */
@@ -619,13 +621,13 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 24px;
+  margin-bottom: clamp(18px, 1.25vw, 52px);
 }
 
 .players-header h2 {
   margin: 0;
 
-  font-size: 42px;
+  font-size: clamp(34px, 2.35vw, 92px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -640,9 +642,9 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
 
-  gap: 14px;
+  gap: clamp(10px, 0.75vw, 34px);
 
-  padding-right: 10px;
+  padding-right: clamp(8px, 0.55vw, 22px);
 }
 
 .players-list::-webkit-scrollbar {
@@ -666,11 +668,13 @@ onUnmounted(() => {
 /* PLAYER ROW */
 
 .player-row {
-  min-height: 74px;
+  min-height: clamp(60px, 3.5vw, 136px);
 
   flex-shrink: 0;
 
-  padding: 0 22px;
+  padding:
+    0
+    clamp(16px, 1.1vw, 48px);
 
   display: flex;
   justify-content: space-between;
@@ -705,15 +709,15 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: clamp(10px, 0.75vw, 34px);
 
-  font-size: 24px;
+  font-size: clamp(19px, 1.25vw, 50px);
 }
 
 .host-icon {
   color: gold;
 
-  font-size: 24px;
+  font-size: clamp(20px, 1.2vw, 48px);
 
   filter:
     drop-shadow(
@@ -732,8 +736,8 @@ onUnmounted(() => {
 /* KICK BUTTON */
 
 .kick-button {
-  width: 54px;
-  height: 54px;
+  width: clamp(46px, 2.6vw, 100px);
+  height: clamp(46px, 2.6vw, 100px);
 
   border: none;
   border-radius: 16px;
@@ -758,12 +762,12 @@ onUnmounted(() => {
 }
 
 .kick-button i {
-  font-size: 22px;
+  font-size: clamp(19px, 1.05vw, 42px);
 }
 
 .host-placeholder {
-  width: 54px;
-  height: 54px;
+  width: clamp(46px, 2.6vw, 100px);
+  height: clamp(46px, 2.6vw, 100px);
 }
 
 /* CAPSULE */
@@ -778,16 +782,16 @@ onUnmounted(() => {
 
   border-radius: 10px;
 
-  padding: 0 24px;
+  padding: 0 clamp(18px, 1.2vw, 48px);
 
   min-width: 90px;
-  height: 52px;
+  height: clamp(44px, 2.55vw, 98px);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  font-size: 20px;
+  font-size: clamp(17px, 1vw, 40px);
   font-weight: 900;
 
   border:
@@ -826,8 +830,25 @@ onUnmounted(() => {
 
 @media (max-width: 1100px) {
 
+  .lobby-container {
+    padding: 22px;
+  }
+
+  .lobby-wrapper {
+    height: 92vh;
+    max-width: 880px;
+  }
+
+  .lobby-title {
+    font-size: clamp(44px, 6vw, 64px);
+  }
+
   .lobby-box {
     flex-direction: column;
+
+    gap: 22px;
+
+    padding: 26px;
   }
 
   .divider {
@@ -837,6 +858,65 @@ onUnmounted(() => {
 
   .left-side {
     width: 100%;
+
+    gap: 16px;
+  }
+
+  .left-side h1 {
+    font-size: 36px;
+  }
+
+  .lobby-code {
+    height: 84px;
+
+    font-size: 42px;
+  }
+
+  .lobby-button,
+  .copy-button {
+    height: 54px;
+  }
+
+  .copy-button {
+    width: 54px;
+  }
+
+  .players-header h2 {
+    font-size: 32px;
+  }
+
+  .player-row {
+    min-height: 56px;
+  }
+
+  .player-left {
+    font-size: 18px;
+  }
+
+  .kick-button,
+  .host-placeholder {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+@media (max-height: 780px) {
+  .lobby-wrapper {
+    height: 94vh;
+  }
+
+  .lobby-title {
+    font-size: clamp(42px, 4vw, 68px);
+
+    margin-bottom: 8px;
+  }
+
+  .lobby-box {
+    padding: 24px;
+  }
+
+  .left-side {
+    gap: 14px;
   }
 }
 </style>

@@ -19,6 +19,9 @@ from "./admin/AdminAuthScreen.vue"
 import AdminPanelScreen
 from "./admin/AdminPanelScreen.vue"
 
+import AudioSettingsModal
+from "../components/modals/AudioSettingsModal.vue"
+
 const emit = defineEmits([
   "leave"
 ])
@@ -28,6 +31,9 @@ const authenticated =
 
 const error =
   ref("")
+
+const settingsOpen =
+  ref(false)
 
 function authenticate(password) {
 
@@ -97,6 +103,10 @@ onUnmounted(() => {
     @leave="
       emit('leave')
     "
+
+    @open-settings="
+      settingsOpen = true
+    "
   />
 
   <AdminPanelScreen
@@ -105,5 +115,14 @@ onUnmounted(() => {
     @leave="
       emit('leave')
     "
+
+    @open-settings="
+      settingsOpen = true
+    "
+  />
+
+  <AudioSettingsModal
+    v-if="settingsOpen"
+    @close="settingsOpen = false"
   />
 </template>

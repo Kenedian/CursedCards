@@ -1,5 +1,11 @@
 <script setup>
-import { computed }
+import {
+  computed,
+  nextTick,
+  onBeforeUpdate,
+  ref,
+  watch
+}
 from "vue"
 
 import RevealCard
@@ -42,6 +48,12 @@ const props = defineProps({
 const emit = defineEmits([
   "card-click"
 ])
+
+const gridRef =
+  ref(null)
+
+const cardRefs =
+  ref([])
 
 const displayedSubmissions = computed(() => {
 
@@ -97,12 +109,61 @@ function clickSubmission(submission) {
     submission
   )
 }
+
+function setCardRef(element, index) {
+  cardRefs.value[index] =
+    element?.$el ||
+    element
+}
+
+async function scrollActiveCardIntoView(index) {
+  if (
+    !props.revealMode ||
+    index < 0
+  ) {
+    return
+  }
+
+  await nextTick()
+
+  const grid =
+    gridRef.value
+
+  const card =
+    cardRefs.value[index]
+
+  if (
+    !grid ||
+    !card ||
+    grid.scrollWidth <= grid.clientWidth
+  ) {
+    return
+  }
+
+  card.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+    inline: "center"
+  })
+}
+
+onBeforeUpdate(() => {
+  cardRefs.value = []
+})
+
+watch(
+  () => props.activeRevealIndex,
+  scrollActiveCardIntoView
+)
 </script>
 
 <template>
   <div class="submission-phase">
 
-    <div class="submission-grid">
+    <div
+      ref="gridRef"
+      class="submission-grid"
+    >
 
       <RevealCard
         v-for="
@@ -111,6 +172,11 @@ function clickSubmission(submission) {
         "
 
         :key="submission.id"
+
+        :ref="
+          element =>
+            setCardRef(element, index)
+        "
 
         :black-card-text="
           blackCard.text
@@ -183,7 +249,8 @@ function clickSubmission(submission) {
 
   overflow: hidden;
 
-  padding: 20px;
+  padding:
+    clamp(10px, 2vh, 20px);
 }
 
 .submission-grid {
@@ -192,7 +259,7 @@ function clickSubmission(submission) {
   grid-template-columns:
     repeat(4, 1fr);
 
-  gap: 28px;
+  gap: clamp(14px, 1.5vw, 28px);
 
   justify-items: center;
   align-items: center;
@@ -204,8 +271,6 @@ function clickSubmission(submission) {
 @media (max-width: 1600px) {
 
   .submission-grid {
-    gap: 22px;
-
     transform: scale(0.92);
   }
 }
@@ -213,8 +278,6 @@ function clickSubmission(submission) {
 @media (max-width: 1400px) {
 
   .submission-grid {
-    gap: 18px;
-
     transform: scale(0.82);
   }
 }
@@ -222,9 +285,105 @@ function clickSubmission(submission) {
 @media (max-width: 1200px) {
 
   .submission-grid {
+    transform: scale(0.72);
+  }
+}
+
+@media (max-width: 1000px) {
+  .submission-phase {
+    align-items: flex-start;
+
+    overflow-y: auto;
+  }
+
+  .submission-grid {
+    width: 100%;
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
     gap: 14px;
 
-    transform: scale(0.72);
+    transform: none;
+  }
+}
+
+@media (max-height: 820px) {
+  .submission-grid {
+    transform: scale(0.78);
+  }
+}
+
+@media (max-height: 720px) {
+  .submission-grid {
+    transform: scale(0.68);
+  }
+}
+
+@media (min-width: 2200px) and (min-height: 1200px) {
+  .submission-grid {
+    transform: scale(1.12);
+  }
+}
+
+@media (max-width: 760px) {
+  .submission-phase {
+    align-items: center;
+
+    overflow: hidden;
+
+    padding: 10px 0 18px;
+  }
+
+  .submission-grid,
+  .submission-grid {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 14px;
+
+    overflow-x: auto;
+    overflow-y: visible;
+
+    padding:
+      24px
+      calc((100vw - 132px) / 2)
+      22px;
+
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline:
+      calc((100vw - 132px) / 2);
+
+    transform: none;
+  }
+
+  .submission-grid :deep(.reveal-card) {
+    flex: 0 0 auto;
+
+    scroll-snap-align: center;
+  }
+}
+
+@media (max-width: 420px) and (max-height: 720px) {
+  .submission-phase {
+    padding: 6px 0 12px;
+  }
+
+  .submission-grid,
+  .submission-grid {
+    gap: 12px;
+
+    padding:
+      20px
+      calc((100vw - 112px) / 2)
+      18px;
+
+    scroll-padding-inline:
+      calc((100vw - 112px) / 2);
   }
 }
 </style>

@@ -173,20 +173,27 @@ function handleSelectVote(id) {
       "
     />
 
-    <div class="game-layout">
+    <div
+      class="game-layout"
+      :class="{
+        'game-over-layout':
+          gamePhase === GAME_PHASES.GAME_OVER
+      }"
+    >
 
       <!-- SIDEBAR -->
 
-      <div class="sidebar-slot">
+      <div
+        v-if="
+          gamePhase !==
+          GAME_PHASES.GAME_OVER
+        "
+        class="sidebar-slot"
+      >
 
         <transition name="sidebar">
 
           <PlayersSideBar
-            v-if="
-              gamePhase !==
-              GAME_PHASES.GAME_OVER
-            "
-
             :players="
               sortedPlayers
             "
@@ -287,7 +294,9 @@ function handleSelectVote(id) {
   width: 100vw;
   height: 100vh;
 
-  padding: 22px;
+  padding:
+    clamp(14px, 2vh, 22px)
+    clamp(14px, 1.6vw, 22px);
 
   display: flex;
   flex-direction: column;
@@ -307,20 +316,25 @@ function handleSelectVote(id) {
 
   display: flex;
 
-  align-items: flex-start;
+  align-items: stretch;
 
   min-height: 0;
 }
 
+.game-layout.game-over-layout {
+  align-items: stretch;
+}
+
 .sidebar-slot {
-  width: 264px;
+  width: clamp(236px, 14vw, 360px);
 
   flex-shrink: 0;
+  align-self: flex-start;
 
   display: flex;
 
-  padding-top: 18px;
-  padding-right: 18px;
+  padding-top: clamp(14px, 1.1vw, 28px);
+  padding-right: clamp(14px, 1.1vw, 28px);
 }
 
 .sidebar-enter-active,
@@ -339,6 +353,7 @@ function handleSelectVote(id) {
 
   min-width: 0;
   min-height: 0;
+  height: 100%;
 
   position: relative;
 
@@ -352,6 +367,7 @@ function handleSelectVote(id) {
 
   min-width: 0;
   min-height: 0;
+  height: 100%;
 }
 
 .phase-enter-active,
@@ -375,5 +391,53 @@ function handleSelectVote(id) {
   transform:
     translateY(-10px)
     scale(0.985);
+}
+
+@media (max-width: 1100px) {
+  .game-container {
+    padding: 10px;
+  }
+
+  .sidebar-slot {
+    width: 206px;
+
+    padding-top: 12px;
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar-slot {
+    width: 180px;
+  }
+}
+
+@media (max-width: 760px) {
+  .game-container {
+    padding: 8px;
+
+    overflow: hidden;
+  }
+
+  .game-layout {
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+  .sidebar-slot {
+    width: 100%;
+
+    padding: 0;
+
+    flex-shrink: 0;
+  }
+
+  .phase-wrapper,
+  .phase-content {
+    width: 100%;
+
+    overflow: visible;
+  }
 }
 </style>

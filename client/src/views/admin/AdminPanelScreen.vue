@@ -27,6 +27,7 @@ import BrowseCardsTab
 from "../../components/admin/BrowseCardsTab.vue"
 
 const emit = defineEmits([
+  "open-settings",
   "leave"
 ])
 
@@ -234,15 +235,31 @@ onUnmounted(() => {
 
       </div>
 
-      <button
-        class="btn btn-danger"
+      <div class="top-actions">
 
-        @click="
-          emit('leave')
-        "
-      >
-        Main Menu
-      </button>
+        <button
+          class="btn settings-button"
+          type="button"
+          aria-label="Open audio settings"
+          title="Settings"
+          @click="
+            emit('open-settings')
+          "
+        >
+          <i class="fa-solid fa-gear"></i>
+        </button>
+
+        <button
+          class="btn btn-danger"
+
+          @click="
+            emit('leave')
+          "
+        >
+          Main Menu
+        </button>
+
+      </div>
 
     </div>
 
@@ -334,7 +351,8 @@ onUnmounted(() => {
   width: 100vw;
   height: 100vh;
 
-  padding: 22px;
+  padding:
+    clamp(12px, 1.2vw, 36px);
 
   display: flex;
   flex-direction: column;
@@ -352,11 +370,11 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
 
-  gap: 18px;
+  gap: clamp(12px, 0.9vw, 30px);
 
-  margin-bottom: 18px;
+  margin-bottom: clamp(10px, 0.9vw, 28px);
 
-  padding: 14px;
+  padding: clamp(10px, 0.8vw, 24px);
 
   border:
     1px solid rgba(47,230,107,0.18);
@@ -378,7 +396,7 @@ onUnmounted(() => {
 .top-left {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: clamp(12px, 0.9vw, 30px);
   min-width: 0;
 }
 
@@ -386,7 +404,7 @@ onUnmounted(() => {
   color:
     var(--game-green);
 
-  font-size: 12px;
+  font-size: clamp(11px, 0.6vw, 22px);
   font-weight: 900;
   letter-spacing: 1.3px;
   text-transform: uppercase;
@@ -395,7 +413,7 @@ onUnmounted(() => {
 .top-left h1 {
   margin: 0;
 
-  font-size: 34px;
+  font-size: clamp(28px, 1.8vw, 68px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -404,13 +422,13 @@ onUnmounted(() => {
 
 .deck-stats {
   display: flex;
-  gap: 8px;
+  gap: clamp(7px, 0.45vw, 16px);
 }
 
 .stat-chip {
-  height: 38px;
+  height: clamp(34px, 2vw, 68px);
 
-  padding: 0 12px;
+  padding: 0 clamp(10px, 0.65vw, 24px);
 
   display: flex;
   align-items: center;
@@ -426,21 +444,64 @@ onUnmounted(() => {
   color:
     var(--game-muted);
 
-  font-size: 13px;
+  font-size: clamp(12px, 0.68vw, 24px);
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .tab-buttons {
   display: flex;
-  gap: 10px;
+  gap: clamp(8px, 0.55vw, 18px);
+}
+
+.tab-buttons .btn,
+.top-actions .btn {
+  min-height: clamp(36px, 2.1vw, 72px);
+
+  padding:
+    0
+    clamp(12px, 0.75vw, 28px);
+
+  font-size: clamp(12px, 0.72vw, 24px);
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+
+  gap: clamp(8px, 0.55vw, 18px);
+
+  flex-shrink: 0;
+}
+
+.settings-button {
+  width: clamp(38px, 2.1vw, 72px);
+  height: clamp(38px, 2.1vw, 72px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #777f78,
+      #515a53 58%,
+      #323833
+    );
+}
+
+.settings-button i {
+  font-size: clamp(16px, 0.9vw, 30px);
 }
 
 .panel-content {
   flex: 1;
   min-height: 0;
 
-  padding: 18px;
+  padding: clamp(12px, 1vw, 32px);
 
   border:
     1px solid var(--game-line);
@@ -461,14 +522,39 @@ onUnmounted(() => {
 
 @media (max-width: 1050px) {
 
-  .top-bar,
+  .top-bar {
+    align-items: flex-start;
+  }
+
   .top-left {
-    align-items: stretch;
-    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .tab-buttons {
     flex-wrap: wrap;
+  }
+
+  .panel-kicker {
+    display: none;
+  }
+
+  .top-left h1 {
+    font-size: 26px;
+  }
+
+  .stat-chip,
+  .tab-buttons .btn,
+  .top-actions .btn {
+    min-height: 34px;
+    height: 34px;
+
+    font-size: 12px;
+  }
+
+  .settings-button {
+    width: 34px;
+    height: 34px;
   }
 }
 </style>

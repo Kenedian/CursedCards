@@ -62,7 +62,7 @@ const {
     props.blackCardText,
     props.selectedCards
   ],
-  28
+  40
 )
 </script>
 
@@ -114,8 +114,8 @@ const {
 .reveal-card {
   position: relative;
 
-  width: 180px;
-  height: 240px;
+  width: clamp(160px, 9.4vw, 280px);
+  height: clamp(214px, 12.5vw, 374px);
 
   background:
     linear-gradient(
@@ -130,7 +130,7 @@ const {
 
   border-radius: 14px;
 
-  padding: 26px;
+  padding: clamp(20px, 1.35vw, 38px);
 
   display: flex;
   flex-direction: column;
@@ -303,11 +303,11 @@ const {
 .votes-badge {
   position: absolute;
 
-  top: 7.5px;
-  right: 7.5px;
+  top: clamp(7px, 0.45vw, 14px);
+  right: clamp(7px, 0.45vw, 14px);
 
-  width: 22px;
-  height: 22px;
+  width: clamp(22px, 1.45vw, 42px);
+  height: clamp(22px, 1.45vw, 42px);
 
   border-radius: 999px;
 
@@ -318,7 +318,7 @@ const {
   justify-content: center;
   align-items: center;
 
-  font-size: 18px;
+  font-size: clamp(16px, 0.95vw, 28px);
   font-weight: bold;
 
   box-shadow:
@@ -328,12 +328,12 @@ const {
 .player-name {
   position: absolute;
 
-  right: 18px;
-  bottom: 10px;
+  right: clamp(14px, 0.95vw, 28px);
+  bottom: clamp(8px, 0.6vw, 18px);
 
-  max-width: 130px;
+  max-width: 72%;
 
-  font-size: 14px;
+  font-size: clamp(13px, 0.8vw, 24px);
   font-weight: bold;
 
   color: rgba(255,255,255,0.75);
@@ -343,5 +343,64 @@ const {
   text-overflow: ellipsis;
 
   text-align: right;
+}
+
+@media (max-width: 760px) {
+  .reveal-card {
+    width: 132px;
+    height: 176px;
+
+    padding: 14px;
+  }
+
+  .votes-badge {
+    width: 22px;
+    height: 22px;
+
+    font-size: 14px;
+  }
+
+  .player-name {
+    right: 10px;
+    bottom: 8px;
+
+    font-size: 11px;
+  }
+
+  .reveal-card.clickable:hover:not(.selected) {
+    transform:
+      translateY(-2px)
+      scale(1.02);
+  }
+
+  .reveal-card.selected {
+    transform:
+      translateY(-2px)
+      scale(1.04);
+  }
+
+  .reveal-card.winner,
+  .reveal-card.active {
+    transform:
+      scale(1.05);
+  }
+}
+
+@media (max-width: 1000px) and (min-width: 761px) {
+  .reveal-card {
+    width: clamp(138px, 18vw, 170px);
+    height: clamp(184px, 24vw, 226px);
+
+    padding: 16px;
+  }
+}
+
+@media (max-width: 420px) and (max-height: 720px) {
+  .reveal-card {
+    width: 112px;
+    height: 150px;
+
+    padding: 11px;
+  }
 }
 </style>

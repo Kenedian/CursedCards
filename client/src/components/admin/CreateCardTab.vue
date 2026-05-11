@@ -269,17 +269,19 @@ defineExpose({
   justify-content: center;
   align-items: center;
 
-  gap: 48px;
+  gap: clamp(24px, 2.2vw, 84px);
 }
 
 .left-side {
-  width: min(560px, 48vw);
+  flex: 1 1 0;
+  max-width: 980px;
+  min-width: 0;
 
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: clamp(14px, 1vw, 34px);
 
-  padding: 24px;
+  padding: clamp(18px, 1.3vw, 42px);
 
   border:
     1px solid rgba(255,255,255,0.08);
@@ -291,8 +293,9 @@ defineExpose({
 }
 
 .preview-side {
-  width: min(420px, 38vw);
-  min-height: 470px;
+  flex: 0 1 clamp(300px, 30vw, 760px);
+  min-width: 280px;
+  min-height: clamp(360px, 31vw, 860px);
 
   display: flex;
   justify-content: center;
@@ -318,7 +321,7 @@ defineExpose({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
+  gap: clamp(10px, 0.7vw, 24px);
 }
 
 .section-kicker,
@@ -326,7 +329,7 @@ defineExpose({
   color:
     var(--game-green);
 
-  font-size: 12px;
+  font-size: clamp(11px, 0.6vw, 22px);
   font-weight: 900;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -335,15 +338,15 @@ defineExpose({
 .section-header h2 {
   margin: 0;
 
-  font-size: 34px;
+  font-size: clamp(28px, 1.8vw, 68px);
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .blank-count {
-  height: 38px;
+  height: clamp(34px, 2vw, 68px);
 
-  padding: 0 12px;
+  padding: 0 clamp(10px, 0.65vw, 24px);
 
   display: flex;
   align-items: center;
@@ -359,7 +362,7 @@ defineExpose({
   color:
     var(--game-yellow);
 
-  font-size: 13px;
+  font-size: clamp(12px, 0.68vw, 24px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -367,19 +370,29 @@ defineExpose({
 .preview-label {
   position: absolute;
 
-  top: 16px;
-  left: 16px;
+  top: clamp(14px, 0.9vw, 30px);
+  left: clamp(14px, 0.9vw, 30px);
 }
 
 .type-switch {
   display: flex;
-  gap: 10px;
+  gap: clamp(8px, 0.55vw, 18px);
+}
+
+.type-switch .btn {
+  min-height: clamp(38px, 2.2vw, 76px);
+
+  padding:
+    0
+    clamp(12px, 0.8vw, 28px);
+
+  font-size: clamp(12px, 0.75vw, 26px);
 }
 
 .card-input {
   flex: 1;
 
-  min-height: 280px;
+  min-height: clamp(220px, 18vw, 620px);
 
   resize: none;
 
@@ -393,9 +406,9 @@ defineExpose({
 
   border-radius: 10px;
 
-  padding: 24px;
+  padding: clamp(18px, 1.25vw, 44px);
 
-  font-size: 24px;
+  font-size: clamp(20px, 1.25vw, 44px);
   font-weight: 800;
   line-height: 1.25;
 
@@ -414,7 +427,7 @@ defineExpose({
 
 .action-row {
   display: flex;
-  gap: 10px;
+  gap: clamp(8px, 0.55vw, 18px);
 }
 
 .create-button {
@@ -424,11 +437,11 @@ defineExpose({
 .create-button,
 .cancel-button,
 .utility-button {
-  height: 60px;
+  height: clamp(50px, 3vw, 104px);
 
-  min-width: 170px;
+  min-width: clamp(138px, 9vw, 300px);
 
-  font-size: 16px;
+  font-size: clamp(14px, 0.85vw, 30px);
 }
 
 .blank-count.invalid {
@@ -448,6 +461,60 @@ defineExpose({
 @media (max-width: 1050px) {
 
   .create-layout {
+    overflow: hidden;
+
+    flex-direction: row;
+    justify-content: stretch;
+
+    gap: 14px;
+  }
+
+  .left-side {
+    flex-basis: 56%;
+
+    padding: 14px;
+
+    gap: 10px;
+  }
+
+  .preview-side {
+    flex-basis: 44%;
+
+    min-width: 260px;
+    min-height: 0;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+  }
+
+  .section-kicker,
+  .preview-label {
+    font-size: 10px;
+  }
+
+  .card-input {
+    min-height: 190px;
+
+    padding: 16px;
+
+    font-size: 18px;
+  }
+
+  .create-button,
+  .cancel-button,
+  .utility-button {
+    min-width: 0;
+    height: 44px;
+
+    padding: 0 12px;
+
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 820px) {
+  .create-layout {
     overflow-y: auto;
 
     flex-direction: column;
@@ -457,6 +524,11 @@ defineExpose({
   .left-side,
   .preview-side {
     width: 100%;
+    flex-basis: auto;
+  }
+
+  .preview-side {
+    min-height: 360px;
   }
 }
 </style>

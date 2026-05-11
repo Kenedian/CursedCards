@@ -15,7 +15,7 @@ const {
   fontSize
 } = useFitText(
   () => props.text,
-  28
+  36
 )
 </script>
 
@@ -74,8 +74,8 @@ const {
 }
 
 .white-card {
-  width: 180px;
-  height: 240px;
+  width: clamp(142px, 9.4vw, 240px);
+  height: clamp(190px, 12.5vw, 320px);
 
   background:
     linear-gradient(
@@ -91,11 +91,12 @@ const {
 
   border-radius: 14px;
 
-  padding: 18px;
+  padding: clamp(14px, 1.2vw, 18px);
 
-  margin-left: -26px;
+  margin-left: clamp(-26px, -1.5vw, -14px);
 
-  transform: translateY(125px);
+  transform:
+    translateY(clamp(84px, 14vh, 125px));
 
   transition:
     transform 0.18s,
@@ -155,7 +156,7 @@ const {
 }
 
 .white-card-top {
-  height: 26px;
+  height: clamp(20px, 3vh, 26px);
 
   display: flex;
   align-items: flex-start;
@@ -163,15 +164,15 @@ const {
   flex-shrink: 0;
 
   margin:
-    -18px
-    -18px
-    20px
-    -18px;
+    calc(clamp(14px, 1.2vw, 18px) * -1)
+    calc(clamp(14px, 1.2vw, 18px) * -1)
+    clamp(14px, 2vh, 20px)
+    calc(clamp(14px, 1.2vw, 18px) * -1);
 }
 
 .pick-order {
-  width: 42px;
-  height: 42px;
+  width: clamp(34px, 3.2vw, 42px);
+  height: clamp(34px, 3.2vw, 42px);
 
   border-bottom-right-radius: 12px;
   border-top-left-radius: 14px;
@@ -189,7 +190,7 @@ const {
   justify-content: center;
   align-items: center;
 
-  font-size: 18px;
+  font-size: clamp(15px, 1.2vw, 18px);
   font-weight: 900;
 
   box-shadow:
@@ -209,5 +210,78 @@ const {
   overflow-wrap: normal;
 
   hyphens: none;
+}
+
+@media (max-width: 1100px) {
+  .white-card {
+    width: clamp(122px, 13vw, 142px);
+    height: clamp(164px, 17.5vw, 190px);
+
+    padding: 13px;
+
+    margin-left: -12px;
+  }
+
+  .white-card-top {
+    margin:
+      -13px
+      -13px
+      12px
+      -13px;
+  }
+}
+
+@media (max-width: 760px) {
+  .white-card {
+    width: 112px;
+    height: 150px;
+
+    padding: 11px;
+
+    margin-left: -8px;
+  }
+
+  .white-card-top {
+    height: 18px;
+
+    margin:
+      -11px
+      -11px
+      10px
+      -11px;
+  }
+
+  .pick-order {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 420px) and (max-height: 720px) {
+  .white-card {
+    width: 82px;
+    height: 110px;
+
+    padding: 9px;
+
+    margin-left: -22px;
+  }
+
+  .white-card-top {
+    height: 15px;
+
+    margin:
+      -9px
+      -9px
+      8px
+      -9px;
+  }
+
+  .pick-order {
+    width: 25px;
+    height: 25px;
+
+    font-size: 12px;
+  }
 }
 </style>

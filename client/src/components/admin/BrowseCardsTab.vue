@@ -304,7 +304,7 @@ function confirmDelete() {
   display: flex;
   flex-direction: column;
 
-  gap: 24px;
+  gap: clamp(12px, 1vw, 34px);
 
   min-height: 0;
 }
@@ -314,15 +314,17 @@ function confirmDelete() {
   justify-content: space-between;
   align-items: center;
 
-  gap: 20px;
+  gap: clamp(12px, 0.9vw, 30px);
+
+  flex-shrink: 0;
 }
 
 .toolbar-panel {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(6px, 0.4vw, 14px);
 
-  padding: 12px;
+  padding: clamp(10px, 0.65vw, 22px);
 
   border:
     1px solid rgba(255,255,255,0.08);
@@ -337,7 +339,7 @@ function confirmDelete() {
   color:
     var(--game-muted);
 
-  font-size: 11px;
+  font-size: clamp(10px, 0.55vw, 20px);
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -345,14 +347,24 @@ function confirmDelete() {
 
 .top-group {
   display: flex;
-  gap: 10px;
+  gap: clamp(8px, 0.5vw, 18px);
+}
+
+.top-group .btn {
+  min-height: clamp(36px, 2vw, 70px);
+
+  padding:
+    0
+    clamp(12px, 0.75vw, 28px);
+
+  font-size: clamp(12px, 0.7vw, 24px);
 }
 
 .mode-chip {
-  min-width: 190px;
-  height: 48px;
+  min-width: clamp(160px, 10vw, 360px);
+  height: clamp(40px, 2.3vw, 78px);
 
-  padding: 0 16px;
+  padding: 0 clamp(12px, 0.85vw, 30px);
 
   display: flex;
   justify-content: center;
@@ -369,7 +381,7 @@ function confirmDelete() {
   color:
     #9cc9ff;
 
-  font-size: 14px;
+  font-size: clamp(12px, 0.75vw, 26px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -405,11 +417,14 @@ function confirmDelete() {
   display: grid;
 
   grid-template-columns:
-    repeat(auto-fill, minmax(220px, 1fr));
+    repeat(auto-fill, minmax(clamp(150px, 10.5vw, 300px), 1fr));
 
-  gap: 28px;
+  gap: clamp(16px, 1.2vw, 42px);
 
-  padding: 18px 12px 22px;
+  padding:
+    clamp(14px, 0.9vw, 30px)
+    clamp(10px, 0.65vw, 24px)
+    clamp(18px, 1vw, 34px);
 
   border:
     1px solid rgba(255,255,255,0.06);
@@ -425,9 +440,9 @@ function confirmDelete() {
 
 .cards-grid.black {
   grid-template-columns:
-    repeat(auto-fill, minmax(340px, 1fr));
+    repeat(auto-fill, minmax(clamp(210px, 16vw, 460px), 1fr));
 
-  gap: 40px;
+  gap: clamp(22px, 1.6vw, 58px);
 
   padding-top: 16px;
 }
@@ -504,16 +519,60 @@ function confirmDelete() {
 @media (max-width: 1050px) {
 
   .browse-top {
-    align-items: stretch;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    gap: 8px;
+  }
+
+  .toolbar-panel {
+    flex: 1 1 280px;
+
+    padding: 8px;
   }
 
   .top-group {
     flex-wrap: wrap;
+
+    gap: 6px;
   }
 
   .mode-chip {
+    order: 3;
+
     width: 100%;
+    height: 34px;
+
+    font-size: 11px;
+  }
+
+  .top-group .btn {
+    min-height: 32px;
+
+    padding: 0 10px;
+
+    font-size: 11px;
+  }
+
+  .toolbar-label {
+    font-size: 9px;
+  }
+
+  .cards-grid {
+    grid-template-columns:
+      repeat(auto-fill, minmax(118px, 1fr));
+
+    gap: 12px;
+
+    padding: 12px 8px 18px;
+  }
+
+  .cards-grid.black {
+    grid-template-columns:
+      repeat(auto-fill, minmax(170px, 1fr));
+
+    gap: 16px;
   }
 }
 </style>
