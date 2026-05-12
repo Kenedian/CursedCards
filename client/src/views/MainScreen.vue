@@ -356,10 +356,6 @@ onUnmounted(() => {
 
             class="form-control"
 
-            :maxlength="
-              MAX_USERNAME_LENGTH
-            "
-
             @keyup.enter="joinLobby"
           >
 
@@ -371,6 +367,10 @@ onUnmounted(() => {
             placeholder="Your name"
 
             class="form-control"
+
+            :maxlength="
+              MAX_USERNAME_LENGTH
+            "
 
             @keyup.enter="joinLobby"
           >
