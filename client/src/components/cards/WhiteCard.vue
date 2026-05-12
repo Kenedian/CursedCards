@@ -7,7 +7,20 @@ const props = defineProps({
 
   pickedOrder: Number,
 
-  previewMode: Boolean
+  previewMode: Boolean,
+
+  maxFontSize: {
+    type: [
+      Number,
+      Function
+    ],
+    default: 36
+  },
+
+  minFontSize: {
+    type: Number,
+    default: 6
+  }
 })
 
 const {
@@ -15,7 +28,16 @@ const {
   fontSize
 } = useFitText(
   () => props.text,
-  36
+  () => {
+    if (
+      typeof props.maxFontSize === "function"
+    ) {
+      return props.maxFontSize()
+    }
+
+    return props.maxFontSize
+  },
+  props.minFontSize
 )
 </script>
 
@@ -74,8 +96,8 @@ const {
 }
 
 .white-card {
-  width: clamp(142px, 9.4vw, 240px);
-  height: clamp(190px, 12.5vw, 320px);
+  width: clamp(150px, 10.4vw, 360px);
+  height: clamp(200px, 13.9vw, 480px);
 
   background:
     linear-gradient(
@@ -91,12 +113,12 @@ const {
 
   border-radius: 14px;
 
-  padding: clamp(14px, 1.2vw, 18px);
+  padding: clamp(14px, 1.05vw, 28px);
 
-  margin-left: clamp(-26px, -1.5vw, -14px);
+  margin-left: clamp(-54px, -1.8vw, -18px);
 
   transform:
-    translateY(clamp(84px, 14vh, 125px));
+    translateY(clamp(92px, 13vh, 220px));
 
   transition:
     transform 0.18s,
@@ -156,7 +178,7 @@ const {
 }
 
 .white-card-top {
-  height: clamp(20px, 3vh, 26px);
+  height: clamp(20px, 2vh, 34px);
 
   display: flex;
   align-items: flex-start;
@@ -171,8 +193,8 @@ const {
 }
 
 .pick-order {
-  width: clamp(34px, 3.2vw, 42px);
-  height: clamp(34px, 3.2vw, 42px);
+  width: clamp(34px, 2.2vw, 58px);
+  height: clamp(34px, 2.2vw, 58px);
 
   border-bottom-right-radius: 12px;
   border-top-left-radius: 14px;
@@ -190,7 +212,7 @@ const {
   justify-content: center;
   align-items: center;
 
-  font-size: clamp(15px, 1.2vw, 18px);
+  font-size: clamp(15px, 0.95vw, 26px);
   font-weight: 900;
 
   box-shadow:
@@ -199,6 +221,7 @@ const {
 
 .white-card-text {
   height: 65%;
+  min-height: 0;
 
   line-height: 1.15;
 
@@ -212,7 +235,7 @@ const {
   hyphens: none;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 999px) {
   .white-card {
     width: clamp(122px, 13vw, 142px);
     height: clamp(164px, 17.5vw, 190px);
@@ -228,6 +251,13 @@ const {
       -13px
       12px
       -13px;
+  }
+
+  .white-card-text {
+    word-break: normal;
+    overflow-wrap: break-word;
+
+    hyphens: manual;
   }
 }
 

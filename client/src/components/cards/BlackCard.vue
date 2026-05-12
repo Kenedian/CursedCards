@@ -11,7 +11,20 @@ const props = defineProps({
 
   pickCount: Number,
 
-  previewMode: Boolean
+  previewMode: Boolean,
+
+  maxFontSize: {
+    type: [
+      Number,
+      Function
+    ],
+    default: 44
+  },
+
+  minFontSize: {
+    type: Number,
+    default: 6
+  }
 })
 
 const displayText = computed(() => {
@@ -26,7 +39,16 @@ const {
   fontSize
 } = useFitText(
   () => props.text,
-  44
+  () => {
+    if (
+      typeof props.maxFontSize === "function"
+    ) {
+      return props.maxFontSize()
+    }
+
+    return props.maxFontSize
+  },
+  props.minFontSize
 )
 </script>
 
@@ -63,8 +85,8 @@ const {
 
 <style scoped>
 .black-card {
-  width: clamp(220px, 14.6vw, 380px);
-  height: clamp(300px, 19.8vw, 516px);
+  width: clamp(240px, 16vw, 560px);
+  height: clamp(326px, 21.5vw, 752px);
 
   background:
     linear-gradient(
@@ -79,12 +101,12 @@ const {
 
   border-radius: 18px;
 
-  padding: clamp(20px, 1.8vw, 26px);
+  padding: clamp(22px, 1.35vw, 42px);
 
   display: flex;
   flex-direction: column;
 
-  margin-bottom: clamp(46px, 11vh, 120px);
+  margin-bottom: clamp(30px, 6vh, 110px);
 
   box-shadow:
     0 24px 0 rgba(0,0,0,0.28),
@@ -101,8 +123,8 @@ const {
 .black-card:not(.preview-mode) {
   transform:
     translate(
-      clamp(-80px, -5vw, -34px),
-      clamp(-20px, -2vh, -8px)
+      clamp(-130px, -5vw, -34px),
+      clamp(-34px, -2vh, -8px)
     );
 }
 
@@ -114,6 +136,7 @@ const {
 
 .black-card-text {
   flex: 1;
+  min-height: 0;
 
   line-height: 1.12;
 
@@ -121,6 +144,8 @@ const {
   overflow-wrap: normal;
 
   hyphens: none;
+
+  overflow: hidden;
 }
 
 .black-card-footer {
@@ -133,9 +158,9 @@ const {
 }
 
 .black-card-picks {
-  height: clamp(30px, 4vh, 36px);
+  height: clamp(30px, 2.1vw, 52px);
 
-  padding: 0 14px;
+  padding: 0 clamp(14px, 0.8vw, 28px);
 
   border-radius: 8px;
 
@@ -152,7 +177,7 @@ const {
   align-items: center;
   justify-content: center;
 
-  font-size: clamp(13px, 1.1vw, 16px);
+  font-size: clamp(13px, 0.72vw, 22px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -161,12 +186,19 @@ const {
     0 0 0 3px rgba(255,255,255,0.04);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 999px) {
   .black-card {
     width: clamp(184px, 20vw, 220px);
     height: clamp(250px, 27vw, 300px);
 
     padding: 18px;
+  }
+
+  .black-card-text {
+    word-break: normal;
+    overflow-wrap: break-word;
+
+    hyphens: manual;
   }
 }
 

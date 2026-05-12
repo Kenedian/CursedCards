@@ -21,6 +21,16 @@ export default function useFitText(
   let resizeObserver =
     null
 
+  function getDefaultFontSize(el) {
+    if (
+      typeof defaultFontSize === "function"
+    ) {
+      return defaultFontSize(el)
+    }
+
+    return defaultFontSize
+  }
+
   async function fitText() {
 
     await nextTick()
@@ -36,7 +46,7 @@ export default function useFitText(
       minFontSize
 
     let high =
-      defaultFontSize
+      getDefaultFontSize(el)
 
     let best =
       minFontSize

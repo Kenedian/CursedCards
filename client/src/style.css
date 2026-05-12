@@ -39,6 +39,25 @@ body,
   position: relative;
 }
 
+@media (max-width: 760px), (max-width: 999px) and (max-height: 520px) and (orientation: landscape) {
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    min-height: 100dvh;
+  }
+
+  body,
+  #app {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  #app {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 :root {
   --game-bg: #090b0a;
   --game-panel: rgba(13,17,15,0.88);
@@ -116,6 +135,10 @@ body::before {
 
   overflow: hidden;
 
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
   border: none !important;
 
   border-radius: 10px !important;
@@ -124,7 +147,10 @@ body::before {
 
   font-weight: 800 !important;
   letter-spacing: 0.4px;
+  line-height: 1.08 !important;
+  text-align: center;
   text-transform: uppercase;
+  white-space: nowrap;
 
   transition:
     transform 0.14s cubic-bezier(.2,1,.2,1),

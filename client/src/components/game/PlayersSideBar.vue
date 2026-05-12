@@ -38,6 +38,26 @@ defineEmits([
           :key="player.id"
         >
 
+          <button
+            v-if="
+              isHost &&
+              player.id !== currentPlayerId &&
+              !player.isHost
+            "
+            class="kick-button"
+            type="button"
+            :aria-label="`Kick ${player.username}`"
+            title="Kick player"
+            @click="
+              $emit(
+                'kick-player',
+                player.id
+              )
+            "
+          >
+            <i class="fa-solid fa-user-minus"></i>
+          </button>
+
           <div class="player-left">
 
             <div
@@ -65,26 +85,6 @@ defineEmits([
             {{ player.score }}
           </div>
 
-          <button
-            v-if="
-              isHost &&
-              player.id !== currentPlayerId &&
-              !player.isHost
-            "
-            class="kick-button"
-            type="button"
-            :aria-label="`Kick ${player.username}`"
-            title="Kick player"
-            @click="
-              $emit(
-                'kick-player',
-                player.id
-              )
-            "
-          >
-            <i class="fa-solid fa-user-minus"></i>
-          </button>
-
         </div>
 
       </transition-group>
@@ -96,7 +96,7 @@ defineEmits([
 
 <style scoped>
 .players-side {
-  width: clamp(220px, 12.5vw, 320px);
+  width: clamp(240px, 16vw, 640px);
 
   flex-shrink: 0;
 
@@ -105,7 +105,7 @@ defineEmits([
 
   justify-content: center;
 
-  padding: clamp(14px, 0.95vw, 24px);
+  padding: clamp(16px, 1.15vw, 50px);
 
   border:
     1px solid rgba(255,255,255,0.08);
@@ -128,26 +128,26 @@ defineEmits([
   display: flex;
   flex-direction: column;
 
-  gap: clamp(12px, 0.9vw, 24px);
+  gap: clamp(12px, 0.95vw, 42px);
 }
 
 .player-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
 
-  column-gap: 8px;
+  column-gap: clamp(8px, 0.6vw, 26px);
 
-  min-height: clamp(36px, 2.3vw, 58px);
+  min-height: clamp(42px, 2.8vw, 110px);
 
-  padding: 0 clamp(8px, 0.7vw, 16px);
+  padding: 0 clamp(10px, 0.9vw, 36px);
 
   border-radius: 8px;
 
   background:
     rgba(255,255,255,0.025);
 
-  font-size: clamp(15px, 0.9vw, 22px);
+  font-size: clamp(16px, 1.05vw, 42px);
   font-weight: 800;
 
   transition:
@@ -157,7 +157,7 @@ defineEmits([
 }
 
 .player-row:has(.kick-button) {
-  padding-right: 4px;
+  padding-left: 4px;
 }
 
 .player-row:hover {
@@ -166,6 +166,8 @@ defineEmits([
 }
 
 .player-left {
+  grid-column: 2;
+
   display: flex;
   align-items: center;
 
@@ -198,18 +200,22 @@ defineEmits([
   }
 
 .player-score {
+  grid-column: 3;
+
   color:
     var(--game-yellow);
 
-  font-size: clamp(14px, 0.85vw, 20px);
+  font-size: clamp(15px, 0.95vw, 38px);
   font-weight: 900;
 
   flex-shrink: 0;
 }
 
 .kick-button {
-  width: clamp(28px, 1.7vw, 42px);
-  height: clamp(28px, 1.7vw, 42px);
+  grid-column: 1;
+
+  width: clamp(32px, 2vw, 78px);
+  height: clamp(32px, 2vw, 78px);
 
   display: flex;
   align-items: center;
@@ -226,7 +232,7 @@ defineEmits([
   color:
     #ff8391;
 
-  font-size: clamp(12px, 0.75vw, 17px);
+  font-size: clamp(13px, 0.85vw, 32px);
 
   opacity: 0.72;
 
@@ -252,8 +258,8 @@ defineEmits([
 }
 
 .ready-dot {
-  width: clamp(9px, 0.55vw, 14px);
-  height: clamp(9px, 0.55vw, 14px);
+  width: clamp(10px, 0.65vw, 24px);
+  height: clamp(10px, 0.65vw, 24px);
 
   border-radius: 999px;
 
@@ -298,7 +304,7 @@ defineEmits([
     translateY(8px);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 999px) {
   .players-side {
     width: 190px;
 
@@ -345,7 +351,7 @@ defineEmits([
 @media (max-width: 760px) {
   .players-side {
     width: 100%;
-    max-height: 142px;
+    max-height: min(34dvh, 220px);
 
     padding: 8px;
 
@@ -391,7 +397,7 @@ defineEmits([
 
 @media (max-width: 420px) and (max-height: 720px) {
   .players-side {
-    max-height: 88px;
+    max-height: min(32dvh, 160px);
 
     padding: 6px;
   }

@@ -186,7 +186,10 @@ function previewTts() {
   align-items: center;
   justify-content: center;
 
-  padding: 24px;
+  padding:
+    calc(18px + env(safe-area-inset-top))
+    18px
+    calc(18px + env(safe-area-inset-bottom));
 
   background:
     rgba(0,0,0,0.66);
@@ -197,8 +200,11 @@ function previewTts() {
 
 .settings-modal {
   width: min(520px, 100%);
+  max-height: calc(100dvh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 
   padding: 24px;
+
+  overflow-y: auto;
 
   border:
     1px solid var(--game-line);
@@ -374,6 +380,8 @@ input[type="range"]:disabled {
   height: 44px;
 
   padding: 0 18px;
+
+  font-size: 14px;
 }
 
 .test-button {
@@ -411,6 +419,10 @@ input[type="range"]:disabled {
     padding: 18px;
   }
 
+  h2 {
+    font-size: 28px;
+  }
+
   .slider-row {
     grid-template-columns: 1fr 58px;
     grid-template-rows: auto auto;
@@ -420,6 +432,22 @@ input[type="range"]:disabled {
 
   .slider-row input {
     grid-column: 1 / 3;
+  }
+
+  .modal-actions {
+    gap: 8px;
+  }
+
+  .test-button,
+  .tts-test-button,
+  .reset-button {
+    flex: 1;
+
+    height: 40px;
+
+    padding: 0 8px;
+
+    font-size: 12px;
   }
 }
 </style>

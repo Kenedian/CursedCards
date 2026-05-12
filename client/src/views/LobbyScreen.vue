@@ -330,7 +330,8 @@ onUnmounted(() => {
 <style scoped>
 .lobby-container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
 
   display: flex;
   justify-content: center;
@@ -338,7 +339,12 @@ onUnmounted(() => {
 
   padding:
     clamp(18px, 1.6vw, 70px);
+  padding-bottom:
+    calc(clamp(18px, 1.6vw, 70px) + 40px + env(safe-area-inset-bottom));
   box-sizing: border-box;
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .settings-button {
@@ -831,11 +837,17 @@ onUnmounted(() => {
 @media (max-width: 1100px) {
 
   .lobby-container {
-    padding: 22px;
+    align-items: flex-start;
+
+    padding:
+      calc(68px + env(safe-area-inset-top))
+      18px
+      calc(72px + env(safe-area-inset-bottom));
   }
 
   .lobby-wrapper {
-    height: 92vh;
+    height: auto;
+    min-height: 0;
     max-width: 880px;
   }
 
@@ -885,6 +897,21 @@ onUnmounted(() => {
     font-size: 32px;
   }
 
+  .right-side {
+    min-height: 0;
+  }
+
+  .players-list {
+    max-height: min(42dvh, 360px);
+    min-height: 120px;
+
+    padding-bottom:
+      calc(72px + env(safe-area-inset-bottom));
+
+    scroll-padding-bottom:
+      calc(72px + env(safe-area-inset-bottom));
+  }
+
   .player-row {
     min-height: 56px;
   }
@@ -902,7 +929,7 @@ onUnmounted(() => {
 
 @media (max-height: 780px) {
   .lobby-wrapper {
-    height: 94vh;
+    height: auto;
   }
 
   .lobby-title {
@@ -917,6 +944,72 @@ onUnmounted(() => {
 
   .left-side {
     gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-button {
+    top: calc(10px + env(safe-area-inset-top));
+    right: 10px;
+
+    width: 38px;
+    height: 38px;
+  }
+
+  .settings-button i {
+    font-size: 16px;
+  }
+
+  .lobby-title {
+    font-size: clamp(34px, 11vw, 44px);
+  }
+
+  .lobby-box {
+    padding: 18px;
+
+    gap: 18px;
+  }
+
+  .left-side h1 {
+    font-size: 28px;
+  }
+
+  .lobby-code {
+    height: 68px;
+
+    font-size: 34px;
+    letter-spacing: 5px;
+  }
+
+  .lobby-button {
+    height: 48px;
+
+    font-size: 15px;
+  }
+
+  .copy-button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .players-header {
+    margin-bottom: 12px;
+  }
+
+  .players-header h2 {
+    font-size: 26px;
+  }
+
+  .player-left {
+    min-width: 0;
+
+    font-size: 15px;
+  }
+
+  .player-left span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

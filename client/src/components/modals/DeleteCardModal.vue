@@ -69,10 +69,16 @@ const emit = defineEmits([
   z-index: 99999;
 
   backdrop-filter: blur(8px);
+
+  padding:
+    calc(18px + env(safe-area-inset-top))
+    18px
+    calc(18px + env(safe-area-inset-bottom));
 }
 
 .modal-box {
-  width: 420px;
+  width: min(420px, 100%);
+  max-height: calc(100dvh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
 
   background:
     linear-gradient(
@@ -96,6 +102,8 @@ const emit = defineEmits([
   display: flex;
   flex-direction: column;
   gap: 22px;
+
+  overflow-y: auto;
 }
 
 .modal-box h2 {
@@ -123,5 +131,39 @@ const emit = defineEmits([
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+
+.modal-buttons .btn {
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .modal-box {
+    padding: 22px;
+
+    gap: 18px;
+  }
+
+  .modal-box h2 {
+    font-size: 24px;
+  }
+
+  .modal-buttons {
+    gap: 8px;
+  }
+
+  .modal-buttons .btn {
+    flex: 1;
+
+    min-height: 40px;
+
+    padding: 0 10px;
+
+    font-size: 12px;
+  }
 }
 </style>

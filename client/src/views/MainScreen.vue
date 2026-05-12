@@ -359,7 +359,8 @@ onUnmounted(() => {
 <style scoped>
 .main-container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
 
   display: flex;
   justify-content: center;
@@ -367,6 +368,12 @@ onUnmounted(() => {
 
   padding:
     clamp(18px, 3vw, 56px);
+
+  padding-bottom:
+    calc(clamp(18px, 3vw, 56px) + env(safe-area-inset-bottom));
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .main-wrapper {
@@ -605,7 +612,10 @@ onUnmounted(() => {
   .main-container {
     align-items: center;
 
-    padding: 22px;
+    padding:
+      calc(70px + env(safe-area-inset-top))
+      18px
+      calc(26px + env(safe-area-inset-bottom));
   }
 
   .title {
@@ -635,7 +645,7 @@ onUnmounted(() => {
     min-height: 46px;
     height: 46px;
 
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .divider {
@@ -644,6 +654,10 @@ onUnmounted(() => {
 }
 
 @media (max-height: 760px) {
+  .main-container {
+    align-items: flex-start;
+  }
+
   .title {
     font-size: clamp(40px, 5vw, 64px);
 
@@ -652,6 +666,50 @@ onUnmounted(() => {
 
   .menu-box {
     padding: 24px;
+  }
+}
+
+@media (max-width: 420px) {
+  .corner-actions {
+    top: calc(10px + env(safe-area-inset-top));
+    right: 10px;
+
+    gap: 8px;
+  }
+
+  .settings-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .admin-button {
+    min-height: 38px;
+
+    padding: 0 12px;
+
+    font-size: 12px;
+  }
+
+  .main-wrapper {
+    width: 100%;
+  }
+
+  .title {
+    font-size: clamp(34px, 11vw, 42px);
+  }
+
+  .menu-box {
+    padding: 18px;
+
+    gap: 20px;
+  }
+
+  .menu-side h2 {
+    font-size: 19px;
+  }
+
+  .menu-box .btn {
+    font-size: 13px;
   }
 }
 </style>

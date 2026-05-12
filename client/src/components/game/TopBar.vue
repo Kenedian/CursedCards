@@ -389,15 +389,15 @@ function handleAction() {
   align-items: center;
 
   padding:
-    clamp(8px, 0.65vw, 18px)
-    clamp(10px, 0.9vw, 24px)
-    clamp(10px, 0.8vw, 20px);
+    clamp(10px, 0.65vw, 26px)
+    clamp(12px, 0.9vw, 36px)
+    clamp(12px, 0.8vw, 28px);
 
   border-bottom:
     1px solid rgba(47,230,107,0.18);
 
   margin-bottom:
-    clamp(8px, 0.8vw, 20px);
+    clamp(10px, 0.8vw, 28px);
 
   z-index: 50;
 
@@ -431,15 +431,15 @@ function handleAction() {
 }
 
 .ready-button {
-  width: clamp(150px, 8.5vw, 230px);
-  height: clamp(38px, 2.35vw, 60px);
+  width: clamp(168px, 10.5vw, 440px);
+  height: clamp(44px, 3vw, 118px);
 
   padding: 0;
 
   border: none;
   border-radius: 10px;
 
-  font-size: clamp(15px, 0.9vw, 22px);
+  font-size: clamp(16px, 1.05vw, 42px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -468,9 +468,9 @@ function handleAction() {
 }
 
 .reconnect-button {
-  height: clamp(38px, 2.35vw, 60px);
+  height: clamp(44px, 3vw, 118px);
 
-  padding: 0 clamp(12px, 0.8vw, 22px);
+  padding: 0 clamp(14px, 1.1vw, 48px);
 
   border:
     1px solid rgba(255,216,77,0.34);
@@ -483,7 +483,7 @@ function handleAction() {
   color:
     var(--game-yellow);
 
-  font-size: clamp(13px, 0.8vw, 20px);
+  font-size: clamp(14px, 0.95vw, 38px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -516,14 +516,14 @@ function handleAction() {
 }
 
 .leave-button {
-  height: clamp(38px, 2.35vw, 60px);
+  height: clamp(44px, 3vw, 118px);
 
-  padding: 0 clamp(16px, 1vw, 28px);
+  padding: 0 clamp(18px, 1.2vw, 54px);
 
   border: none;
   border-radius: 10px;
 
-  font-size: clamp(15px, 0.9vw, 22px);
+  font-size: clamp(16px, 1.05vw, 42px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -545,8 +545,8 @@ function handleAction() {
 }
 
 .settings-button {
-  width: clamp(38px, 2.35vw, 60px);
-  height: clamp(38px, 2.35vw, 60px);
+  width: clamp(44px, 3vw, 118px);
+  height: clamp(44px, 3vw, 118px);
 
   display: flex;
   align-items: center;
@@ -593,13 +593,13 @@ function handleAction() {
 }
 
 .settings-button i {
-  font-size: clamp(16px, 1vw, 24px);
+  font-size: clamp(18px, 1.12vw, 44px);
 }
 
 .capsule {
-  height: clamp(38px, 2.35vw, 60px);
+  height: clamp(44px, 3vw, 118px);
 
-  padding: 0 clamp(16px, 1vw, 30px);
+  padding: 0 clamp(18px, 1.2vw, 58px);
 
   display: flex;
 
@@ -621,7 +621,7 @@ function handleAction() {
   backdrop-filter:
     blur(10px);
 
-  font-size: clamp(13px, 0.8vw, 20px);
+  font-size: clamp(14px, 0.95vw, 38px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -665,7 +665,7 @@ function handleAction() {
   opacity: 0;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 999px) {
   .top-bar {
     padding: 8px 10px 10px;
   }

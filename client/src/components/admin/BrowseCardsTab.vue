@@ -413,6 +413,8 @@ function confirmDelete() {
   min-height: 0;
 
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
 
   display: grid;
 
@@ -565,7 +567,10 @@ function confirmDelete() {
 
     gap: 12px;
 
-    padding: 12px 8px 18px;
+    padding:
+      12px
+      8px
+      calc(40px + env(safe-area-inset-bottom));
   }
 
   .cards-grid.black {

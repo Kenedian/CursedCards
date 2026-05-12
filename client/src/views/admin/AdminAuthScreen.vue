@@ -86,7 +86,8 @@ const password = ref("")
 <style scoped>
 .auth-container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
 
   display: flex;
   justify-content: center;
@@ -94,6 +95,12 @@ const password = ref("")
 
   padding:
     clamp(24px, 2vw, 72px);
+
+  padding-bottom:
+    calc(clamp(24px, 2vw, 72px) + env(safe-area-inset-bottom));
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .settings-button {
@@ -209,10 +216,45 @@ const password = ref("")
 }
 
 @media (max-width: 1100px) {
+  .auth-container {
+    align-items: flex-start;
+
+    padding:
+      calc(70px + env(safe-area-inset-top))
+      18px
+      calc(24px + env(safe-area-inset-bottom));
+  }
+
   .auth-box {
     width: min(88vw, 620px);
 
     padding: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-button {
+    top: calc(10px + env(safe-area-inset-top));
+    right: 10px;
+
+    width: 38px;
+    height: 38px;
+  }
+
+  .auth-box {
+    width: 100%;
+
+    padding: 24px;
+  }
+
+  .auth-box h1 {
+    font-size: 30px;
+  }
+
+  .auth-button {
+    height: 46px;
+
+    font-size: 14px;
   }
 }
 </style>

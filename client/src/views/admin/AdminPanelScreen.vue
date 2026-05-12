@@ -350,12 +350,21 @@ onUnmounted(() => {
 .panel-container {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
 
   padding:
     clamp(12px, 1.2vw, 36px);
 
+  padding-bottom:
+    calc(clamp(12px, 1.2vw, 36px) + env(safe-area-inset-bottom));
+
   display: flex;
   flex-direction: column;
+
+  overflow-y: auto;
+  overflow-x: hidden;
 
   background:
     radial-gradient(
@@ -532,7 +541,9 @@ onUnmounted(() => {
   }
 
   .tab-buttons {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 340px;
   }
 
   .panel-kicker {
@@ -540,7 +551,7 @@ onUnmounted(() => {
   }
 
   .top-left h1 {
-    font-size: 26px;
+    font-size: 24px;
   }
 
   .stat-chip,
@@ -555,6 +566,78 @@ onUnmounted(() => {
   .settings-button {
     width: 34px;
     height: 34px;
+  }
+}
+
+@media (max-width: 620px) {
+  .panel-container {
+    height: 100dvh;
+
+    padding:
+      calc(8px + env(safe-area-inset-top))
+      8px
+      calc(32px + env(safe-area-inset-bottom));
+  }
+
+  .top-bar {
+    gap: 8px;
+
+    padding: 8px;
+  }
+
+  .top-left {
+    flex: 1;
+    gap: 8px;
+  }
+
+  .top-left h1 {
+    font-size: 20px;
+  }
+
+  .deck-stats {
+    order: 3;
+    width: 100%;
+  }
+
+  .stat-chip {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .tab-buttons {
+    order: 4;
+    max-width: none;
+  }
+
+  .tab-buttons .btn {
+    flex: 1;
+    min-width: 0;
+
+    padding: 0 8px;
+
+    font-size: 11px;
+  }
+
+  .top-actions {
+    gap: 6px;
+  }
+
+  .top-actions .btn {
+    padding: 0 9px;
+
+    font-size: 11px;
+  }
+
+  .top-actions .settings-button {
+    width: 34px;
+
+    padding: 0;
+  }
+
+  .panel-content {
+    padding: 10px;
+
+    min-height: 0;
   }
 }
 </style>

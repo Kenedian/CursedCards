@@ -293,10 +293,16 @@ function handleSelectVote(id) {
 .game-container {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
 
   padding:
-    clamp(14px, 2vh, 22px)
-    clamp(14px, 1.6vw, 22px);
+    clamp(16px, 2vh, 34px)
+    clamp(16px, 1.6vw, 42px);
+
+  padding-bottom:
+    clamp(16px, 2vh, 34px);
 
   display: flex;
   flex-direction: column;
@@ -326,15 +332,15 @@ function handleSelectVote(id) {
 }
 
 .sidebar-slot {
-  width: clamp(236px, 14vw, 360px);
+  width: clamp(260px, 16vw, 520px);
 
   flex-shrink: 0;
   align-self: flex-start;
 
   display: flex;
 
-  padding-top: clamp(14px, 1.1vw, 28px);
-  padding-right: clamp(14px, 1.1vw, 28px);
+  padding-top: clamp(16px, 1.1vw, 36px);
+  padding-right: clamp(16px, 1.1vw, 36px);
 }
 
 .sidebar-enter-active,
@@ -393,7 +399,7 @@ function handleSelectVote(id) {
     scale(0.985);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 999px) {
   .game-container {
     padding: 10px;
   }
@@ -414,15 +420,25 @@ function handleSelectVote(id) {
 
 @media (max-width: 760px) {
   .game-container {
-    padding: 8px;
+    height: 100vh;
+    height: 100dvh;
 
-    overflow: hidden;
+    padding:
+      calc(8px + env(safe-area-inset-top))
+      8px
+      calc(14px + env(safe-area-inset-bottom));
+
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .game-layout {
     flex-direction: column;
 
     gap: 8px;
+
+    flex: none;
+    min-height: 0;
   }
 
   .sidebar-slot {
@@ -438,6 +454,14 @@ function handleSelectVote(id) {
     width: 100%;
 
     overflow: visible;
+  }
+}
+
+@media (max-width: 999px) and (max-height: 520px) and (orientation: landscape) {
+  .game-container {
+    height: 100dvh;
+
+    overflow-y: auto;
   }
 }
 </style>
