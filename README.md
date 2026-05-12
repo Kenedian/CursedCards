@@ -78,11 +78,19 @@ Create `server/.env`:
 ADMIN_PASSWORD=your_password
 PORT=3000
 CLIENT_URL=http://localhost:5173
+USE_LOCAL_SQLITE=true
+```
+
+The repository includes a local demo SQLite database, so Turso setup is not required for local testing.
+
+If you want to use Turso instead, set `USE_LOCAL_SQLITE=false` and add:
+
+```env
 TURSO_DATABASE_URL=your_turso_database_url
 TURSO_AUTH_TOKEN=your_turso_auth_token
 ```
 
-- Turso offers free hobby SQLite hosting here: https://turso.tech/
+Turso offers free hobby SQLite hosting here: https://turso.tech/
 
 ### 4. Start the development servers
 
@@ -135,6 +143,10 @@ http://localhost:3000
 
 `TURSO_AUTH_TOKEN`
 - Turso authentication token
+
+`USE_LOCAL_SQLITE`
+- Set to `true` to use the included local demo database
+- Set to `false` to use Turso
 
 ## Screenshots
 
