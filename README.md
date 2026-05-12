@@ -66,4 +66,5 @@ Clone the repository and create `.env` files inside both the `client` and `serve
 <img width="1918" height="861" alt="image" src="https://github.com/user-attachments/assets/3416177e-6194-4eac-b265-8c3bf00dd04e" />
 
 # Settings Modal
-<img width="677" height="612" alt="image" src="https://github.com/user-attachments/assets/ebdec994-d250-49a7-91f1-eb46e396b1e0" />
+<img width="682" height="702" alt="image" src="https://github.com/user-attachments/assets/d6603af5-ca36-4bbd-8f69-8f59aca9d7c4" />
+
