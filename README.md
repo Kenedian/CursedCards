@@ -5,7 +5,7 @@ Cursed Cards is a browser-based multiplayer party game inspired by classic fill-
 The project focuses on real-time multiplayer flow, lobby management, custom card administration, reconnect handling, animated reveals, voting, scoring and a polished game-over screen.
 
 > ⚠️ Content note  
-> The public demo uses a live card database created for a private friend group. Some cards may contain NSFW humor or inside jokes. The repository is primarily intended to showcase the code, architecture and gameplay systems. Screenshots below use safer examples.
+> The public demo uses a live card database created for a private friend group. Some cards may contain NSFW humor or inside jokes. The repository is primarily intended to showcase the code, architecture and gameplay systems. Screenshots below use safer examples or run your local build of this project - instructions below
 
 ## Features
 
