@@ -292,7 +292,7 @@ watch(
   grid-template-columns:
     repeat(4, 1fr);
 
-  gap: clamp(14px, 1.5vw, 28px);
+  gap: clamp(12px, 1.5vw, 22px);
 
   justify-items: center;
   align-items: center;
@@ -355,7 +355,7 @@ watch(
 
 @media (min-width: 2200px) and (min-height: 1200px) {
   .submission-grid {
-    transform: scale(1.12);
+    transform: scale(1.02);
   }
 }
 

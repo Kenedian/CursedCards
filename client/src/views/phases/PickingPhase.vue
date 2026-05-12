@@ -25,10 +25,10 @@ function getWhiteCardMaxFontSize() {
 
   return Math.round(
     Math.min(
-      82,
+      44,
       Math.max(
-        36,
-        window.innerWidth * 0.024
+        30,
+        window.innerWidth * 0.018
       )
     )
   )
@@ -43,10 +43,10 @@ function getBlackCardMaxFontSize() {
 
   return Math.round(
     Math.min(
-      96,
+      56,
       Math.max(
-        44,
-        window.innerWidth * 0.026
+        36,
+        window.innerWidth * 0.02
       )
     )
   )
@@ -225,10 +225,10 @@ function clickCard(instanceId) {
   }
 
   .hand-area :deep(.white-card-wrapper:not(.preview-mode) .white-card) {
-    width: clamp(116px, 10.5vw, 420px);
-    height: clamp(156px, 14vw, 560px);
+    width: clamp(116px, 10.5vw, 220px);
+    height: clamp(156px, 14vw, 294px);
 
-    padding: clamp(12px, 0.95vw, 34px);
+    padding: clamp(12px, 0.95vw, 21px);
 
     margin-left: clamp(-168px, -4.8vw, -54px);
 
@@ -249,27 +249,27 @@ function clickCard(instanceId) {
   }
 
   .hand-area :deep(.white-card-wrapper:not(.preview-mode) .white-card-top) {
-    height: clamp(18px, 1.65vw, 44px);
+    height: clamp(18px, 1.65vw, 34px);
 
     margin:
-      calc(clamp(12px, 0.95vw, 34px) * -1)
-      calc(clamp(12px, 0.95vw, 34px) * -1)
-      clamp(10px, 1.05vw, 26px)
-      calc(clamp(12px, 0.95vw, 34px) * -1);
+      calc(clamp(12px, 0.95vw, 21px) * -1)
+      calc(clamp(12px, 0.95vw, 21px) * -1)
+      clamp(10px, 1.05vw, 20px)
+      calc(clamp(12px, 0.95vw, 21px) * -1);
   }
 
   .hand-area :deep(.white-card-wrapper:not(.preview-mode) .pick-order) {
-    width: clamp(30px, 2vw, 72px);
-    height: clamp(30px, 2vw, 72px);
+    width: clamp(30px, 2vw, 42px);
+    height: clamp(30px, 2vw, 42px);
 
-    font-size: clamp(14px, 0.9vw, 30px);
+    font-size: clamp(14px, 0.9vw, 18px);
   }
 
   .center-area :deep(.black-card:not(.preview-mode)) {
-    width: clamp(220px, 16.8vw, 680px);
-    height: clamp(300px, 22.6vw, 914px);
+    width: clamp(220px, 16.8vw, 360px);
+    height: clamp(300px, 22.6vw, 486px);
 
-    padding: clamp(20px, 1.45vw, 54px);
+    padding: clamp(20px, 1.45vw, 30px);
 
     margin-bottom: clamp(22px, 4.8vh, 108px);
 
@@ -281,11 +281,11 @@ function clickCard(instanceId) {
   }
 
   .center-area :deep(.black-card:not(.preview-mode) .black-card-picks) {
-    height: clamp(28px, 2.05vw, 68px);
+    height: clamp(28px, 2.05vw, 42px);
 
-    padding: 0 clamp(12px, 0.86vw, 34px);
+    padding: 0 clamp(12px, 0.86vw, 18px);
 
-    font-size: clamp(12px, 0.82vw, 28px);
+    font-size: clamp(12px, 0.82vw, 16px);
   }
 }
 

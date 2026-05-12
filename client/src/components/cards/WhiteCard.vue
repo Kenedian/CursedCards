@@ -96,8 +96,8 @@ const {
 }
 
 .white-card {
-  width: clamp(150px, 10.4vw, 360px);
-  height: clamp(200px, 13.9vw, 480px);
+  width: clamp(150px, 10.4vw, 210px);
+  height: clamp(200px, 13.9vw, 280px);
 
   background:
     linear-gradient(
@@ -113,7 +113,7 @@ const {
 
   border-radius: 14px;
 
-  padding: clamp(14px, 1.05vw, 28px);
+  padding: clamp(13px, 1.05vw, 21px);
 
   margin-left: clamp(-54px, -1.8vw, -18px);
 
@@ -193,8 +193,8 @@ const {
 }
 
 .pick-order {
-  width: clamp(34px, 2.2vw, 58px);
-  height: clamp(34px, 2.2vw, 58px);
+  width: clamp(32px, 2.2vw, 42px);
+  height: clamp(32px, 2.2vw, 42px);
 
   border-bottom-right-radius: 12px;
   border-top-left-radius: 14px;
@@ -212,7 +212,7 @@ const {
   justify-content: center;
   align-items: center;
 
-  font-size: clamp(15px, 0.95vw, 26px);
+  font-size: clamp(14px, 0.95vw, 18px);
   font-weight: 900;
 
   box-shadow:

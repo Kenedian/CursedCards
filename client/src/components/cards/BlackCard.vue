@@ -85,8 +85,8 @@ const {
 
 <style scoped>
 .black-card {
-  width: clamp(240px, 16vw, 560px);
-  height: clamp(326px, 21.5vw, 752px);
+  width: clamp(230px, 16vw, 340px);
+  height: clamp(312px, 21.5vw, 458px);
 
   background:
     linear-gradient(
@@ -101,7 +101,7 @@ const {
 
   border-radius: 18px;
 
-  padding: clamp(22px, 1.35vw, 42px);
+  padding: clamp(20px, 1.35vw, 28px);
 
   display: flex;
   flex-direction: column;
@@ -158,7 +158,7 @@ const {
 }
 
 .black-card-picks {
-  height: clamp(30px, 2.1vw, 52px);
+  height: clamp(28px, 2.1vw, 40px);
 
   padding: 0 clamp(14px, 0.8vw, 28px);
 
@@ -177,7 +177,7 @@ const {
   align-items: center;
   justify-content: center;
 
-  font-size: clamp(13px, 0.72vw, 22px);
+  font-size: clamp(12px, 0.72vw, 15px);
   font-weight: 900;
   text-transform: uppercase;
 

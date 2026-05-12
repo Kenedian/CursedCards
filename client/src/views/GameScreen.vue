@@ -298,11 +298,11 @@ function handleSelectVote(id) {
   min-height: 100dvh;
 
   padding:
-    clamp(16px, 2vh, 34px)
-    clamp(16px, 1.6vw, 42px);
+    clamp(14px, 2vh, 26px)
+    clamp(14px, 1.6vw, 30px);
 
   padding-bottom:
-    clamp(16px, 2vh, 34px);
+    clamp(14px, 2vh, 26px);
 
   display: flex;
   flex-direction: column;
@@ -332,15 +332,15 @@ function handleSelectVote(id) {
 }
 
 .sidebar-slot {
-  width: clamp(260px, 16vw, 520px);
+  width: clamp(250px, 16vw, 340px);
 
   flex-shrink: 0;
   align-self: flex-start;
 
   display: flex;
 
-  padding-top: clamp(16px, 1.1vw, 36px);
-  padding-right: clamp(16px, 1.1vw, 36px);
+  padding-top: clamp(14px, 1.1vw, 22px);
+  padding-right: clamp(14px, 1.1vw, 22px);
 }
 
 .sidebar-enter-active,

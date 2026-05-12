@@ -440,15 +440,15 @@ function handleAction() {
 }
 
 .ready-button {
-  width: clamp(168px, 10.5vw, 440px);
-  height: clamp(44px, 3vw, 118px);
+  width: clamp(148px, 10.5vw, 220px);
+  height: clamp(42px, 3vw, 58px);
 
   padding: 0;
 
   border: none;
   border-radius: 10px;
 
-  font-size: clamp(16px, 1.05vw, 42px);
+  font-size: clamp(15px, 1.05vw, 20px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -477,9 +477,9 @@ function handleAction() {
 }
 
 .reconnect-button {
-  height: clamp(44px, 3vw, 118px);
+  height: clamp(42px, 3vw, 58px);
 
-  padding: 0 clamp(14px, 1.1vw, 48px);
+  padding: 0 clamp(14px, 1.1vw, 24px);
 
   border:
     1px solid rgba(255,216,77,0.34);
@@ -492,7 +492,7 @@ function handleAction() {
   color:
     var(--game-yellow);
 
-  font-size: clamp(14px, 0.95vw, 38px);
+  font-size: clamp(14px, 0.95vw, 18px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -525,14 +525,14 @@ function handleAction() {
 }
 
 .leave-button {
-  height: clamp(44px, 3vw, 118px);
+  height: clamp(42px, 3vw, 58px);
 
-  padding: 0 clamp(18px, 1.2vw, 54px);
+  padding: 0 clamp(16px, 1.2vw, 26px);
 
   border: none;
   border-radius: 10px;
 
-  font-size: clamp(16px, 1.05vw, 42px);
+  font-size: clamp(15px, 1.05vw, 20px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -554,8 +554,8 @@ function handleAction() {
 }
 
 .settings-button {
-  width: clamp(44px, 3vw, 118px);
-  height: clamp(44px, 3vw, 118px);
+  width: clamp(42px, 3vw, 58px);
+  height: clamp(42px, 3vw, 58px);
 
   display: flex;
   align-items: center;
@@ -602,13 +602,13 @@ function handleAction() {
 }
 
 .settings-button i {
-  font-size: clamp(18px, 1.12vw, 44px);
+  font-size: clamp(17px, 1.12vw, 22px);
 }
 
 .capsule {
-  height: clamp(44px, 3vw, 118px);
+  height: clamp(42px, 3vw, 58px);
 
-  padding: 0 clamp(18px, 1.2vw, 58px);
+  padding: 0 clamp(16px, 1.2vw, 28px);
 
   display: flex;
 
@@ -630,7 +630,7 @@ function handleAction() {
   backdrop-filter:
     blur(10px);
 
-  font-size: clamp(14px, 0.95vw, 38px);
+  font-size: clamp(13px, 0.95vw, 18px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.5px;

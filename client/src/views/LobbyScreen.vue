@@ -428,9 +428,9 @@ watch(
   align-items: center;
 
   padding:
-    clamp(18px, 1.6vw, 70px);
+    clamp(18px, 1.6vw, 34px);
   padding-bottom:
-    calc(clamp(18px, 1.6vw, 70px) + 40px + env(safe-area-inset-bottom));
+    calc(clamp(18px, 1.6vw, 34px) + 40px + env(safe-area-inset-bottom));
   box-sizing: border-box;
 
   overflow-y: auto;
@@ -443,8 +443,8 @@ watch(
   top: clamp(14px, 1.2vw, 28px);
   right: clamp(14px, 1.2vw, 28px);
 
-  width: clamp(42px, 2.4vw, 96px);
-  height: clamp(42px, 2.4vw, 96px);
+  width: clamp(42px, 2.4vw, 54px);
+  height: clamp(42px, 2.4vw, 54px);
 
   display: flex;
   align-items: center;
@@ -462,7 +462,7 @@ watch(
 }
 
 .settings-button i {
-  font-size: clamp(18px, 1vw, 38px);
+  font-size: clamp(18px, 1vw, 22px);
 }
 
 .lobby-wrapper {
@@ -478,7 +478,7 @@ watch(
 .lobby-title {
   text-align: center;
 
-  font-size: clamp(50px, 4.2vw, 180px);
+  font-size: clamp(48px, 4.2vw, 78px);
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -497,10 +497,10 @@ watch(
   min-height: 0;
 
   display: flex;
-  gap: clamp(28px, 2.2vw, 96px);
+  gap: clamp(24px, 2.2vw, 44px);
 
   padding:
-    clamp(28px, 2.2vw, 96px);
+    clamp(26px, 2.2vw, 44px);
 
   border-radius: 14px;
 
@@ -526,7 +526,7 @@ watch(
 /* LEFT */
 
 .left-side {
-  width: clamp(360px, 25vw, 860px);
+  width: clamp(340px, 25vw, 480px);
 
   display: flex;
   flex-direction: column;
@@ -537,7 +537,7 @@ watch(
 .left-side h1 {
   margin: 0;
 
-  font-size: clamp(38px, 2.6vw, 96px);
+  font-size: clamp(38px, 2.6vw, 54px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -579,7 +579,7 @@ watch(
 .lobby-code {
   flex: 1;
 
-  height: clamp(88px, 5.7vw, 220px);
+  height: clamp(82px, 5.7vw, 112px);
 
   display: flex;
   justify-content: center;
@@ -597,7 +597,7 @@ watch(
   border:
     1px solid var(--game-line-strong);
 
-  font-size: clamp(44px, 3.2vw, 124px);
+  font-size: clamp(42px, 3.2vw, 64px);
   font-weight: bold;
 
   letter-spacing: clamp(7px, 0.45vw, 22px);
@@ -614,12 +614,12 @@ watch(
 /* BUTTONS */
 
 .lobby-button {
-  height: clamp(56px, 3.2vw, 124px);
+  height: clamp(52px, 3.2vw, 64px);
 
   border: none;
   border-radius: 10px;
 
-  font-size: clamp(20px, 1.25vw, 48px);
+  font-size: clamp(18px, 1.25vw, 24px);
 
   font-family: inherit;
 
@@ -650,8 +650,8 @@ watch(
 }
 
 .copy-button {
-  width: clamp(56px, 3.2vw, 124px);
-  height: clamp(56px, 3.2vw, 124px);
+  width: clamp(52px, 3.2vw, 64px);
+  height: clamp(52px, 3.2vw, 64px);
 
   border: none;
   border-radius: 10px;
@@ -697,7 +697,7 @@ watch(
 }
 
 .copy-button i {
-  font-size: clamp(24px, 1.45vw, 56px);
+  font-size: clamp(22px, 1.45vw, 28px);
 }
 
 .minimum-text {
@@ -742,7 +742,7 @@ watch(
   color:
     rgba(255,255,255,0.9);
 
-  font-size: clamp(16px, 1vw, 38px);
+  font-size: clamp(16px, 1vw, 20px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -753,14 +753,14 @@ watch(
   color:
     rgba(255,255,255,0.54);
 
-  font-size: clamp(12px, 0.75vw, 26px);
+  font-size: clamp(12px, 0.75vw, 15px);
   font-weight: 800;
 }
 
 .round-input,
 .round-readonly {
-  width: clamp(86px, 5.2vw, 180px);
-  height: clamp(42px, 2.6vw, 94px);
+  width: clamp(78px, 5.2vw, 100px);
+  height: clamp(40px, 2.6vw, 50px);
 
   border:
     1px solid var(--game-line);
@@ -774,7 +774,7 @@ watch(
     var(--game-yellow);
 
   font: inherit;
-  font-size: clamp(18px, 1.1vw, 42px);
+  font-size: clamp(18px, 1.1vw, 22px);
   font-weight: 900;
 
   text-align: center;
@@ -789,7 +789,7 @@ watch(
 .players-header h2 {
   margin: 0;
 
-  font-size: clamp(34px, 2.35vw, 92px);
+  font-size: clamp(32px, 2.35vw, 48px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -830,7 +830,7 @@ watch(
 /* PLAYER ROW */
 
 .player-row {
-  min-height: clamp(60px, 3.5vw, 136px);
+  min-height: clamp(56px, 3.5vw, 68px);
 
   flex-shrink: 0;
 
@@ -873,13 +873,13 @@ watch(
 
   gap: clamp(10px, 0.75vw, 34px);
 
-  font-size: clamp(19px, 1.25vw, 50px);
+  font-size: clamp(18px, 1.25vw, 24px);
 }
 
 .host-icon {
   color: gold;
 
-  font-size: clamp(20px, 1.2vw, 48px);
+  font-size: clamp(19px, 1.2vw, 24px);
 
   filter:
     drop-shadow(
@@ -898,8 +898,8 @@ watch(
 /* KICK BUTTON */
 
 .kick-button {
-  width: clamp(46px, 2.6vw, 100px);
-  height: clamp(46px, 2.6vw, 100px);
+  width: clamp(42px, 2.6vw, 52px);
+  height: clamp(42px, 2.6vw, 52px);
 
   border: none;
   border-radius: 16px;
@@ -924,7 +924,7 @@ watch(
 }
 
 .kick-button i {
-  font-size: clamp(19px, 1.05vw, 42px);
+  font-size: clamp(17px, 1.05vw, 21px);
 }
 
 .own-player-name {
@@ -934,8 +934,8 @@ watch(
 }
 
 .host-placeholder {
-  width: clamp(46px, 2.6vw, 100px);
-  height: clamp(46px, 2.6vw, 100px);
+  width: clamp(42px, 2.6vw, 52px);
+  height: clamp(42px, 2.6vw, 52px);
 }
 
 /* CAPSULE */
@@ -953,13 +953,13 @@ watch(
   padding: 0 clamp(18px, 1.2vw, 48px);
 
   min-width: 90px;
-  height: clamp(44px, 2.55vw, 98px);
+  height: clamp(42px, 2.55vw, 52px);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  font-size: clamp(17px, 1vw, 40px);
+  font-size: clamp(16px, 1vw, 20px);
   font-weight: 900;
 
   border:
@@ -999,18 +999,14 @@ watch(
 @media (max-width: 1100px) {
 
   .lobby-container {
-    align-items: flex-start;
-
     padding:
-      calc(68px + env(safe-area-inset-top))
+      calc(58px + env(safe-area-inset-top))
       18px
-      calc(72px + env(safe-area-inset-bottom));
+      calc(32px + env(safe-area-inset-bottom));
   }
 
   .lobby-wrapper {
-    height: auto;
-    min-height: 0;
-    max-width: 880px;
+    max-width: 1040px;
   }
 
   .lobby-title {
@@ -1018,21 +1014,11 @@ watch(
   }
 
   .lobby-box {
-    flex-direction: column;
-
     gap: 22px;
-
-    padding: 26px;
-  }
-
-  .divider {
-    width: 100%;
-    height: 1px;
+    padding: 24px;
   }
 
   .left-side {
-    width: 100%;
-
     gap: 16px;
   }
 
@@ -1064,14 +1050,7 @@ watch(
   }
 
   .players-list {
-    max-height: min(42dvh, 360px);
-    min-height: 120px;
-
-    padding-bottom:
-      calc(72px + env(safe-area-inset-bottom));
-
-    scroll-padding-bottom:
-      calc(72px + env(safe-area-inset-bottom));
+    min-height: 0;
   }
 
   .player-row {
@@ -1086,6 +1065,47 @@ watch(
   .host-placeholder {
     width: 42px;
     height: 42px;
+  }
+}
+
+@media (max-width: 760px) {
+  .lobby-container {
+    align-items: flex-start;
+
+    padding:
+      calc(68px + env(safe-area-inset-top))
+      18px
+      calc(72px + env(safe-area-inset-bottom));
+  }
+
+  .lobby-wrapper {
+    height: auto;
+    min-height: 0;
+    max-width: 880px;
+  }
+
+  .lobby-box {
+    flex-direction: column;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .left-side {
+    width: 100%;
+  }
+
+  .players-list {
+    max-height: min(42dvh, 360px);
+    min-height: 120px;
+
+    padding-bottom:
+      calc(72px + env(safe-area-inset-bottom));
+
+    scroll-padding-bottom:
+      calc(72px + env(safe-area-inset-bottom));
   }
 }
 

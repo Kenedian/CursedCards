@@ -181,8 +181,8 @@ const {
 .reveal-card {
   position: relative;
 
-  width: clamp(176px, 10.4vw, 330px);
-  height: clamp(236px, 13.9vw, 442px);
+  width: clamp(166px, 10.4vw, 220px);
+  height: clamp(222px, 13.9vw, 294px);
 
   background:
     linear-gradient(
@@ -197,7 +197,7 @@ const {
 
   border-radius: 14px;
 
-  padding: clamp(20px, 1.25vw, 42px);
+  padding: clamp(18px, 1.25vw, 26px);
 
   display: flex;
   flex-direction: column;
@@ -376,8 +376,8 @@ const {
   top: clamp(7px, 0.45vw, 14px);
   right: clamp(7px, 0.45vw, 14px);
 
-  width: clamp(22px, 1.45vw, 42px);
-  height: clamp(22px, 1.45vw, 42px);
+  width: clamp(22px, 1.45vw, 30px);
+  height: clamp(22px, 1.45vw, 30px);
 
   border-radius: 999px;
 
@@ -388,7 +388,7 @@ const {
   justify-content: center;
   align-items: center;
 
-  font-size: clamp(16px, 0.95vw, 28px);
+  font-size: clamp(14px, 0.95vw, 18px);
   font-weight: bold;
 
   box-shadow:
@@ -403,7 +403,7 @@ const {
 
   max-width: 72%;
 
-  font-size: clamp(13px, 0.8vw, 24px);
+  font-size: clamp(12px, 0.8vw, 15px);
   font-weight: bold;
 
   color: rgba(255,255,255,0.75);
