@@ -34,6 +34,8 @@ function registerCreateLobby(
 
         game: null,
 
+        maxRounds: 10,
+
         players: [
 
           {

@@ -278,21 +278,11 @@ onUnmounted(() => {
 
         <!-- JOIN -->
 
-        <div class="menu-side">
+        <div class="menu-side join-side">
 
           <h2>
             Join Lobby
           </h2>
-
-          <input
-            v-model="joinUsername"
-
-            type="text"
-
-            placeholder="Your name"
-
-            class="form-control"
-          >
 
           <input
             v-model="joinCode"
@@ -300,6 +290,16 @@ onUnmounted(() => {
             type="text"
 
             placeholder="Lobby code"
+
+            class="form-control"
+          >
+
+          <input
+            v-model="joinUsername"
+
+            type="text"
+
+            placeholder="Your name"
 
             class="form-control"
           >
@@ -318,29 +318,31 @@ onUnmounted(() => {
 
         <!-- CREATE -->
 
-        <div class="menu-side">
+        <div class="menu-side create-side">
 
           <h2>
             Create Lobby
           </h2>
 
-          <input
-            v-model="createUsername"
+          <div class="create-controls">
+            <input
+              v-model="createUsername"
 
-            type="text"
+              type="text"
 
-            placeholder="Your name"
+              placeholder="Your name"
 
-            class="form-control"
-          >
+              class="form-control"
+            >
 
-          <button
-            class="btn btn-success w-100"
+            <button
+              class="btn btn-success w-100 create-button"
 
-            @click="createLobby"
-          >
-            Create Lobby
-          </button>
+              @click="createLobby"
+            >
+              Create Lobby
+            </button>
+          </div>
 
         </div>
 
@@ -525,6 +527,19 @@ onUnmounted(() => {
   gap: clamp(16px, 1.2vw, 50px);
 }
 
+.create-side {
+  justify-content: space-between;
+}
+
+.create-controls {
+  display: flex;
+  flex-direction: column;
+
+  gap: clamp(16px, 1.2vw, 50px);
+
+  margin-top: auto;
+}
+
 .menu-side h2 {
   margin: 0;
 
@@ -535,6 +550,7 @@ onUnmounted(() => {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.6px;
+  white-space: nowrap;
 
   text-shadow:
     0 0 16px rgba(255,216,77,0.16);
@@ -640,6 +656,14 @@ onUnmounted(() => {
     gap: 16px;
   }
 
+  .create-controls {
+    gap: 16px;
+  }
+
+  .menu-side h2 {
+    font-size: clamp(18px, 3.1vw, 22px);
+  }
+
   .menu-box .form-control,
   .menu-box .btn {
     min-height: 46px;
@@ -705,7 +729,7 @@ onUnmounted(() => {
   }
 
   .menu-side h2 {
-    font-size: 19px;
+    font-size: clamp(16px, 5vw, 19px);
   }
 
   .menu-box .btn {

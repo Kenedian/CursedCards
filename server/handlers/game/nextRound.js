@@ -44,6 +44,7 @@ function registerNextRound(
       }
 
       if (
+        room.game.maxRounds > 0 &&
 
         room.game.round >=
         room.game.maxRounds

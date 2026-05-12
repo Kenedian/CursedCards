@@ -11,7 +11,8 @@ const defaults = {
   masterVolume: 0.55,
   effectsVolume: 1,
   ttsVolume: 0.35,
-  ttsEnabled: true
+  ttsEnabled: true,
+  progressiveTtsEnabled: true
 }
 
 const masterVolume =
@@ -25,6 +26,9 @@ const ttsVolume =
 
 const ttsEnabled =
   ref(defaults.ttsEnabled)
+
+const progressiveTtsEnabled =
+  ref(defaults.progressiveTtsEnabled)
 
 let loaded = false
 
@@ -84,6 +88,9 @@ function loadSettings() {
 
     ttsEnabled.value =
       saved.ttsEnabled !== false
+
+    progressiveTtsEnabled.value =
+      saved.progressiveTtsEnabled !== false
   } catch {
     window.localStorage.removeItem(
       STORAGE_KEY
@@ -112,7 +119,10 @@ function saveSettings() {
         ttsVolume.value,
 
       ttsEnabled:
-        ttsEnabled.value
+        ttsEnabled.value,
+
+      progressiveTtsEnabled:
+        progressiveTtsEnabled.value
     })
   )
 }
@@ -129,6 +139,9 @@ function resetAudioSettings() {
 
   ttsEnabled.value =
     defaults.ttsEnabled
+
+  progressiveTtsEnabled.value =
+    defaults.progressiveTtsEnabled
 }
 
 watch(
@@ -136,7 +149,8 @@ watch(
     masterVolume,
     effectsVolume,
     ttsVolume,
-    ttsEnabled
+    ttsEnabled,
+    progressiveTtsEnabled
   ],
   saveSettings
 )
@@ -149,6 +163,7 @@ export default function useAudioSettings() {
     effectsVolume,
     ttsVolume,
     ttsEnabled,
+    progressiveTtsEnabled,
     resetAudioSettings
   }
 }

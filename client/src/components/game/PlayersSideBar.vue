@@ -73,7 +73,9 @@ defineEmits([
 
               :class="{
                 host: player.isHost,
-                offline: player.connected === false
+                offline: player.connected === false,
+                own:
+                  player.id === currentPlayerId
               }"
             >
               {{ player.username }}
@@ -197,6 +199,12 @@ defineEmits([
 
     text-decoration:
       line-through;
+  }
+
+  .player-name.own {
+    text-decoration: underline;
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.18em;
   }
 
 .player-score {

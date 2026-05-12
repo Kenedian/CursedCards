@@ -76,7 +76,10 @@ export default function useSpeechSynthesis() {
     speechSynthesis.getVoices()
   }
 
-  function speak(text) {
+  function speak(
+    text,
+    options = {}
+  ) {
 
     return new Promise(resolve => {
       if (!ttsEnabled.value) {
@@ -160,6 +163,17 @@ export default function useSpeechSynthesis() {
 
       utterance.onerror =
         finish
+
+      utterance.onboundary =
+        event => {
+          options.onBoundary?.({
+            charIndex:
+              event.charIndex || 0,
+
+            name:
+              event.name
+          })
+        }
 
       speechSynthesis.speak(
         utterance

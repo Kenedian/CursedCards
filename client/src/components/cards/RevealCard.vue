@@ -6,8 +6,8 @@ import {
 import useFitText
 from "../../composables/useFitText"
 
-import formatBlackCardText
-from "../../utils/cards/formatBlackCardText"
+import buildRevealSegments
+from "../../utils/cards/buildRevealSegments"
 
 const props = defineProps({
   blackCardText: String,
@@ -27,32 +27,62 @@ const props = defineProps({
   showPlayer: Boolean,
 
   revealed: Boolean,
-  active: Boolean
+  active: Boolean,
+
+  progressiveReveal: Boolean,
+
+  activeAnswerIndex: {
+    type: Number,
+    default: -1
+  },
+
+  revealedAnswerCount: {
+    type: Number,
+    default: 0
+  }
 })
 
-const formattedText = computed(() => {
-
-  let formatted =
-    formatBlackCardText(
+const revealSegments = computed(() =>
+  buildRevealSegments(
       props.blackCardText,
       props.selectedCards
-    )
+  ).segments
+)
 
-  props.selectedCards.forEach(card => {
+function getVisibleAnswerText(segment) {
+  if (!props.progressiveReveal) {
+    return segment.text
+  }
 
-    formatted = formatted.replace(
-      card.text,
+  if (
+    segment.answerIndex <
+    props.revealedAnswerCount
+  ) {
+    return segment.text
+  }
 
-      `
-        <span class="answer-text">
-          ${card.text}
-        </span>
-      `
-    )
-  })
+  if (
+    segment.answerIndex !==
+    props.activeAnswerIndex
+  ) {
+    return ""
+  }
 
-  return formatted
-})
+  return segment.text
+}
+
+function getHiddenAnswerText(segment) {
+  if (!props.progressiveReveal) {
+    return ""
+  }
+
+  const visibleText =
+    getVisibleAnswerText(segment)
+
+  return segment.text.slice(
+    visibleText.length
+  )
+}
 
 const {
   textRef,
@@ -103,9 +133,46 @@ const {
       :style="{
         fontSize: fontSize + 'px'
       }"
+    >
+      <template
+        v-for="
+          (segment, index)
+          in revealSegments
+        "
+        :key="index"
+      >
+        <span
+          v-if="
+            segment.type === 'answer'
+          "
+          class="answer-text"
+          :class="{
+            'answer-text-progressive':
+              props.progressiveReveal
+          }"
+        >
+          <template
+            v-if="
+              props.progressiveReveal
+            "
+          >
+            <span class="answer-visible">
+              {{ getVisibleAnswerText(segment) }}
+            </span><span class="answer-hidden">
+              {{ getHiddenAnswerText(segment) }}
+            </span>
+          </template>
 
-      v-html="formattedText"
-    ></div>
+          <template v-else>
+            {{ segment.text }}
+          </template>
+        </span>
+
+        <span v-else>
+          {{ segment.text }}
+        </span>
+      </template>
+    </div>
 
   </div>
 </template>
@@ -346,6 +413,16 @@ const {
   text-overflow: ellipsis;
 
   text-align: right;
+}
+
+.reveal-card-text :deep(.answer-hidden) {
+  color: transparent;
+
+  text-shadow: none;
+}
+
+.reveal-card-text :deep(.answer-visible) {
+  color: #2fe66b;
 }
 
 @media (max-width: 760px) {

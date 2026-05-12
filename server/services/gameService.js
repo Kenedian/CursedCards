@@ -42,6 +42,16 @@ function drawCards(room, count) {
   return deck.splice(0, count).map(createCardInstance)
 }
 
+function drawBlackCard(room) {
+  if (!room.game.blackDeck.length) {
+    room.game.blackDeck.push(
+      ...shuffle(room.game.allBlackCards)
+    )
+  }
+
+  return room.game.blackDeck.shift()
+}
+
 function allPlayersReady(room) {
   return room.players.every(player => player.ready)
 }
@@ -49,18 +59,25 @@ function allPlayersReady(room) {
 async function startGame(room) {
   const shuffledWhiteCards = shuffle(await getWhiteCards())
   const shuffledBlackCards = shuffle(await getBlackCards())
-  const blackCard = shuffledBlackCards.shift()
+  const maxRounds =
+    Number.isInteger(room.maxRounds)
+      ? room.maxRounds
+      : MAX_ROUNDS
 
   room.game = {
     phase: GAME_PHASES.PICKING,
     round: 1,
-    maxRounds: MAX_ROUNDS,
+    maxRounds,
     submissions: [],
     blackDeck: shuffledBlackCards,
+    allBlackCards: [...shuffledBlackCards],
     whiteDeck: [...shuffledWhiteCards],
     allWhiteCards: [...shuffledWhiteCards],
-    blackCard
+    blackCard: null
   }
+
+  room.game.blackCard =
+    drawBlackCard(room)
 
   room.players.forEach(player => {
     player.score = 0
@@ -76,7 +93,7 @@ function nextRound(room) {
   room.game.round++
   room.game.phase = GAME_PHASES.PICKING
   room.game.submissions = []
-  room.game.blackCard = room.game.blackDeck.shift()
+  room.game.blackCard = drawBlackCard(room)
 
   room.players.forEach(player => {
     // odebrat použité karty

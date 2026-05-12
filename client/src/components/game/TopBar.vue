@@ -45,9 +45,18 @@ const isLastRound =
   computed(() => {
 
     return (
+      props.maxRounds > 0 &&
       props.round >=
       props.maxRounds
     )
+  })
+
+const roundLimitText =
+  computed(() => {
+
+    return props.maxRounds === 0
+      ? "Infinite"
+      : props.maxRounds
   })
 
 const showReadyCapsule =
@@ -368,7 +377,7 @@ function handleAction() {
           Round
           {{ round }}
           /
-          {{ maxRounds }}
+          {{ roundLimitText }}
 
         </div>
 

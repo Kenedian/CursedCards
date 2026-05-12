@@ -42,6 +42,21 @@ const props = defineProps({
   activeRevealIndex: {
     type: Number,
     default: -1
+  },
+
+  activeAnswerIndex: {
+    type: Number,
+    default: -1
+  },
+
+  revealedAnswerCount: {
+    type: Number,
+    default: 0
+  },
+
+  progressiveReveal: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -227,6 +242,24 @@ watch(
         :active="
           revealMode &&
           index === activeRevealIndex
+        "
+
+        :progressive-reveal="
+          revealMode &&
+          progressiveReveal &&
+          index === activeRevealIndex
+        "
+
+        :active-answer-index="
+          index === activeRevealIndex
+            ? activeAnswerIndex
+            : -1
+        "
+
+        :revealed-answer-count="
+          index === activeRevealIndex
+            ? revealedAnswerCount
+            : 0
         "
 
         @click="

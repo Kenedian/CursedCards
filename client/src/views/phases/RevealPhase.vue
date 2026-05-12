@@ -22,7 +22,10 @@ const submissions =
   computed(() => props.submissions)
 
 const {
-  activeRevealIndex
+  activeRevealIndex,
+  activeAnswerIndex,
+  revealedAnswerCount,
+  progressiveReveal
 } = useRevealSequence({
 
   blackCard,
@@ -38,6 +41,18 @@ const {
 
     :active-reveal-index="
       activeRevealIndex
+    "
+
+    :active-answer-index="
+      activeAnswerIndex
+    "
+
+    :revealed-answer-count="
+      revealedAnswerCount
+    "
+
+    :progressive-reveal="
+      progressiveReveal
     "
 
     reveal-mode

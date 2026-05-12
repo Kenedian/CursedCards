@@ -2,6 +2,7 @@
 import {
   ref,
   computed,
+  watch,
   onMounted,
   onUnmounted
 } from "vue"
@@ -30,7 +31,8 @@ from "../utils/reconnectSession"
 
 const {
   currentLobby,
-  currentPlayer
+  currentPlayer,
+  currentPlayerId
 } = useGameStore()
 
 const {
@@ -42,6 +44,9 @@ const copied =
 
 const settingsOpen =
   ref(false)
+
+const roundAmount =
+  ref(10)
 
 const maxPlayers = 8
 
@@ -70,6 +75,49 @@ const playerCount = computed(() => {
 
   return players.value.length
 })
+
+const maxRounds = computed(() => {
+
+  return (
+    currentLobby.value?.maxRounds ?? 10
+  )
+})
+
+const roundAmountLabel = computed(() => {
+
+  return maxRounds.value === 0
+    ? "Infinite"
+    : maxRounds.value
+})
+
+function updateRoundAmount() {
+  if (!isHost.value) {
+    return
+  }
+
+  const value =
+    Math.max(
+      0,
+      Math.floor(
+        Number(roundAmount.value) || 0
+      )
+    )
+
+  roundAmount.value =
+    value
+
+  socket.emit(
+    SOCKET_EVENTS.UPDATE_LOBBY_SETTINGS,
+
+    {
+      code:
+        lobbyCode.value,
+
+      maxRounds:
+        value
+    }
+  )
+}
 
 async function copyCode() {
 
@@ -143,6 +191,17 @@ onUnmounted(() => {
     handleLobbyError
   )
 })
+
+watch(
+  maxRounds,
+  value => {
+    roundAmount.value =
+      value
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <template>
@@ -201,6 +260,35 @@ onUnmounted(() => {
 
             </button>
 
+          </div>
+
+          <div class="round-setting">
+            <label for="round-count">
+              Rounds
+            </label>
+
+            <input
+              v-if="isHost"
+              id="round-count"
+              v-model.number="roundAmount"
+              class="round-input"
+              type="number"
+              min="0"
+              step="1"
+              @change="updateRoundAmount"
+              @blur="updateRoundAmount"
+            >
+
+            <div
+              v-else
+              class="round-readonly"
+            >
+              {{ roundAmountLabel }}
+            </div>
+
+            <span>
+              0 = infinite
+            </span>
           </div>
 
           <button
@@ -279,9 +367,11 @@ onUnmounted(() => {
                   class="fa-solid fa-crown host-icon"
                 ></i>
 
-                <span
-                  :class="{
-                    'host-name': player.isHost
+              <span
+                :class="{
+                    'host-name': player.isHost,
+                    'own-player-name':
+                      player.id === currentPlayerId
                   }"
                 >
                   {{ player.username }}
@@ -630,6 +720,72 @@ onUnmounted(() => {
   margin-bottom: clamp(18px, 1.25vw, 52px);
 }
 
+.round-setting {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+
+  gap: 8px 14px;
+
+  padding: clamp(12px, 0.8vw, 28px);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,0.035);
+}
+
+.round-setting label {
+  color:
+    rgba(255,255,255,0.9);
+
+  font-size: clamp(16px, 1vw, 38px);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.round-setting span {
+  grid-column: 1 / 3;
+
+  color:
+    rgba(255,255,255,0.54);
+
+  font-size: clamp(12px, 0.75vw, 26px);
+  font-weight: 800;
+}
+
+.round-input,
+.round-readonly {
+  width: clamp(86px, 5.2vw, 180px);
+  height: clamp(42px, 2.6vw, 94px);
+
+  border:
+    1px solid var(--game-line);
+
+  border-radius: 8px;
+
+  background:
+    rgba(0,0,0,0.28);
+
+  color:
+    var(--game-yellow);
+
+  font: inherit;
+  font-size: clamp(18px, 1.1vw, 42px);
+  font-weight: 900;
+
+  text-align: center;
+}
+
+.round-readonly {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .players-header h2 {
   margin: 0;
 
@@ -769,6 +925,12 @@ onUnmounted(() => {
 
 .kick-button i {
   font-size: clamp(19px, 1.05vw, 42px);
+}
+
+.own-player-name {
+  text-decoration: underline;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.18em;
 }
 
 .host-placeholder {

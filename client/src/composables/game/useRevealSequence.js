@@ -1,4 +1,5 @@
 import {
+  computed,
   ref,
   onMounted,
   onUnmounted
@@ -16,8 +17,16 @@ from "../../../../shared/constants/socketEvents"
 import useGameStore
 from "../../stores/gameStore"
 
-import formatBlackCardText
-from "../../utils/cards/formatBlackCardText"
+import {
+  ENABLE_PROGRESSIVE_TTS_REVEAL
+}
+from "../../constants/revealEffects"
+
+import buildRevealSegments
+from "../../utils/cards/buildRevealSegments"
+
+import useAudioSettings
+from "../useAudioSettings"
 
 import useSpeechSynthesis
 from "./useSpeechSynthesis"
@@ -33,12 +42,33 @@ export default function useRevealSequence({
   } = useGameStore()
 
   const {
+    ttsEnabled,
+    progressiveTtsEnabled
+  } = useAudioSettings()
+
+  const {
     speak,
     cancelSpeech
   } = useSpeechSynthesis()
 
   const activeRevealIndex =
     ref(-1)
+
+  const activeAnswerIndex =
+    ref(-1)
+
+  const revealedAnswerCount =
+    ref(0)
+
+  const progressiveReveal =
+    computed(() =>
+
+      ENABLE_PROGRESSIVE_TTS_REVEAL &&
+      ttsEnabled.value &&
+      progressiveTtsEnabled.value &&
+      typeof window !== "undefined" &&
+      Boolean(window.speechSynthesis)
+    )
 
   let cancelled = false
 
@@ -56,6 +86,120 @@ export default function useRevealSequence({
   function isCancelled() {
 
     return cancelled
+  }
+
+  function resetAnswerProgress() {
+    activeAnswerIndex.value =
+      -1
+
+    revealedAnswerCount.value =
+      0
+  }
+
+  function showAllAnswers(answerRanges) {
+    activeAnswerIndex.value =
+      -1
+
+    revealedAnswerCount.value =
+      answerRanges.length
+  }
+
+  function setAnswerProgressFromTextIndex(
+    answerRanges,
+    textIndex
+  ) {
+    if (!answerRanges.length) {
+      resetAnswerProgress()
+
+      return
+    }
+
+    let completedCount = 0
+    let currentIndex = -1
+
+    answerRanges.some(range => {
+      if (textIndex >= range.end) {
+        completedCount =
+          range.answerIndex + 1
+
+        return false
+      }
+
+      if (textIndex >= range.start) {
+        currentIndex =
+          range.answerIndex
+
+        return true
+      }
+
+      return true
+    })
+
+    revealedAnswerCount.value =
+      completedCount
+
+    activeAnswerIndex.value =
+      currentIndex
+  }
+
+  function startEstimatedAnswerProgress(
+    fullText,
+    answerRanges,
+    latestTextIndex
+  ) {
+    if (
+      !progressiveReveal.value ||
+      !answerRanges.length
+    ) {
+      return () => {}
+    }
+
+    const duration =
+      Math.max(
+        6000,
+        fullText.length * 90
+      )
+
+    const startedAt =
+      Date.now()
+
+    const interval =
+      setInterval(() => {
+        if (isCancelled()) {
+          return
+        }
+
+        const elapsed =
+          Date.now() - startedAt
+
+        const estimatedIndex =
+          Math.min(
+            fullText.length,
+            Math.floor(
+              (elapsed / duration) *
+              fullText.length
+            )
+          )
+
+        if (
+          estimatedIndex <
+          latestTextIndex.value
+        ) {
+          return
+        }
+
+        latestTextIndex.value =
+          estimatedIndex
+
+        setAnswerProgressFromTextIndex(
+          answerRanges,
+          estimatedIndex
+        )
+      }, 120)
+
+    return () => {
+      clearInterval(interval)
+    }
   }
 
   async function startReveal() {
@@ -79,6 +223,8 @@ export default function useRevealSequence({
       const submission =
         submissions.value[i]
 
+      resetAnswerProgress()
+
       activeRevealIndex.value =
         i
 
@@ -88,16 +234,56 @@ export default function useRevealSequence({
         return
       }
 
-      const fullText =
-
-        formatBlackCardText(
+      const {
+        fullText,
+        answerRanges
+      } =
+        buildRevealSegments(
 
           blackCard.value.text,
 
           submission.cards
         )
 
-      await speak(fullText)
+      const latestTextIndex =
+        ref(0)
+
+      const stopEstimatedProgress =
+        startEstimatedAnswerProgress(
+          fullText,
+          answerRanges,
+          latestTextIndex
+        )
+
+      await speak(
+        fullText,
+        {
+          onBoundary(event) {
+            if (!progressiveReveal.value) {
+              return
+            }
+
+            if (
+              event.charIndex <
+              latestTextIndex.value
+            ) {
+              return
+            }
+
+            latestTextIndex.value =
+              event.charIndex
+
+            setAnswerProgressFromTextIndex(
+              answerRanges,
+              event.charIndex
+            )
+          }
+        }
+      )
+
+      stopEstimatedProgress()
+
+      showAllAnswers(answerRanges)
 
       if (isCancelled()) {
         return
@@ -118,6 +304,8 @@ export default function useRevealSequence({
 
     activeRevealIndex.value =
       -1
+
+    resetAnswerProgress()
 
     socket.emit(
 
@@ -146,6 +334,9 @@ export default function useRevealSequence({
 
   return {
 
-    activeRevealIndex
+    activeRevealIndex,
+    activeAnswerIndex,
+    revealedAnswerCount,
+    progressiveReveal
   }
 }

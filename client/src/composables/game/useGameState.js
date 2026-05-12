@@ -26,7 +26,7 @@ export default function useGameState() {
   })
 
   const maxRounds = computed(() => {
-    return game.value?.maxRounds || 10
+    return game.value?.maxRounds ?? 10
   })
 
   const blackCard = computed(() => {

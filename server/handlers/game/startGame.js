@@ -87,14 +87,33 @@ function registerStartGame(
       const blackCardCount =
         blackCards.length
 
+      const maxRounds =
+        Number.isInteger(room.maxRounds)
+          ? room.maxRounds
+          : MAX_ROUNDS
+
       if (
-        blackCardCount <
-        MAX_ROUNDS
+        maxRounds === 0 &&
+        blackCardCount < 1
       ) {
 
         socket.emit(
           SOCKET_EVENTS.LOBBY_ERROR,
-          `Not enough black cards. Need ${MAX_ROUNDS} for all rounds, but only ${blackCardCount} available.`
+          "Not enough black cards. Need at least 1 black card for infinite rounds."
+        )
+
+        return
+      }
+
+      if (
+        maxRounds > 0 &&
+        blackCardCount <
+        maxRounds
+      ) {
+
+        socket.emit(
+          SOCKET_EVENTS.LOBBY_ERROR,
+          `Not enough black cards. Need ${maxRounds} for all rounds, but only ${blackCardCount} available.`
         )
 
         return

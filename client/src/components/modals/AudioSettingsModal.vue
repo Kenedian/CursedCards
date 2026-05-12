@@ -19,6 +19,7 @@ const {
   effectsVolume,
   ttsVolume,
   ttsEnabled,
+  progressiveTtsEnabled,
   resetAudioSettings
 } = useAudioSettings()
 
@@ -141,6 +142,23 @@ function previewTts() {
           <input
             v-model="ttsEnabled"
             type="checkbox"
+          >
+        </label>
+
+        <label
+          class="toggle-row"
+          :class="{
+            disabled: !ttsEnabled
+          }"
+        >
+          <span>
+            Progressive TTS
+          </span>
+
+          <input
+            v-model="progressiveTtsEnabled"
+            type="checkbox"
+            :disabled="!ttsEnabled"
           >
         </label>
       </div>
@@ -363,6 +381,10 @@ input[type="range"]:disabled {
 
   accent-color:
     var(--game-green);
+}
+
+.toggle-row.disabled {
+  opacity: 0.48;
 }
 
 .modal-actions {

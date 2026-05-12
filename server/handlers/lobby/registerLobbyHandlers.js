@@ -16,6 +16,9 @@ const registerDisconnect =
 const registerKickPlayer =
   require("./kickPlayer")
 
+const registerUpdateLobbySettings =
+  require("./updateLobbySettings")
+
 module.exports =
 function registerLobbyHandlers(
   io,
@@ -48,6 +51,11 @@ function registerLobbyHandlers(
   )
 
   registerKickPlayer(
+    io,
+    socket
+  )
+
+  registerUpdateLobbySettings(
     io,
     socket
   )

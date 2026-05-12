@@ -26,6 +26,9 @@ export const SOCKET_EVENTS = {
   LOBBY_UPDATED:
     "lobby-updated",
 
+  UPDATE_LOBBY_SETTINGS:
+    "update-lobby-settings",
+
   LOBBY_ERROR:
     "lobby-error",
 
