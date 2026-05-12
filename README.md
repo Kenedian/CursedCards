@@ -1,6 +1,6 @@
 # Cursed Cards
 
-Cursed Cards is a browser-based multiplayer party game inspired by Cards Against Humanity, built with Vue 3, Node.js, Socket.IO and SQLite/Turso.
+Cursed Cards is a browser-based multiplayer party game inspired by classic fill-in-the-blank card games, built with Vue 3, Node.js, Socket.IO and SQLite/Turso.
 
 The project focuses on real-time multiplayer flow, lobby management, custom card administration, reconnect handling, animated reveals, voting, scoring and a polished game-over screen.
 
@@ -42,22 +42,22 @@ Clone the repository and create `.env` files inside both the `client` and `serve
 ## Screenshots
 
 # Main Menu
-<img width="1918" height="860" alt="image" src="https://github.com/user-attachments/assets/2fa8791f-e306-44db-bd26-cfabc82325d8" />
+<img width="1918" height="866" alt="image" src="https://github.com/user-attachments/assets/93391aa8-d020-4202-9ae6-cc2ebcf583c3" />
 
 # Lobby
-<img width="1918" height="871" alt="image" src="https://github.com/user-attachments/assets/130687ad-6a25-4cb1-a464-b9ad4b3bf456" />
+<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/6ef2e84c-e684-4644-a823-ccf658a400a2" />
 
 # Game (Picking Phase)
-<img width="1918" height="868" alt="image" src="https://github.com/user-attachments/assets/e33b3258-fc74-4054-9c90-4a8609b8bb05" />
+<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/7e0f5b98-81cb-46ee-b678-759cf0dcee88" />
 
 # Game (Voting Phase)
-<img width="1917" height="862" alt="image" src="https://github.com/user-attachments/assets/a3107101-40c7-4071-8712-52336b3e87b1" />
+<img width="1918" height="866" alt="image" src="https://github.com/user-attachments/assets/75b1f1d8-9ccd-4dd8-ba8e-612893083c1e" />
 
 # Game (Results Phase)
-<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/11fd6069-9ad1-461b-bc7b-afb0e3519cd1" />
+<img width="1918" height="862" alt="image" src="https://github.com/user-attachments/assets/9e83b7d5-c9ef-4f77-b2ae-940517b1361d" />
 
 # Game (Game-over Screen)
-<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/3e77ee31-4c0f-4cd1-b600-19a7720acfee" />
+<img width="1918" height="857" alt="image" src="https://github.com/user-attachments/assets/4bbc269d-2fee-432a-846d-12e1c7f8f572" />
 
 # Admin Panel (Create Card)
 <img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/fe13023e-e4a6-4f59-b564-930a59bfcc76" />
@@ -66,4 +66,5 @@ Clone the repository and create `.env` files inside both the `client` and `serve
 <img width="1918" height="861" alt="image" src="https://github.com/user-attachments/assets/3416177e-6194-4eac-b265-8c3bf00dd04e" />
 
 # Settings Modal
-<img width="677" height="612" alt="image" src="https://github.com/user-attachments/assets/ebdec994-d250-49a7-91f1-eb46e396b1e0" />
+<img width="682" height="702" alt="image" src="https://github.com/user-attachments/assets/d6603af5-ca36-4bbd-8f69-8f59aca9d7c4" />
+
