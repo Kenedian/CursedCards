@@ -31,7 +31,7 @@ The project focuses on real-time multiplayer flow, lobby management, custom card
 
 ## Live Demo
 
-Available here: https://cursed-cards-eight.vercel.app/
+Available here: https://cursed-cards-eight.vercel.app/ (⚠️NSFW Content⚠️)
 
 The app uses free hosting, so the backend may take around 30 seconds to wake up after inactivity. The database is also hosted on a free tier, so some admin/game actions may be slower.
 
