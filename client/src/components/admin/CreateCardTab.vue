@@ -269,19 +269,19 @@ defineExpose({
   justify-content: center;
   align-items: center;
 
-  gap: clamp(24px, 2.2vw, 84px);
+  gap: clamp(18px, 1.6vw, 42px);
 }
 
 .left-side {
   flex: 1 1 0;
-  max-width: 980px;
+  max-width: 820px;
   min-width: 0;
 
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 1vw, 34px);
+  gap: clamp(12px, 0.8vw, 22px);
 
-  padding: clamp(18px, 1.3vw, 42px);
+  padding: clamp(14px, 1vw, 24px);
 
   border:
     1px solid rgba(255,255,255,0.08);
@@ -293,9 +293,9 @@ defineExpose({
 }
 
 .preview-side {
-  flex: 0 1 clamp(300px, 30vw, 760px);
-  min-width: 280px;
-  min-height: clamp(360px, 31vw, 860px);
+  flex: 0 1 clamp(220px, 18vw, 340px);
+  min-width: 210px;
+  min-height: clamp(260px, 20vw, 380px);
 
   display: flex;
   justify-content: center;
@@ -329,7 +329,7 @@ defineExpose({
   color:
     var(--game-green);
 
-  font-size: clamp(11px, 0.6vw, 22px);
+  font-size: clamp(10px, 0.55vw, 13px);
   font-weight: 900;
   letter-spacing: 1.2px;
   text-transform: uppercase;
@@ -338,13 +338,13 @@ defineExpose({
 .section-header h2 {
   margin: 0;
 
-  font-size: clamp(28px, 1.8vw, 68px);
+  font-size: clamp(26px, 1.55vw, 36px);
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .blank-count {
-  height: clamp(34px, 2vw, 68px);
+  height: clamp(32px, 1.75vw, 42px);
 
   padding: 0 clamp(10px, 0.65vw, 24px);
 
@@ -362,7 +362,7 @@ defineExpose({
   color:
     var(--game-yellow);
 
-  font-size: clamp(12px, 0.68vw, 24px);
+  font-size: clamp(11px, 0.62vw, 14px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -380,19 +380,19 @@ defineExpose({
 }
 
 .type-switch .btn {
-  min-height: clamp(38px, 2.2vw, 76px);
+  min-height: clamp(36px, 1.85vw, 46px);
 
   padding:
     0
     clamp(12px, 0.8vw, 28px);
 
-  font-size: clamp(12px, 0.75vw, 26px);
+  font-size: clamp(11px, 0.68vw, 14px);
 }
 
 .card-input {
   flex: 1;
 
-  min-height: clamp(220px, 18vw, 620px);
+  min-height: clamp(180px, 14vw, 320px);
 
   resize: none;
 
@@ -406,9 +406,9 @@ defineExpose({
 
   border-radius: 10px;
 
-  padding: clamp(18px, 1.25vw, 44px);
+  padding: clamp(14px, 0.9vw, 22px);
 
-  font-size: clamp(20px, 1.25vw, 44px);
+  font-size: clamp(17px, 0.95vw, 22px);
   font-weight: 800;
   line-height: 1.25;
 
@@ -437,11 +437,11 @@ defineExpose({
 .create-button,
 .cancel-button,
 .utility-button {
-  height: clamp(50px, 3vw, 104px);
+  height: clamp(42px, 2.2vw, 52px);
 
-  min-width: clamp(138px, 9vw, 300px);
+  min-width: clamp(116px, 7vw, 160px);
 
-  font-size: clamp(14px, 0.85vw, 30px);
+  font-size: clamp(12px, 0.72vw, 15px);
 }
 
 .blank-count.invalid {

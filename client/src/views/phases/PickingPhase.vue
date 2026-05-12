@@ -43,10 +43,10 @@ function getBlackCardMaxFontSize() {
 
   return Math.round(
     Math.min(
-      56,
+      50,
       Math.max(
-        36,
-        window.innerWidth * 0.02
+        34,
+        window.innerWidth * 0.018
       )
     )
   )
@@ -266,10 +266,10 @@ function clickCard(instanceId) {
   }
 
   .center-area :deep(.black-card:not(.preview-mode)) {
-    width: clamp(220px, 16.8vw, 360px);
-    height: clamp(300px, 22.6vw, 486px);
+    width: clamp(210px, 15.4vw, 326px);
+    height: clamp(284px, 20.7vw, 440px);
 
-    padding: clamp(20px, 1.45vw, 30px);
+    padding: clamp(18px, 1.2vw, 25px);
 
     margin-bottom: clamp(22px, 4.8vh, 108px);
 

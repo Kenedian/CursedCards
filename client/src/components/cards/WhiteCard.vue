@@ -170,11 +170,33 @@ const {
 }
 
 .white-card-wrapper.preview-mode .white-card {
+  width: clamp(112px, 6.4vw, 138px);
+  height: clamp(150px, 8.6vw, 184px);
+
+  padding: clamp(10px, 0.6vw, 13px);
+
   margin-left: 0;
 
   transform: none;
 
   cursor: default;
+}
+
+.white-card-wrapper.preview-mode .white-card-top {
+  height: 18px;
+
+  margin:
+    calc(clamp(10px, 0.6vw, 13px) * -1)
+    calc(clamp(10px, 0.6vw, 13px) * -1)
+    10px
+    calc(clamp(10px, 0.6vw, 13px) * -1);
+}
+
+.white-card-wrapper.preview-mode .pick-order {
+  width: 28px;
+  height: 28px;
+
+  font-size: 12px;
 }
 
 .white-card-top {

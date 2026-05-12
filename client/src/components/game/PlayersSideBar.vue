@@ -98,7 +98,7 @@ defineEmits([
 
 <style scoped>
 .players-side {
-  width: clamp(240px, 16vw, 320px);
+  width: clamp(224px, 14.5vw, 292px);
 
   flex-shrink: 0;
 
@@ -107,7 +107,7 @@ defineEmits([
 
   justify-content: center;
 
-  padding: clamp(14px, 1.15vw, 24px);
+  padding: clamp(12px, 0.95vw, 20px);
 
   border:
     1px solid rgba(255,255,255,0.08);
@@ -130,7 +130,7 @@ defineEmits([
   display: flex;
   flex-direction: column;
 
-  gap: clamp(10px, 0.95vw, 18px);
+  gap: clamp(8px, 0.75vw, 14px);
 }
 
 .player-row {
@@ -140,16 +140,16 @@ defineEmits([
 
   column-gap: clamp(8px, 0.6vw, 14px);
 
-  min-height: clamp(42px, 2.8vw, 56px);
+  min-height: clamp(38px, 2.4vw, 50px);
 
-  padding: 0 clamp(10px, 0.9vw, 18px);
+  padding: 0 clamp(9px, 0.75vw, 15px);
 
   border-radius: 8px;
 
   background:
     rgba(255,255,255,0.025);
 
-  font-size: clamp(15px, 1.05vw, 20px);
+  font-size: clamp(14px, 0.9vw, 18px);
   font-weight: 800;
 
   transition:
@@ -213,7 +213,7 @@ defineEmits([
   color:
     var(--game-yellow);
 
-  font-size: clamp(14px, 0.95vw, 18px);
+  font-size: clamp(13px, 0.85vw, 16px);
   font-weight: 900;
 
   flex-shrink: 0;
@@ -222,8 +222,8 @@ defineEmits([
 .kick-button {
   grid-column: 1;
 
-  width: clamp(30px, 2vw, 40px);
-  height: clamp(30px, 2vw, 40px);
+  width: clamp(28px, 1.7vw, 34px);
+  height: clamp(28px, 1.7vw, 34px);
 
   display: flex;
   align-items: center;
@@ -240,7 +240,7 @@ defineEmits([
   color:
     #ff8391;
 
-  font-size: clamp(12px, 0.85vw, 16px);
+  font-size: clamp(11px, 0.72vw, 14px);
 
   opacity: 0.72;
 

@@ -304,7 +304,7 @@ function confirmDelete() {
   display: flex;
   flex-direction: column;
 
-  gap: clamp(12px, 1vw, 34px);
+  gap: clamp(10px, 0.8vw, 22px);
 
   min-height: 0;
 }
@@ -314,7 +314,7 @@ function confirmDelete() {
   justify-content: space-between;
   align-items: center;
 
-  gap: clamp(12px, 0.9vw, 30px);
+  gap: clamp(10px, 0.75vw, 22px);
 
   flex-shrink: 0;
 }
@@ -324,7 +324,7 @@ function confirmDelete() {
   flex-direction: column;
   gap: clamp(6px, 0.4vw, 14px);
 
-  padding: clamp(10px, 0.65vw, 22px);
+  padding: clamp(8px, 0.55vw, 14px);
 
   border:
     1px solid rgba(255,255,255,0.08);
@@ -351,18 +351,18 @@ function confirmDelete() {
 }
 
 .top-group .btn {
-  min-height: clamp(36px, 2vw, 70px);
+  min-height: clamp(34px, 1.75vw, 44px);
 
   padding:
     0
     clamp(12px, 0.75vw, 28px);
 
-  font-size: clamp(12px, 0.7vw, 24px);
+  font-size: clamp(11px, 0.64vw, 14px);
 }
 
 .mode-chip {
-  min-width: clamp(160px, 10vw, 360px);
-  height: clamp(40px, 2.3vw, 78px);
+  min-width: clamp(150px, 9vw, 220px);
+  height: clamp(36px, 2vw, 44px);
 
   padding: 0 clamp(12px, 0.85vw, 30px);
 
@@ -381,7 +381,7 @@ function confirmDelete() {
   color:
     #9cc9ff;
 
-  font-size: clamp(12px, 0.75vw, 26px);
+  font-size: clamp(11px, 0.68vw, 14px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -419,14 +419,14 @@ function confirmDelete() {
   display: grid;
 
   grid-template-columns:
-    repeat(auto-fill, minmax(clamp(150px, 10.5vw, 300px), 1fr));
+    repeat(auto-fill, minmax(clamp(128px, 8vw, 170px), 1fr));
 
-  gap: clamp(16px, 1.2vw, 42px);
+  gap: clamp(12px, 0.9vw, 20px);
 
   padding:
-    clamp(14px, 0.9vw, 30px)
-    clamp(10px, 0.65vw, 24px)
-    clamp(18px, 1vw, 34px);
+    clamp(12px, 0.75vw, 18px)
+    clamp(8px, 0.55vw, 14px)
+    clamp(16px, 0.9vw, 24px);
 
   border:
     1px solid rgba(255,255,255,0.06);
@@ -442,9 +442,9 @@ function confirmDelete() {
 
 .cards-grid.black {
   grid-template-columns:
-    repeat(auto-fill, minmax(clamp(210px, 16vw, 460px), 1fr));
+    repeat(auto-fill, minmax(clamp(158px, 9.5vw, 198px), 1fr));
 
-  gap: clamp(22px, 1.6vw, 58px);
+  gap: clamp(14px, 1vw, 24px);
 
   padding-top: 16px;
 }
@@ -485,7 +485,7 @@ function confirmDelete() {
 }
 
 .card-wrapper:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 .card-wrapper.edit {
@@ -514,8 +514,8 @@ function confirmDelete() {
     );
 
   transform:
-    translateY(-6px)
-    scale(1.02);
+    translateY(-3px)
+    scale(1.01);
 }
 
 @media (max-width: 1050px) {

@@ -85,8 +85,8 @@ const {
 
 <style scoped>
 .black-card {
-  width: clamp(230px, 16vw, 340px);
-  height: clamp(312px, 21.5vw, 458px);
+  width: clamp(218px, 14.8vw, 310px);
+  height: clamp(294px, 19.9vw, 418px);
 
   background:
     linear-gradient(
@@ -101,7 +101,7 @@ const {
 
   border-radius: 18px;
 
-  padding: clamp(20px, 1.35vw, 28px);
+  padding: clamp(18px, 1.15vw, 24px);
 
   display: flex;
   flex-direction: column;
@@ -129,9 +129,26 @@ const {
 }
 
 .black-card.preview-mode {
+  width: clamp(138px, 7.6vw, 164px);
+  height: clamp(186px, 10.3vw, 222px);
+
+  padding: clamp(12px, 0.72vw, 15px);
+
   margin-bottom: 0;
 
   transform: none;
+}
+
+.black-card.preview-mode .black-card-footer {
+  padding-top: 9px;
+}
+
+.black-card.preview-mode .black-card-picks {
+  height: 24px;
+
+  padding: 0 9px;
+
+  font-size: 10px;
 }
 
 .black-card-text {

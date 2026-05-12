@@ -355,10 +355,10 @@ onUnmounted(() => {
   min-height: 100dvh;
 
   padding:
-    clamp(12px, 1.2vw, 36px);
+    clamp(10px, 0.9vw, 22px);
 
   padding-bottom:
-    calc(clamp(12px, 1.2vw, 36px) + env(safe-area-inset-bottom));
+    calc(clamp(10px, 0.9vw, 22px) + env(safe-area-inset-bottom));
 
   display: flex;
   flex-direction: column;
@@ -381,9 +381,9 @@ onUnmounted(() => {
 
   gap: clamp(12px, 0.9vw, 30px);
 
-  margin-bottom: clamp(10px, 0.9vw, 28px);
+  margin-bottom: clamp(8px, 0.7vw, 18px);
 
-  padding: clamp(10px, 0.8vw, 24px);
+  padding: clamp(8px, 0.65vw, 16px);
 
   border:
     1px solid rgba(47,230,107,0.18);
@@ -413,7 +413,7 @@ onUnmounted(() => {
   color:
     var(--game-green);
 
-  font-size: clamp(11px, 0.6vw, 22px);
+  font-size: clamp(10px, 0.55vw, 13px);
   font-weight: 900;
   letter-spacing: 1.3px;
   text-transform: uppercase;
@@ -422,7 +422,7 @@ onUnmounted(() => {
 .top-left h1 {
   margin: 0;
 
-  font-size: clamp(28px, 1.8vw, 68px);
+  font-size: clamp(26px, 1.55vw, 36px);
   font-weight: 900;
   text-transform: uppercase;
 
@@ -435,7 +435,7 @@ onUnmounted(() => {
 }
 
 .stat-chip {
-  height: clamp(34px, 2vw, 68px);
+  height: clamp(32px, 1.8vw, 42px);
 
   padding: 0 clamp(10px, 0.65vw, 24px);
 
@@ -453,7 +453,7 @@ onUnmounted(() => {
   color:
     var(--game-muted);
 
-  font-size: clamp(12px, 0.68vw, 24px);
+  font-size: clamp(11px, 0.62vw, 14px);
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -465,13 +465,13 @@ onUnmounted(() => {
 
 .tab-buttons .btn,
 .top-actions .btn {
-  min-height: clamp(36px, 2.1vw, 72px);
+  min-height: clamp(34px, 1.85vw, 44px);
 
   padding:
     0
     clamp(12px, 0.75vw, 28px);
 
-  font-size: clamp(12px, 0.72vw, 24px);
+  font-size: clamp(11px, 0.66vw, 14px);
 }
 
 .top-actions {
@@ -484,8 +484,8 @@ onUnmounted(() => {
 }
 
 .settings-button {
-  width: clamp(38px, 2.1vw, 72px);
-  height: clamp(38px, 2.1vw, 72px);
+  width: clamp(36px, 1.9vw, 44px);
+  height: clamp(36px, 1.9vw, 44px);
 
   display: flex;
   align-items: center;
@@ -503,14 +503,14 @@ onUnmounted(() => {
 }
 
 .settings-button i {
-  font-size: clamp(16px, 0.9vw, 30px);
+  font-size: clamp(15px, 0.8vw, 18px);
 }
 
 .panel-content {
   flex: 1;
   min-height: 0;
 
-  padding: clamp(12px, 1vw, 32px);
+  padding: clamp(10px, 0.8vw, 20px);
 
   border:
     1px solid var(--game-line);

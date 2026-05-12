@@ -95,11 +95,21 @@ function updateRoundAmount() {
     return
   }
 
+  setRoundAmount(
+    roundAmount.value
+  )
+}
+
+function setRoundAmount(nextValue) {
+  if (!isHost.value) {
+    return
+  }
+
   const value =
     Math.max(
       0,
       Math.floor(
-        Number(roundAmount.value) || 0
+        Number(nextValue) || 0
       )
     )
 
@@ -116,6 +126,12 @@ function updateRoundAmount() {
       maxRounds:
         value
     }
+  )
+}
+
+function changeRoundAmount(delta) {
+  setRoundAmount(
+    Number(roundAmount.value || 0) + delta
   )
 }
 
@@ -267,17 +283,40 @@ watch(
               Rounds
             </label>
 
-            <input
+            <div
               v-if="isHost"
-              id="round-count"
-              v-model.number="roundAmount"
-              class="round-input"
-              type="number"
-              min="0"
-              step="1"
-              @change="updateRoundAmount"
-              @blur="updateRoundAmount"
+              class="round-stepper"
             >
+              <button
+                class="round-step-button"
+                type="button"
+                aria-label="Decrease rounds"
+                @click="changeRoundAmount(-1)"
+              >
+                <i class="fa-solid fa-minus"></i>
+              </button>
+
+              <input
+                id="round-count"
+                v-model.number="roundAmount"
+                class="round-input"
+                type="number"
+                min="0"
+                step="1"
+                inputmode="numeric"
+                @change="updateRoundAmount"
+                @blur="updateRoundAmount"
+              >
+
+              <button
+                class="round-step-button"
+                type="button"
+                aria-label="Increase rounds"
+                @click="changeRoundAmount(1)"
+              >
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
 
             <div
               v-else
@@ -757,6 +796,64 @@ watch(
   font-weight: 800;
 }
 
+.round-stepper {
+  display: grid;
+  grid-template-columns: clamp(34px, 2vw, 42px) clamp(58px, 3.4vw, 74px) clamp(34px, 2vw, 42px);
+  align-items: stretch;
+
+  height: clamp(40px, 2.6vw, 50px);
+
+  border:
+    1px solid var(--game-line);
+
+  border-radius: 8px;
+
+  background:
+    rgba(0,0,0,0.28);
+
+  overflow: hidden;
+
+  box-shadow:
+    inset 0 2px 12px rgba(0,0,0,0.38);
+}
+
+.round-step-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.12),
+      rgba(255,255,255,0.035)
+    );
+
+  color:
+    rgba(255,255,255,0.9);
+
+  font-size: clamp(12px, 0.75vw, 15px);
+
+  cursor: pointer;
+
+  transition:
+    background 0.16s ease,
+    color 0.16s ease;
+}
+
+.round-step-button:hover,
+.round-step-button:focus {
+  background:
+    rgba(47,230,107,0.18);
+
+  color:
+    var(--game-green);
+}
+
 .round-input,
 .round-readonly {
   width: clamp(78px, 5.2vw, 100px);
@@ -778,6 +875,31 @@ watch(
   font-weight: 900;
 
   text-align: center;
+}
+
+.round-stepper .round-input {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  border-right: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 0;
+
+  background:
+    rgba(0,0,0,0.24);
+}
+
+.round-input::-webkit-outer-spin-button,
+.round-input::-webkit-inner-spin-button {
+  margin: 0;
+
+  appearance: none;
+}
+
+.round-input {
+  appearance: textfield;
 }
 
 .round-readonly {

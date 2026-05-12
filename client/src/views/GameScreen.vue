@@ -332,7 +332,7 @@ function handleSelectVote(id) {
 }
 
 .sidebar-slot {
-  width: clamp(250px, 16vw, 340px);
+  width: clamp(232px, 14.5vw, 308px);
 
   flex-shrink: 0;
   align-self: flex-start;
