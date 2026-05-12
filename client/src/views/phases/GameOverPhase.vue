@@ -22,6 +22,24 @@ function isHost(player) {
   return player?.isHost
 }
 
+function nameFitStyle(player) {
+  const nameLength =
+    [...(player?.username || "")].length
+
+  const scale =
+    Math.max(
+      0.42,
+      Math.min(
+        1,
+        14 / Math.max(nameLength, 1)
+      )
+    )
+
+  return {
+    "--name-scale": scale
+  }
+}
+
 const sortedPlayers = computed(() =>
   [...props.players].sort((a, b) => b.score - a.score)
 )
@@ -220,6 +238,10 @@ onUnmounted(() => {
                   :class="{
                     'host-name': isHost(firstPlace)
                   }"
+
+                  :style="
+                    nameFitStyle(firstPlace)
+                  "
                 >
                   {{ firstPlace.username }}
                 </div>
@@ -268,6 +290,10 @@ onUnmounted(() => {
                 :class="{
                   'host-name': isHost(secondPlace)
                 }"
+
+                :style="
+                  nameFitStyle(secondPlace)
+                "
               >
                 {{ secondPlace.username }}
               </div>
@@ -314,6 +340,10 @@ onUnmounted(() => {
                 :class="{
                   'host-name': isHost(thirdPlace)
                 }"
+
+                :style="
+                  nameFitStyle(thirdPlace)
+                "
               >
                 {{ thirdPlace.username }}
               </div>
@@ -341,6 +371,7 @@ onUnmounted(() => {
 
           <div
             v-if="remainingPlayers.length > 0"
+            class="leaderboard-list"
           >
 
             <div
@@ -515,6 +546,18 @@ onUnmounted(() => {
   justify-content: center;
 
   gap: 4px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 100%;
+
+  box-sizing: border-box;
+
+  padding:
+    0
+    clamp(58px, 6vw, 88px)
+    0
+    clamp(14px, 2vw, 28px);
 
   z-index: 2;
 }
@@ -530,18 +573,25 @@ onUnmounted(() => {
 
 .crown {
   font-size: clamp(24px, 2.2vw, 34px);
+  line-height: 1;
 }
 
 .winner-name {
-  font-size: clamp(26px, 2.8vw, 38px);
+  font-size:
+    max(
+      10px,
+      calc(clamp(26px, 2.8vw, 38px) * var(--name-scale, 1))
+    );
   font-weight: bold;
+  line-height: 1.05;
 
   text-align: center;
 
-  max-width: 82%;
+  width: 100%;
+  max-width: 100%;
 
-  overflow-wrap:
-    anywhere;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .host-name {
@@ -631,6 +681,18 @@ onUnmounted(() => {
   align-items: center;
 
   gap: 2px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 100%;
+
+  box-sizing: border-box;
+
+  padding:
+    0
+    clamp(52px, 5.4vw, 78px)
+    0
+    clamp(12px, 2vw, 24px);
 }
 
 .place-label {
@@ -644,15 +706,21 @@ onUnmounted(() => {
 }
 
 .podium-name {
-  font-size: clamp(18px, 2vw, 26px);
+  font-size:
+    max(
+      9px,
+      calc(clamp(18px, 2vw, 26px) * var(--name-scale, 1))
+    );
   font-weight: bold;
+  line-height: 1.05;
 
-  max-width: 82%;
+  width: 100%;
+  max-width: 100%;
 
   text-align: center;
 
-  overflow-wrap:
-    anywhere;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .leaderboard-side {
@@ -660,11 +728,29 @@ onUnmounted(() => {
 
   max-width: 560px;
   max-height: 100%;
+  min-height: 0;
 
   display: flex;
   flex-direction: column;
 
   gap: clamp(8px, 1.4vh, 16px);
+}
+
+.leaderboard-list {
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: clamp(8px, 1.2vh, 14px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding-right: 4px;
+  padding-bottom: 2px;
+
+  scroll-padding-bottom: 16px;
 }
 
 .leaderboard-title {
@@ -727,6 +813,8 @@ onUnmounted(() => {
 
 .leaderboard-score {
   opacity: 0.72;
+
+  flex-shrink: 0;
 }
 
 @media (max-width: 1050px) {
@@ -783,19 +871,37 @@ onUnmounted(() => {
 
     align-items: flex-start;
 
-    padding: 14px 8px 20px;
+    padding:
+      14px
+      8px
+      calc(72px + env(safe-area-inset-bottom));
   }
 
   .scoreboard-layout {
     flex-direction: column;
 
     gap: 18px;
+
+    min-height: 0;
   }
 
   .podium-side,
   .leaderboard-side {
     width: 100%;
     max-width: 420px;
+  }
+
+  .leaderboard-side {
+    flex: 0 1 auto;
+    max-height: min(40dvh, 320px);
+  }
+
+  .leaderboard-list {
+    padding-bottom:
+      calc(56px + env(safe-area-inset-bottom));
+
+    scroll-padding-bottom:
+      calc(56px + env(safe-area-inset-bottom));
   }
 
   .winner-card {
@@ -813,9 +919,83 @@ onUnmounted(() => {
   }
 }
 
+@media (max-width: 999px) and (max-height: 520px) and (orientation: landscape) {
+  .game-over-phase {
+    align-items: flex-start;
+
+    overflow-y: auto;
+
+    padding:
+      8px
+      8px
+      calc(56px + env(safe-area-inset-bottom));
+  }
+
+  .scoreboard-layout {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 14px;
+  }
+
+  .podium-side {
+    width: 100%;
+    max-width: none;
+
+    gap: 8px;
+  }
+
+  .leaderboard-side {
+    width: 100%;
+    max-width: none;
+    max-height: calc(100dvh - 82px);
+  }
+
+  .winner-card {
+    height: 112px;
+  }
+
+  .podium-card {
+    height: 66px;
+  }
+
+  .winner-label {
+    font-size: 10px;
+
+    letter-spacing: 3px;
+  }
+
+  .crown {
+    font-size: 20px;
+  }
+
+  .winner-name {
+    font-size:
+      max(
+        10px,
+        calc(20px * var(--name-scale, 1))
+      );
+  }
+
+  .place-label {
+    font-size: 20px;
+  }
+
+  .podium-name {
+    font-size:
+      max(
+        9px,
+        calc(15px * var(--name-scale, 1))
+      );
+  }
+}
+
 @media (max-width: 420px) and (max-height: 720px) {
   .game-over-phase {
-    padding: 8px 6px 16px;
+    padding:
+      8px
+      6px
+      calc(64px + env(safe-area-inset-bottom));
   }
 
   .scoreboard-layout {
@@ -850,7 +1030,11 @@ onUnmounted(() => {
   }
 
   .winner-name {
-    font-size: 20px;
+    font-size:
+      max(
+        10px,
+        calc(20px * var(--name-scale, 1))
+      );
   }
 
   .place-label {
@@ -858,7 +1042,11 @@ onUnmounted(() => {
   }
 
   .podium-name {
-    font-size: 15px;
+    font-size:
+      max(
+        9px,
+        calc(15px * var(--name-scale, 1))
+      );
   }
 
   .leaderboard-title {
