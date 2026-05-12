@@ -9,14 +9,74 @@ const {
 const revealTimers =
   new Map()
 
-function getRevealFallbackDelay(room) {
-  const submissionCount =
-    room.game?.submissions?.length || 0
+function formatRevealText(blackText, cards = []) {
+  let index = 0
 
-  return 15000 + (submissionCount * 12000)
+  return (blackText || "").replace(
+    /_{3,}|\[BLANK\]/g,
+    () => {
+      const card =
+        cards[index++]
+
+      return card?.text || "_____"
+    }
+  )
 }
 
-function scheduleRevealFallback(io, room) {
+function getRevealSpeechDelay(text) {
+  return Math.max(
+    6500,
+    text.length * 120
+  )
+}
+
+function getRevealMinimumDelay(room) {
+  const submissions =
+    room.game?.submissions || []
+
+  const blackText =
+    room.game?.blackCard?.text || ""
+
+  const perSubmissionDelay =
+    submissions.reduce(
+      (total, submission) => {
+        const revealText =
+          formatRevealText(
+            blackText,
+            submission.cards
+          )
+
+        return (
+          total +
+          350 +
+          getRevealSpeechDelay(revealText) +
+          650
+        )
+      },
+      0
+    )
+
+  return 1400 + perSubmissionDelay + 1800
+}
+
+function getRevealFallbackDelay(room) {
+  return getRevealMinimumDelay(room) + 30000
+}
+
+function getRevealPlayerKey(player) {
+  return player?.sessionId || player?.id
+}
+
+function getConnectedRevealPlayerKeys(room) {
+  return room.players
+    .filter(player =>
+      player.connected !== false
+    )
+    .map(getRevealPlayerKey)
+    .filter(Boolean)
+}
+
+function clearRevealTimer(room) {
   const existingTimer =
     revealTimers.get(room.code)
 
@@ -24,28 +84,51 @@ function scheduleRevealFallback(io, room) {
     clearTimeout(existingTimer)
   }
 
+  revealTimers.delete(room.code)
+}
+
+function completeReveal(io, room, reason) {
+  clearRevealTimer(room)
+
+  if (
+    room.game?.phase !==
+    GAME_PHASES.REVEAL
+  ) {
+    return
+  }
+
+  room.players.forEach(player => {
+    player.ready = false
+  })
+
+  room.game.phase =
+    GAME_PHASES.VOTING
+
+  emitGame(io, room)
+
+  console.log(
+    `Reveal ${reason} -> Voting started`
+  )
+}
+
+function scheduleRevealFallback(io, room) {
+  clearRevealTimer(room)
+
+  room.game.revealStartedAt =
+    Date.now()
+
+  room.game.revealMinimumDelay =
+    getRevealMinimumDelay(room)
+
+  room.game.revealFinishedPlayerKeys =
+    []
+
   const timer =
     setTimeout(() => {
-      revealTimers.delete(room.code)
-
-      if (
-        room.game?.phase !==
-        GAME_PHASES.REVEAL
-      ) {
-        return
-      }
-
-      room.players.forEach(player => {
-        player.ready = false
-      })
-
-      room.game.phase =
-        GAME_PHASES.VOTING
-
-      emitGame(io, room)
-
-      console.log(
-        "Reveal fallback -> Voting started"
+      completeReveal(
+        io,
+        room,
+        "fallback"
       )
     }, getRevealFallbackDelay(room))
 
@@ -55,6 +138,105 @@ function scheduleRevealFallback(io, room) {
   )
 }
 
+function completeRevealIfEveryoneFinished(io, room) {
+  if (
+    room.game?.phase !==
+    GAME_PHASES.REVEAL
+  ) {
+    return false
+  }
+
+  const requiredKeys =
+    getConnectedRevealPlayerKeys(room)
+
+  if (!requiredKeys.length) {
+    return false
+  }
+
+  const finishedKeys =
+    new Set(
+      room.game.revealFinishedPlayerKeys || []
+    )
+
+  const allFinished =
+    requiredKeys.every(key =>
+      finishedKeys.has(key)
+    )
+
+  if (!allFinished) {
+    return false
+  }
+
+  completeReveal(
+    io,
+    room,
+    "all clients finished"
+  )
+
+  return true
+}
+
+function handleRevealFinished(io, room, playerId) {
+  if (
+    room.game?.phase !==
+    GAME_PHASES.REVEAL
+  ) {
+    return
+  }
+
+  const player =
+    room.players.find(
+      player =>
+        player.id === playerId
+    )
+
+  if (
+    !player ||
+    player.connected === false
+  ) {
+    return
+  }
+
+  const playerKey =
+    getRevealPlayerKey(player)
+
+  if (!playerKey) {
+    return
+  }
+
+  const finishedKeys =
+    new Set(
+      room.game.revealFinishedPlayerKeys || []
+    )
+
+  finishedKeys.add(playerKey)
+
+  room.game.revealFinishedPlayerKeys =
+    [...finishedKeys]
+
+  if (
+    completeRevealIfEveryoneFinished(
+      io,
+      room
+    )
+  ) {
+    return
+  }
+
+  console.log(
+    "Reveal client finished; waiting for remaining clients"
+  )
+}
+
+function handleRevealPlayerUnavailable(io, room) {
+  completeRevealIfEveryoneFinished(
+    io,
+    room
+  )
+}
+
 module.exports = {
-  scheduleRevealFallback
+  scheduleRevealFallback,
+  handleRevealFinished,
+  handleRevealPlayerUnavailable
 }

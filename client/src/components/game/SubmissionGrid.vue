@@ -271,21 +271,21 @@ watch(
 @media (max-width: 1600px) {
 
   .submission-grid {
-    transform: scale(0.92);
+    transform: scale(0.96);
   }
 }
 
 @media (max-width: 1400px) {
 
   .submission-grid {
-    transform: scale(0.82);
+    transform: scale(0.9);
   }
 }
 
 @media (max-width: 1200px) {
 
   .submission-grid {
-    transform: scale(0.72);
+    transform: scale(0.82);
   }
 }
 
@@ -310,13 +310,13 @@ watch(
 
 @media (max-height: 820px) {
   .submission-grid {
-    transform: scale(0.78);
+    transform: scale(0.84);
   }
 }
 
 @media (max-height: 720px) {
   .submission-grid {
-    transform: scale(0.68);
+    transform: scale(0.74);
   }
 }
 

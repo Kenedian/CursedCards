@@ -10,8 +10,8 @@ const {
 } = require("../../../shared/constants/gamePhases")
 
 const {
-  emitGame
-} = require("../../emitters/gameEmitter")
+  handleRevealFinished
+} = require("../../services/game/revealPhaseService")
 
 module.exports =
 function registerRevealFinished(
@@ -41,20 +41,10 @@ function registerRevealFinished(
         return
       }
 
-      room.players.forEach(
-        player => {
-
-          player.ready = false
-        }
-      )
-
-      room.game.phase =
-        GAME_PHASES.VOTING
-
-      emitGame(io, room)
-
-      console.log(
-        "Reveal finished → Voting started"
+      handleRevealFinished(
+        io,
+        room,
+        socket.id
       )
     }
   )

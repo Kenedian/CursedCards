@@ -10,6 +10,10 @@ const {
   schedulePlayerRemoval
 } = require("../../services/lobby/reconnectService")
 
+const {
+  handleRevealPlayerUnavailable
+} = require("../../services/game/revealPhaseService")
+
 module.exports =
 function registerDisconnect(
   io,
@@ -52,6 +56,11 @@ function registerDisconnect(
         emitLobby(io, room)
 
         if (room.game) {
+          handleRevealPlayerUnavailable(
+            io,
+            room
+          )
+
           emitGame(io, room)
         }
       }

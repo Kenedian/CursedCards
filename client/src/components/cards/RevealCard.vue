@@ -114,8 +114,8 @@ const {
 .reveal-card {
   position: relative;
 
-  width: clamp(160px, 9.4vw, 280px);
-  height: clamp(214px, 12.5vw, 374px);
+  width: clamp(176px, 10.4vw, 330px);
+  height: clamp(236px, 13.9vw, 442px);
 
   background:
     linear-gradient(
@@ -130,7 +130,7 @@ const {
 
   border-radius: 14px;
 
-  padding: clamp(20px, 1.35vw, 38px);
+  padding: clamp(20px, 1.25vw, 42px);
 
   display: flex;
   flex-direction: column;
@@ -185,12 +185,15 @@ const {
 
 .reveal-card-text {
   flex: 1;
+  min-height: 0;
 
   line-height: 1.18;
 
-  word-break: keep-all;
-  overflow-wrap: normal;
-  hyphens: none;
+  overflow: hidden;
+
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: manual;
 }
 
 .reveal-card-text :deep(.answer-text) {
