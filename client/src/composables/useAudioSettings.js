@@ -12,7 +12,8 @@ const defaults = {
   effectsVolume: 1,
   ttsVolume: 0.35,
   ttsEnabled: true,
-  progressiveTtsEnabled: true
+  progressiveTtsEnabled: true,
+  selectedTtsVoice: null
 }
 
 const masterVolume =
@@ -29,6 +30,9 @@ const ttsEnabled =
 
 const progressiveTtsEnabled =
   ref(defaults.progressiveTtsEnabled)
+
+const selectedTtsVoice =
+  ref(defaults.selectedTtsVoice)
 
 let loaded = false
 
@@ -91,10 +95,35 @@ function loadSettings() {
 
     progressiveTtsEnabled.value =
       saved.progressiveTtsEnabled !== false
+
+    selectedTtsVoice.value =
+      normalizeVoiceSetting(
+        saved.selectedTtsVoice
+      )
   } catch {
     window.localStorage.removeItem(
       STORAGE_KEY
     )
+  }
+}
+
+function normalizeVoiceSetting(value) {
+  if (
+    !value ||
+    typeof value !== "object"
+  ) {
+    return null
+  }
+
+  return {
+    voiceURI:
+      String(value.voiceURI || ""),
+
+    name:
+      String(value.name || ""),
+
+    lang:
+      String(value.lang || "")
   }
 }
 
@@ -122,7 +151,10 @@ function saveSettings() {
         ttsEnabled.value,
 
       progressiveTtsEnabled:
-        progressiveTtsEnabled.value
+        progressiveTtsEnabled.value,
+
+      selectedTtsVoice:
+        selectedTtsVoice.value
     })
   )
 }
@@ -142,6 +174,9 @@ function resetAudioSettings() {
 
   progressiveTtsEnabled.value =
     defaults.progressiveTtsEnabled
+
+  selectedTtsVoice.value =
+    defaults.selectedTtsVoice
 }
 
 watch(
@@ -150,7 +185,8 @@ watch(
     effectsVolume,
     ttsVolume,
     ttsEnabled,
-    progressiveTtsEnabled
+    progressiveTtsEnabled,
+    selectedTtsVoice
   ],
   saveSettings
 )
@@ -164,6 +200,7 @@ export default function useAudioSettings() {
     ttsVolume,
     ttsEnabled,
     progressiveTtsEnabled,
+    selectedTtsVoice,
     resetAudioSettings
   }
 }

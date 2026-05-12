@@ -1,4 +1,5 @@
 import {
+  ref,
   onUnmounted
 }
 from "vue"
@@ -9,13 +10,226 @@ from "../useAudioSettings"
 let speechUnlockAttempted = false
 let speechUnlockInProgress = false
 let speechUnlocked = false
+let voiceLoadingInitialized = false
+
+const availableVoices =
+  ref([])
+
+function canUseSpeechSynthesis() {
+  return (
+    typeof window !== "undefined" &&
+    Boolean(window.speechSynthesis)
+  )
+}
+
+function voiceMatchesSetting(
+  voice,
+  setting
+) {
+  if (
+    !voice ||
+    !setting
+  ) {
+    return false
+  }
+
+  return (
+    (
+      setting.voiceURI &&
+      voice.voiceURI === setting.voiceURI
+    ) ||
+    (
+      voice.name === setting.name &&
+      voice.lang === setting.lang
+    )
+  )
+}
+
+function serializeVoice(voice) {
+  if (!voice) {
+    return null
+  }
+
+  return {
+    voiceURI:
+      voice.voiceURI || "",
+
+    name:
+      voice.name || "",
+
+    lang:
+      voice.lang || ""
+  }
+}
+
+function preferCzechVoice(voices) {
+  return (
+    voices.find(
+      voice =>
+        voice.name.toLowerCase().includes(
+          "jakub"
+        )
+    )
+
+    ||
+
+    voices.find(
+      voice =>
+        voice.lang.startsWith("cs") &&
+        voice.name.toLowerCase().includes(
+          "microsoft"
+        )
+    )
+
+    ||
+
+    voices.find(
+      voice =>
+        voice.lang === "cs-CZ"
+    )
+
+    ||
+
+    voices.find(
+      voice =>
+        voice.lang.startsWith(
+          "cs"
+        )
+    )
+  )
+}
+
+function preferEnglishVoice(voices) {
+  return (
+    voices.find(
+      voice =>
+        voice.lang === "en-US"
+    )
+
+    ||
+
+    voices.find(
+      voice =>
+        voice.lang.startsWith(
+          "en"
+        )
+    )
+  )
+}
+
+function refreshAvailableVoices() {
+  if (!canUseSpeechSynthesis()) {
+    availableVoices.value = []
+
+    return []
+  }
+
+  availableVoices.value =
+    window.speechSynthesis.getVoices()
+
+  return availableVoices.value
+}
+
+export function getAvailableVoices() {
+  return refreshAvailableVoices()
+}
+
+export function getSelectedVoice() {
+  const {
+    selectedTtsVoice
+  } = useAudioSettings()
+
+  const voices =
+    refreshAvailableVoices()
+
+  return (
+    voices.find(
+      voice =>
+        voiceMatchesSetting(
+          voice,
+          selectedTtsVoice.value
+        )
+    )
+
+    ||
+
+    null
+  )
+}
+
+export function setSelectedVoice(voice) {
+  const {
+    selectedTtsVoice
+  } = useAudioSettings()
+
+  selectedTtsVoice.value =
+    serializeVoice(voice)
+}
+
+export function getBestVoice() {
+  const {
+    selectedTtsVoice
+  } = useAudioSettings()
+
+  const voices =
+    refreshAvailableVoices()
+
+  if (!voices.length) {
+    return null
+  }
+
+  return (
+    voices.find(
+      voice =>
+        voiceMatchesSetting(
+          voice,
+          selectedTtsVoice.value
+        )
+    )
+
+    ||
+
+    preferCzechVoice(voices)
+
+    ||
+
+    preferEnglishVoice(voices)
+
+    ||
+
+    voices[0]
+  )
+}
+
+function initializeVoiceLoading() {
+  if (
+    voiceLoadingInitialized ||
+    !canUseSpeechSynthesis()
+  ) {
+    return
+  }
+
+  voiceLoadingInitialized =
+    true
+
+  refreshAvailableVoices()
+
+  window.speechSynthesis.addEventListener?.(
+    "voiceschanged",
+    refreshAvailableVoices
+  )
+
+  if (!window.speechSynthesis.addEventListener) {
+    window.speechSynthesis.onvoiceschanged =
+      refreshAvailableVoices
+  }
+}
 
 export function unlockSpeechSynthesis() {
   if (
     speechUnlocked ||
     speechUnlockInProgress ||
-    typeof window === "undefined" ||
-    !window.speechSynthesis
+    !canUseSpeechSynthesis()
   ) {
     return
   }
@@ -27,17 +241,25 @@ export function unlockSpeechSynthesis() {
     true
 
   try {
-    speechSynthesis.getVoices()
+    const voice =
+      getBestVoice()
 
-    speechSynthesis.resume()
+    window.speechSynthesis.getVoices()
 
-    speechSynthesis.cancel()
+    window.speechSynthesis.resume()
+
+    window.speechSynthesis.cancel()
 
     const utterance =
       new SpeechSynthesisUtterance(".")
 
     utterance.lang =
-      "cs-CZ"
+      voice?.lang || "cs-CZ"
+
+    if (voice) {
+      utterance.voice =
+        voice
+    }
 
     utterance.volume =
       0.000001
@@ -81,7 +303,7 @@ export function unlockSpeechSynthesis() {
         clearTimeout(unlockTimeout)
       }
 
-    speechSynthesis.speak(
+    window.speechSynthesis.speak(
       utterance
     )
   } catch {
@@ -90,75 +312,12 @@ export function unlockSpeechSynthesis() {
   }
 }
 
-function getBestVoice() {
-  if (!window.speechSynthesis) {
-    return null
-  }
-
-  const voices =
-    speechSynthesis.getVoices()
-
-  return (
-
-    voices.find(
-      voice =>
-        voice.name.includes(
-          "Jakub"
-        )
-    )
-
-    ||
-
-    voices.find(
-      voice =>
-
-        voice.lang ===
-        "cs-CZ"
-
-        &&
-
-        voice.name.includes(
-          "Microsoft"
-        )
-    )
-
-    ||
-
-    voices.find(
-      voice =>
-        voice.lang ===
-        "cs-CZ"
-    )
-
-    ||
-
-    voices.find(
-      voice =>
-        voice.lang.startsWith(
-          "cs"
-        )
-    )
-
-    ||
-
-    voices[0]
-  )
-}
-
 export default function useSpeechSynthesis() {
   const {
     masterVolume,
     ttsVolume,
     ttsEnabled
   } = useAudioSettings()
-
-  function loadVoices() {
-    if (!window.speechSynthesis) {
-      return
-    }
-
-    speechSynthesis.getVoices()
-  }
 
   function speak(
     text,
@@ -181,7 +340,7 @@ export default function useSpeechSynthesis() {
         return
       }
 
-      if (!window.speechSynthesis) {
+      if (!canUseSpeechSynthesis()) {
         resolve()
 
         return
@@ -198,7 +357,7 @@ export default function useSpeechSynthesis() {
           finish()
         }, Math.max(6000, text.length * 90))
 
-      speechSynthesis.cancel()
+      window.speechSynthesis.cancel()
 
       const utterance =
 
@@ -206,8 +365,11 @@ export default function useSpeechSynthesis() {
           text
         )
 
+      const voice =
+        getBestVoice()
+
       utterance.lang =
-        "cs-CZ"
+        voice?.lang || "cs-CZ"
 
       utterance.rate =
         0.95
@@ -224,9 +386,6 @@ export default function useSpeechSynthesis() {
           ),
           1
         )
-
-      const voice =
-        getBestVoice()
 
       if (voice) {
 
@@ -263,26 +422,21 @@ export default function useSpeechSynthesis() {
           })
         }
 
-      speechSynthesis.speak(
+      window.speechSynthesis.speak(
         utterance
       )
     })
   }
 
   function cancelSpeech() {
-    if (!window.speechSynthesis) {
+    if (!canUseSpeechSynthesis()) {
       return
     }
 
-    speechSynthesis.cancel()
+    window.speechSynthesis.cancel()
   }
 
-  loadVoices()
-
-  if (window.speechSynthesis) {
-    speechSynthesis.onvoiceschanged =
-      loadVoices
-  }
+  initializeVoiceLoading()
 
   onUnmounted(() => {
 
@@ -293,6 +447,14 @@ export default function useSpeechSynthesis() {
 
     speak,
 
-    cancelSpeech
+    cancelSpeech,
+
+    availableVoices,
+
+    getBestVoice,
+
+    getSelectedVoice,
+
+    setSelectedVoice
   }
 }

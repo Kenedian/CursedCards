@@ -1,4 +1,9 @@
 <script setup>
+import {
+  computed
+}
+from "vue"
+
 import useAudioSettings
 from "../../composables/useAudioSettings"
 
@@ -20,17 +25,74 @@ const {
   ttsVolume,
   ttsEnabled,
   progressiveTtsEnabled,
+  selectedTtsVoice,
   resetAudioSettings
 } = useAudioSettings()
 
 const {
-  speak
+  speak,
+  availableVoices,
+  getBestVoice,
+  setSelectedVoice
 } = useSpeechSynthesis()
+
+const selectedVoiceKey = computed({
+  get() {
+    return (
+      voiceKey(
+        availableVoices.value.find(
+          voice =>
+            (
+              selectedTtsVoice.value?.voiceURI &&
+              voice.voiceURI === selectedTtsVoice.value.voiceURI
+            ) ||
+            (
+              voice.name === selectedTtsVoice.value?.name &&
+              voice.lang === selectedTtsVoice.value?.lang
+            )
+        )
+
+        ||
+
+        getBestVoice()
+      )
+    )
+  },
+
+  set(value) {
+    setSelectedVoice(
+      availableVoices.value.find(
+        voice =>
+          voiceKey(voice) === value
+      )
+
+      ||
+
+      null
+    )
+  }
+})
 
 function percent(value) {
   return Math.round(
     value * 100
   )
+}
+
+function voiceKey(voice) {
+  if (!voice) {
+    return ""
+  }
+
+  return [
+    voice.voiceURI,
+    voice.name,
+    voice.lang
+  ].join("|")
+}
+
+function voiceLabel(voice) {
+  return `${voice.name} (${voice.lang})`
 }
 
 function previewEffects() {
@@ -160,6 +222,41 @@ function previewTts() {
             type="checkbox"
             :disabled="!ttsEnabled"
           >
+        </label>
+
+        <label
+          class="voice-row"
+          :class="{
+            disabled: !ttsEnabled
+          }"
+        >
+          <span>
+            TTS voice
+          </span>
+
+          <select
+            v-model="selectedVoiceKey"
+            class="form-control voice-select"
+            :disabled="
+              !ttsEnabled ||
+              availableVoices.length === 0
+            "
+          >
+            <option
+              v-if="availableVoices.length === 0"
+              value=""
+            >
+              No browser voices found
+            </option>
+
+            <option
+              v-for="voice in availableVoices"
+              :key="voiceKey(voice)"
+              :value="voiceKey(voice)"
+            >
+              {{ voiceLabel(voice) }}
+            </option>
+          </select>
         </label>
       </div>
 
@@ -318,7 +415,8 @@ h2 {
 }
 
 .slider-row,
-.toggle-row {
+.toggle-row,
+.voice-row {
   display: grid;
   grid-template-columns: 104px 1fr 58px;
   align-items: center;
@@ -339,7 +437,8 @@ h2 {
 }
 
 .slider-row span,
-.toggle-row span {
+.toggle-row span,
+.voice-row span {
   color:
     rgba(255,255,255,0.9);
 
@@ -385,6 +484,29 @@ input[type="range"]:disabled {
 
 .toggle-row.disabled {
   opacity: 0.48;
+}
+
+.voice-row {
+  grid-template-columns: 104px minmax(0, 1fr);
+
+  padding:
+    12px
+    14px;
+}
+
+.voice-select {
+  min-width: 0;
+  height: 44px;
+
+  padding:
+    0
+    12px;
+
+  font-size: 14px;
+}
+
+.voice-row.disabled {
+  opacity: 0.58;
 }
 
 .modal-actions {
@@ -454,6 +576,16 @@ input[type="range"]:disabled {
 
   .slider-row input {
     grid-column: 1 / 3;
+  }
+
+  .voice-row {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .voice-select {
+    width: 100%;
   }
 
   .modal-actions {
