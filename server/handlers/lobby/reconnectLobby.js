@@ -18,6 +18,11 @@ const {
   ensureActiveHost
 } = require("../../services/lobby/playerLifecycleService")
 
+const {
+  normalizeUsername,
+  getUsernameError
+} = require("../../utils/lobby/username")
+
 function normalize(value) {
   return String(value || "")
     .toLowerCase()
@@ -54,6 +59,21 @@ function registerReconnectLobby(
       sessionId
     }) => {
 
+      const normalizedUsername =
+        normalizeUsername(username)
+
+      const usernameError =
+        getUsernameError(
+          normalizedUsername
+        )
+
+      if (usernameError) {
+        return socket.emit(
+          SOCKET_EVENTS.LOBBY_ERROR,
+          usernameError
+        )
+      }
+
       const room =
         rooms.get(code)
 
@@ -67,7 +87,7 @@ function registerReconnectLobby(
       const player =
         findReconnectPlayer(
           room,
-          username,
+          normalizedUsername,
           sessionId
         )
 

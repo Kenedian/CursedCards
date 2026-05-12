@@ -13,6 +13,11 @@ const {
   emitLobby
 } = require("../../emitters/gameEmitter")
 
+const {
+  normalizeUsername,
+  getUsernameError
+} = require("../../utils/lobby/username")
+
 module.exports =
 function registerJoinLobby(
   io,
@@ -27,6 +32,21 @@ function registerJoinLobby(
       code,
       sessionId
     }) => {
+
+      const normalizedUsername =
+        normalizeUsername(username)
+
+      const usernameError =
+        getUsernameError(
+          normalizedUsername
+        )
+
+      if (usernameError) {
+        return socket.emit(
+          SOCKET_EVENTS.LOBBY_ERROR,
+          usernameError
+        )
+      }
 
       const room =
         rooms.get(code)
@@ -70,7 +90,7 @@ function registerJoinLobby(
 
             ===
 
-            username
+            normalizedUsername
               .toLowerCase()
               .trim()
         )
@@ -91,7 +111,8 @@ function registerJoinLobby(
 
         connected: true,
 
-        username,
+        username:
+          normalizedUsername,
 
         isHost: false,
 

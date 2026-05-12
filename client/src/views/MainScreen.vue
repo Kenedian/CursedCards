@@ -14,6 +14,11 @@ import {
 }
 from "../../../shared/constants/socketEvents"
 
+import {
+  MAX_USERNAME_LENGTH
+}
+from "../../../shared/constants/player"
+
 import useToast
 from "../composables/useToast"
 
@@ -61,16 +66,51 @@ const canReconnect =
     )
   })
 
-function createLobby() {
+function normalizeUsername(username) {
+  return username.trim()
+}
 
-  if (
-    !createUsername.value.trim()
-  ) {
+function isUsernameTooLong(username) {
+  return (
+    [...username].length >
+    MAX_USERNAME_LENGTH
+  )
+}
 
+function validateUsername(username) {
+  const normalizedUsername =
+    normalizeUsername(username)
+
+  if (!normalizedUsername) {
     toastError(
       "Enter username"
     )
 
+    return null
+  }
+
+  if (
+    isUsernameTooLong(
+      normalizedUsername
+    )
+  ) {
+    toastError(
+      `Username max ${MAX_USERNAME_LENGTH} characters`
+    )
+
+    return null
+  }
+
+  return normalizedUsername
+}
+
+function createLobby() {
+  const username =
+    validateUsername(
+      createUsername.value
+    )
+
+  if (!username) {
     return
   }
 
@@ -79,7 +119,7 @@ function createLobby() {
 
     {
       username:
-        createUsername.value.trim(),
+        username,
 
       sessionId:
         getClientSessionId()
@@ -88,15 +128,12 @@ function createLobby() {
 }
 
 function joinLobby() {
-
-  if (
-    !joinUsername.value.trim()
-  ) {
-
-    toastError(
-      "Enter username"
+  const username =
+    validateUsername(
+      joinUsername.value
     )
 
+  if (!username) {
     return
   }
 
@@ -116,7 +153,7 @@ function joinLobby() {
 
     {
       username:
-        joinUsername.value.trim(),
+        username,
 
       code:
         joinCode.value
@@ -319,6 +356,10 @@ onUnmounted(() => {
 
             class="form-control"
 
+            :maxlength="
+              MAX_USERNAME_LENGTH
+            "
+
             @keyup.enter="joinLobby"
           >
 
@@ -363,6 +404,10 @@ onUnmounted(() => {
               placeholder="Your name"
 
               class="form-control"
+
+              :maxlength="
+                MAX_USERNAME_LENGTH
+              "
 
               @keyup.enter="createLobby"
             >

@@ -8,6 +8,11 @@ const {
 const generateCode =
   require("../../utils/game/generateCode")
 
+const {
+  normalizeUsername,
+  getUsernameError
+} = require("../../utils/lobby/username")
+
 module.exports =
 function registerCreateLobby(
   io,
@@ -21,6 +26,21 @@ function registerCreateLobby(
       username,
       sessionId
     }) => {
+
+      const normalizedUsername =
+        normalizeUsername(username)
+
+      const usernameError =
+        getUsernameError(
+          normalizedUsername
+        )
+
+      if (usernameError) {
+        return socket.emit(
+          SOCKET_EVENTS.LOBBY_ERROR,
+          usernameError
+        )
+      }
 
       const code =
         generateCode()
@@ -45,7 +65,8 @@ function registerCreateLobby(
 
             connected: true,
 
-            username,
+            username:
+              normalizedUsername,
 
             isHost: true,
 
