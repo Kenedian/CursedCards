@@ -11,6 +11,7 @@ let speechUnlockAttempted = false
 let speechUnlockInProgress = false
 let speechUnlocked = false
 let voiceLoadingInitialized = false
+let voicesChangedHandler = null
 
 const availableVoices =
   ref([])
@@ -127,11 +128,32 @@ function refreshAvailableVoices() {
   availableVoices.value =
     window.speechSynthesis.getVoices()
 
+  if (
+    availableVoices.value.length > 0 &&
+    voicesChangedHandler
+  ) {
+    window.speechSynthesis.removeEventListener?.(
+      "voiceschanged",
+      voicesChangedHandler
+    )
+
+    if (
+      window.speechSynthesis.onvoiceschanged ===
+      voicesChangedHandler
+    ) {
+      window.speechSynthesis.onvoiceschanged =
+        null
+    }
+
+    voicesChangedHandler =
+      null
+  }
+
   return availableVoices.value
 }
 
 export function getAvailableVoices() {
-  return refreshAvailableVoices()
+  return availableVoices.value
 }
 
 export function getSelectedVoice() {
@@ -140,7 +162,7 @@ export function getSelectedVoice() {
   } = useAudioSettings()
 
   const voices =
-    refreshAvailableVoices()
+    availableVoices.value
 
   return (
     voices.find(
@@ -172,7 +194,7 @@ export function getBestVoice() {
   } = useAudioSettings()
 
   const voices =
-    refreshAvailableVoices()
+    availableVoices.value
 
   if (!voices.length) {
     return null
@@ -212,16 +234,24 @@ function initializeVoiceLoading() {
   voiceLoadingInitialized =
     true
 
-  refreshAvailableVoices()
+  const voices =
+    refreshAvailableVoices()
+
+  if (voices.length > 0) {
+    return
+  }
+
+  voicesChangedHandler =
+    refreshAvailableVoices
 
   window.speechSynthesis.addEventListener?.(
     "voiceschanged",
-    refreshAvailableVoices
+    voicesChangedHandler
   )
 
   if (!window.speechSynthesis.addEventListener) {
     window.speechSynthesis.onvoiceschanged =
-      refreshAvailableVoices
+      voicesChangedHandler
   }
 }
 

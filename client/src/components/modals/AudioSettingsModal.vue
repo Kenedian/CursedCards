@@ -32,30 +32,28 @@ const {
 const {
   speak,
   availableVoices,
-  getBestVoice,
   setSelectedVoice
 } = useSpeechSynthesis()
 
 const selectedVoiceKey = computed({
   get() {
-    return (
-      voiceKey(
-        availableVoices.value.find(
-          voice =>
-            (
-              selectedTtsVoice.value?.voiceURI &&
-              voice.voiceURI === selectedTtsVoice.value.voiceURI
-            ) ||
-            (
-              voice.name === selectedTtsVoice.value?.name &&
-              voice.lang === selectedTtsVoice.value?.lang
-            )
-        )
-
-        ||
-
-        getBestVoice()
+    const selectedVoice =
+      availableVoices.value.find(
+        voice =>
+          (
+            selectedTtsVoice.value?.voiceURI &&
+            voice.voiceURI === selectedTtsVoice.value.voiceURI
+          ) ||
+          (
+            voice.name === selectedTtsVoice.value?.name &&
+            voice.lang === selectedTtsVoice.value?.lang
+          )
       )
+
+    return (
+      selectedVoice
+        ? voiceKey(selectedVoice)
+        : ""
     )
   },
 
@@ -242,9 +240,14 @@ function previewTts() {
               availableVoices.length === 0
             "
           >
+            <option value="">
+              Automatic - Czech preferred
+            </option>
+
             <option
               v-if="availableVoices.length === 0"
-              value=""
+              value="__no_voices__"
+              disabled
             >
               No browser voices found
             </option>
