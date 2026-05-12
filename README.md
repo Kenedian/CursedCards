@@ -35,9 +35,106 @@ Available here: https://cursed-cards-eight.vercel.app/
 
 The app uses free hosting, so the backend may take around 30 seconds to wake up after inactivity. The database is also hosted on a free tier, so some admin/game actions may be slower.
 
-## Setup
+## Local Setup
 
-Clone the repository and create `.env` files inside both the `client` and `server` folders using the provided `.env.template` files.
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Kenedian/CursedCards.git
+cd CursedCards
+```
+
+### 2. Install dependencies
+
+Open two terminals.
+
+Terminal 1:
+
+```bash
+cd client
+npm install
+```
+
+Terminal 2:
+
+```bash
+cd server
+npm install
+```
+
+### 3. Create environment files
+
+Both the `client` and `server` folders contain `.env.template` files.
+
+Create `client/.env`:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+Create `server/.env`:
+
+```env
+ADMIN_PASSWORD=your_password
+PORT=3000
+CLIENT_URL=http://localhost:5173
+TURSO_DATABASE_URL=your_turso_database_url
+TURSO_AUTH_TOKEN=your_turso_auth_token
+```
+
+### 4. Start the development servers
+
+Terminal 1:
+
+```bash
+cd client
+npm run dev
+```
+
+Terminal 2:
+
+```bash
+cd server
+npm run dev
+```
+
+Frontend:
+
+```txt
+http://localhost:5173
+```
+
+Backend:
+
+```txt
+http://localhost:3000
+```
+
+## Environment Variables
+
+### Client
+
+`VITE_API_URL`
+- URL of the backend server
+
+### Server
+
+`ADMIN_PASSWORD`
+- Password for the admin panel
+
+`PORT`
+- Backend server port
+
+`CLIENT_URL`
+- Frontend URL used for CORS/socket connections
+
+`TURSO_DATABASE_URL`
+- Turso database URL
+
+`TURSO_AUTH_TOKEN`
+- Turso authentication token
+
+- Turso offers free hobby SQLite hosting here: https://turso.tech/
 
 ## Screenshots
 
