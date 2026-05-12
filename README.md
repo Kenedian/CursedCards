@@ -14,6 +14,7 @@ The project focuses on real-time multiplayer flow, lobby management, custom card
 - White/black card gameplay with multi-blank support
 - Voting phase and score tracking
 - TTS reveal of player submissions
+- Selectable voice for TTS
 - Animated game-over / winner screen
 - Player kick support
 - 2-minute reconnect window for refreshes or temporary socket drops
@@ -176,5 +177,6 @@ http://localhost:3000
 <img width="1918" height="861" alt="image" src="https://github.com/user-attachments/assets/3416177e-6194-4eac-b265-8c3bf00dd04e" />
 
 # Settings Modal
-<img width="682" height="702" alt="image" src="https://github.com/user-attachments/assets/d6603af5-ca36-4bbd-8f69-8f59aca9d7c4" />
+<img width="698" height="828" alt="image" src="https://github.com/user-attachments/assets/97f63977-6efa-4ca9-968c-d8944cf47b4d" />
+
 
