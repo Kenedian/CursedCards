@@ -57,7 +57,7 @@ Clone the repository and create `.env` files inside both the `client` and `serve
 <img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/11fd6069-9ad1-461b-bc7b-afb0e3519cd1" />
 
 # Game (Game-over Screen)
-- To be added
+<img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/3e77ee31-4c0f-4cd1-b600-19a7720acfee" />
 
 # Admin Panel (Create Card)
 <img width="1918" height="863" alt="image" src="https://github.com/user-attachments/assets/fe13023e-e4a6-4f59-b564-930a59bfcc76" />
