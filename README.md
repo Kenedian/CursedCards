@@ -82,6 +82,8 @@ TURSO_DATABASE_URL=your_turso_database_url
 TURSO_AUTH_TOKEN=your_turso_auth_token
 ```
 
+- Turso offers free hobby SQLite hosting here: https://turso.tech/
+
 ### 4. Start the development servers
 
 Terminal 1:
@@ -133,8 +135,6 @@ http://localhost:3000
 
 `TURSO_AUTH_TOKEN`
 - Turso authentication token
-
-- Turso offers free hobby SQLite hosting here: https://turso.tech/
 
 ## Screenshots
 
