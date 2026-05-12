@@ -6,6 +6,90 @@ from "vue"
 import useAudioSettings
 from "../useAudioSettings"
 
+let speechUnlockAttempted = false
+let speechUnlockInProgress = false
+let speechUnlocked = false
+
+export function unlockSpeechSynthesis() {
+  if (
+    speechUnlocked ||
+    speechUnlockInProgress ||
+    typeof window === "undefined" ||
+    !window.speechSynthesis
+  ) {
+    return
+  }
+
+  speechUnlockAttempted =
+    true
+
+  speechUnlockInProgress =
+    true
+
+  try {
+    speechSynthesis.getVoices()
+
+    speechSynthesis.resume()
+
+    speechSynthesis.cancel()
+
+    const utterance =
+      new SpeechSynthesisUtterance("test")
+
+    utterance.lang =
+      "cs-CZ"
+
+    utterance.volume =
+      0.08
+
+    utterance.rate =
+      2
+
+    const unlockTimeout =
+      setTimeout(() => {
+        if (speechUnlocked) {
+          return
+        }
+
+        speechUnlockInProgress =
+          false
+      }, 1500)
+
+    function markUnlocked() {
+      speechUnlocked =
+        true
+
+      speechUnlockInProgress =
+        false
+
+      clearTimeout(unlockTimeout)
+    }
+
+    utterance.onstart =
+      markUnlocked
+
+    utterance.onend =
+      () => {
+        markUnlocked()
+      }
+
+    utterance.onerror =
+      () => {
+        speechUnlockInProgress =
+          false
+
+        clearTimeout(unlockTimeout)
+      }
+
+    speechSynthesis.speak(
+      utterance
+    )
+  } catch {
+    speechUnlockInProgress =
+      false
+  }
+}
+
 function getBestVoice() {
   if (!window.speechSynthesis) {
     return null
@@ -101,6 +185,10 @@ export default function useSpeechSynthesis() {
         resolve()
 
         return
+      }
+
+      if (!speechUnlocked) {
+        unlockSpeechSynthesis()
       }
 
       let finished = false

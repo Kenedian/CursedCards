@@ -286,7 +286,7 @@ watch(
               {{ roundAmountLabel }}
             </div>
 
-            <span>
+            <span v-if="isHost">
               0 = infinite
             </span>
           </div>

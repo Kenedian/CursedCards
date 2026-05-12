@@ -1,6 +1,11 @@
 import useAudioSettings
 from "./useAudioSettings"
 
+import {
+  unlockSpeechSynthesis
+}
+from "./game/useSpeechSynthesis"
+
 const SOUND_FILES = {
   uiHover: "/sounds/ui-hover.mp3",
   uiClick: "/sounds/ui-click.mp3",
@@ -100,6 +105,8 @@ function getAudioContext() {
 }
 
 function unlockAudio() {
+
+  unlockSpeechSynthesis()
 
   const context =
     getAudioContext()
@@ -308,6 +315,8 @@ function handlePointerOut(event) {
 }
 
 function handleClick(event) {
+
+  unlockSpeechSynthesis()
 
   const target =
     closestInteractive(event.target)
