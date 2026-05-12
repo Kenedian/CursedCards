@@ -63,6 +63,51 @@ function calculateResults(room) {
     GAME_PHASES.RESULTS
 }
 
+function assignHost(room, player) {
+  room.players.forEach(candidate => {
+    candidate.isHost =
+      candidate.id === player.id
+  })
+
+  room.hostId =
+    player.id
+}
+
+function ensureActiveHost(room) {
+  const currentHost =
+    room.players.find(player =>
+      player.id === room.hostId
+    )
+
+  if (
+    currentHost &&
+    currentHost.connected !== false
+  ) {
+    assignHost(
+      room,
+      currentHost
+    )
+
+    return false
+  }
+
+  const nextHost =
+    room.players.find(player =>
+      player.connected !== false
+    )
+
+  if (!nextHost) {
+    return false
+  }
+
+  assignHost(
+    room,
+    nextHost
+  )
+
+  return true
+}
+
 function removePlayerFromRoom(
   room,
   playerId
@@ -171,16 +216,16 @@ function removePlayerFromRoom(
 
   ) {
 
-    room.hostId =
-      room.players[0].id
-
-    room.players[0].isHost =
-      true
+    assignHost(
+      room,
+      room.players[0]
+    )
   }
 }
 
 module.exports = {
 
   removePlayerFromRoom,
+  ensureActiveHost,
   calculateResults
 }

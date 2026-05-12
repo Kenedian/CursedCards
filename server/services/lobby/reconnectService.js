@@ -10,7 +10,8 @@ const {
   removePlayerFromRoom
 } = require("./playerLifecycleService")
 
-const RECONNECT_GRACE_MS = 120000
+const RECONNECT_GRACE_MS =
+  30 * 60 * 1000
 
 const pendingRemovals =
   new Map()

@@ -4,9 +4,6 @@ const SESSION_ID_KEY =
 const RECONNECT_INFO_KEY =
   "cursedCards.reconnectInfo"
 
-const RECONNECT_INFO_TTL_MS =
-  2 * 60 * 1000
-
 function createSessionId() {
   if (window.crypto?.randomUUID) {
     return window.crypto.randomUUID()
@@ -56,16 +53,6 @@ export function getReconnectInfo() {
     if (
       !info?.code ||
       !info?.username
-    ) {
-      clearReconnectInfo()
-
-      return null
-    }
-
-    if (
-      !info.savedAt ||
-      Date.now() - info.savedAt >
-      RECONNECT_INFO_TTL_MS
     ) {
       clearReconnectInfo()
 

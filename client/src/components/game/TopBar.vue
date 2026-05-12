@@ -34,6 +34,8 @@ const props = defineProps({
 
 const emit = defineEmits([
   "leave",
+  "end-game",
+  "force-voting",
   "next-round",
   "back-to-lobby",
   "reconnect",
@@ -84,6 +86,16 @@ const showRoundCapsule =
     )
   })
 
+const showEndGameButton =
+  computed(() => {
+
+    return (
+      props.isHost &&
+      props.phase !==
+      GAME_PHASES.GAME_OVER
+    )
+  })
+
 const phaseConfig =
   computed(() => {
 
@@ -117,6 +129,23 @@ const phaseConfig =
       // REVEAL
 
       case GAME_PHASES.REVEAL:
+
+        if (props.isHost) {
+
+          return {
+
+            text:
+              "Start Voting",
+
+            className:
+              "btn-primary",
+
+            disabled: false,
+
+            action:
+              "force-voting"
+          }
+        }
 
         return {
 
@@ -261,6 +290,23 @@ function handleAction() {
         "
       >
         Leave
+      </button>
+
+      <button
+        v-if="
+          showEndGameButton
+        "
+
+        class="
+          btn
+          end-game-button
+        "
+
+        @click="
+          emit('end-game')
+        "
+      >
+        End Game
       </button>
 
       <button
@@ -553,6 +599,54 @@ function handleAction() {
     0 0 24px rgba(255,80,80,0.18);
 }
 
+.end-game-button {
+  height: clamp(42px, 3vw, 58px);
+
+  padding: 0 clamp(14px, 1.1vw, 24px);
+
+  border:
+    1px solid rgba(255,216,77,0.34);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,216,77,0.14);
+
+  color:
+    var(--game-yellow);
+
+  font-size: clamp(14px, 0.95vw, 18px);
+  font-weight: 900;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 0 20px rgba(255,216,77,0.12);
+
+  transition:
+    transform 0.16s,
+    background 0.16s,
+    border-color 0.16s,
+    box-shadow 0.16s;
+}
+
+.end-game-button:hover,
+.end-game-button:focus {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(255,216,77,0.52);
+
+  background:
+    rgba(255,216,77,0.22);
+
+  color:
+    #ffe680;
+
+  box-shadow:
+    0 0 28px rgba(255,216,77,0.2);
+}
+
 .settings-button {
   width: clamp(42px, 3vw, 58px);
   height: clamp(42px, 3vw, 58px);
@@ -688,7 +782,8 @@ function handleAction() {
     gap: 8px;
   }
 
-  .leave-button {
+  .leave-button,
+  .end-game-button {
     height: 34px;
 
     padding: 0 12px;
@@ -762,6 +857,7 @@ function handleAction() {
   }
 
   .leave-button,
+  .end-game-button,
   .ready-button,
   .reconnect-button,
   .capsule {
@@ -812,6 +908,7 @@ function handleAction() {
   }
 
   .leave-button,
+  .end-game-button,
   .ready-button,
   .reconnect-button,
   .capsule {

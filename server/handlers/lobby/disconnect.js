@@ -11,6 +11,10 @@ const {
 } = require("../../services/lobby/reconnectService")
 
 const {
+  ensureActiveHost
+} = require("../../services/lobby/playerLifecycleService")
+
+const {
   handleRevealPlayerUnavailable
 } = require("../../services/game/revealPhaseService")
 
@@ -46,6 +50,8 @@ function registerDisconnect(
 
         exists.connected =
           false
+
+        ensureActiveHost(room)
 
         schedulePlayerRemoval(
           io,

@@ -24,11 +24,6 @@ from "../composables/useToast"
 import AudioSettingsModal
 from "../components/modals/AudioSettingsModal.vue"
 
-import {
-  clearReconnectInfo
-}
-from "../utils/reconnectSession"
-
 const {
   currentLobby,
   currentPlayer,
@@ -169,8 +164,6 @@ function leaveLobby() {
   )
 
   currentLobby.value = null
-
-  clearReconnectInfo()
 }
 
 function kickPlayer(playerId) {

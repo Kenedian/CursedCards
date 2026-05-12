@@ -11,11 +11,6 @@ import {
 }
 from "../../../../shared/constants/gamePhases"
 
-import {
-  clearReconnectInfo
-}
-from "../../utils/reconnectSession"
-
 export default function useGameActions({
 
   currentLobby,
@@ -93,6 +88,24 @@ export default function useGameActions({
     )
   }
 
+  function endGame() {
+
+    socket.emit(
+      SOCKET_EVENTS.END_GAME,
+
+      currentLobby.value.code
+    )
+  }
+
+  function forceVoting() {
+
+    socket.emit(
+      SOCKET_EVENTS.FORCE_VOTING,
+
+      currentLobby.value.code
+    )
+  }
+
   function leaveGame() {
 
     socket.emit(
@@ -102,8 +115,6 @@ export default function useGameActions({
     )
 
     currentLobby.value = null
-
-    clearReconnectInfo()
   }
 
   function kickPlayer(playerId) {
@@ -127,6 +138,8 @@ export default function useGameActions({
 
     nextRound,
     backToLobby,
+    endGame,
+    forceVoting,
 
     leaveGame,
     kickPlayer

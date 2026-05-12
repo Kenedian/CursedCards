@@ -19,6 +19,12 @@ const registerNextRound =
 const registerBackToLobby =
   require("./backToLobby")
 
+const registerEndGame =
+  require("./endGame")
+
+const registerForceVoting =
+  require("./forceVoting")
+
 module.exports =
 function registerGameHandlers(
   io,
@@ -56,6 +62,16 @@ function registerGameHandlers(
   )
 
   registerBackToLobby(
+    io,
+    socket
+  )
+
+  registerEndGame(
+    io,
+    socket
+  )
+
+  registerForceVoting(
     io,
     socket
   )

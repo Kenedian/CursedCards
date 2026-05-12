@@ -61,6 +61,12 @@ export const SOCKET_EVENTS = {
   BACK_TO_LOBBY:
     "back-to-lobby",
 
+  END_GAME:
+    "end-game",
+
+  FORCE_VOTING:
+    "force-voting",
+
   REVEAL_FINISHED:
    "reveal-finished",
 

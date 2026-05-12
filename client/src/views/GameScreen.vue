@@ -85,6 +85,8 @@ const {
 
   nextRound,
   backToLobby,
+  endGame,
+  forceVoting,
 
   leaveGame,
   kickPlayer
@@ -158,6 +160,14 @@ function handleSelectVote(id) {
 
       @back-to-lobby="
         backToLobby
+      "
+
+      @end-game="
+        endGame
+      "
+
+      @force-voting="
+        forceVoting
       "
 
       @leave="

@@ -14,6 +14,10 @@ const {
   cancelPendingRemoval
 } = require("../../services/lobby/reconnectService")
 
+const {
+  ensureActiveHost
+} = require("../../services/lobby/playerLifecycleService")
+
 function normalize(value) {
   return String(value || "")
     .toLowerCase()
@@ -101,6 +105,8 @@ function registerReconnectLobby(
         player.isHost =
           true
       }
+
+      ensureActiveHost(room)
 
       if (room.game) {
         room.game.submissions.forEach(submission => {

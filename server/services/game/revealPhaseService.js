@@ -60,7 +60,7 @@ function getRevealMinimumDelay(room) {
 }
 
 function getRevealFallbackDelay(room) {
-  return getRevealMinimumDelay(room) + 30000
+  return getRevealMinimumDelay(room) + 8000
 }
 
 function getRevealPlayerKey(player) {
@@ -236,6 +236,7 @@ function handleRevealPlayerUnavailable(io, room) {
 }
 
 module.exports = {
+  completeReveal,
   scheduleRevealFallback,
   handleRevealFinished,
   handleRevealPlayerUnavailable

@@ -48,7 +48,6 @@ const joinCode =
 const reconnectInfo =
   ref(getReconnectInfo())
 
-let reconnectExpiryTimer = null
 let reconnectAttempting = false
 
 const settingsOpen =
@@ -166,24 +165,8 @@ function refreshReconnectInfo() {
     getReconnectInfo()
 }
 
-function scheduleReconnectExpiry() {
-  if (reconnectExpiryTimer) {
-    clearTimeout(
-      reconnectExpiryTimer
-    )
-  }
-
-  reconnectExpiryTimer =
-    setTimeout(() => {
-      refreshReconnectInfo()
-    }, 2 * 60 * 1000)
-}
-
 function isReconnectFailure(message) {
-  return [
-    "Lobby not found",
-    "Reconnect failed"
-  ].includes(message)
+  return message === "Lobby not found"
 }
 
 function handleLobbySuccess() {
@@ -213,8 +196,6 @@ function handleLobbyError(
 onMounted(() => {
   refreshReconnectInfo()
 
-  scheduleReconnectExpiry()
-
   socket.on(
     SOCKET_EVENTS.CREATE_LOBBY_SUCCESS,
     handleLobbySuccess
@@ -237,12 +218,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (reconnectExpiryTimer) {
-    clearTimeout(
-      reconnectExpiryTimer
-    )
-  }
-
   socket.off(
     SOCKET_EVENTS.CREATE_LOBBY_SUCCESS,
     handleLobbySuccess
@@ -343,6 +318,8 @@ onUnmounted(() => {
             placeholder="Lobby code"
 
             class="form-control"
+
+            @keyup.enter="joinLobby"
           >
 
           <input
@@ -353,6 +330,8 @@ onUnmounted(() => {
             placeholder="Your name"
 
             class="form-control"
+
+            @keyup.enter="joinLobby"
           >
 
           <button
@@ -384,6 +363,8 @@ onUnmounted(() => {
               placeholder="Your name"
 
               class="form-control"
+
+              @keyup.enter="createLobby"
             >
 
             <button

@@ -27,6 +27,32 @@ const {
 } = useGameStore()
 
 export default function registerGameSocketListeners() {
+  let hasTriedInitialReconnect = false
+  let reconnectInFlight = false
+
+  function saveReconnectInfoFromRoom(room) {
+    const sessionId =
+      getClientSessionId()
+
+    const player =
+      room.players.find(
+        player =>
+          player.id === socket.id ||
+          player.sessionId === sessionId
+      )
+
+    if (!player?.username) {
+      return
+    }
+
+    saveReconnectInfo({
+      code:
+        room.code,
+
+      username:
+        player.username
+    })
+  }
 
   function reconnectToSavedLobby() {
     const reconnectInfo =
@@ -38,6 +64,9 @@ export default function registerGameSocketListeners() {
     ) {
       return
     }
+
+    reconnectInFlight =
+      true
 
     socket.emit(
       SOCKET_EVENTS.RECONNECT_LOBBY,
@@ -61,17 +90,7 @@ export default function registerGameSocketListeners() {
         socket.id
       )
 
-      saveReconnectInfo({
-        code:
-          room.code,
-
-        username:
-          room.players.find(
-            player =>
-              player.id ===
-              socket.id
-          )?.username
-      })
+      saveReconnectInfoFromRoom(room)
 
       console.log(
         "created lobby",
@@ -91,17 +110,7 @@ export default function registerGameSocketListeners() {
         socket.id
       )
 
-      saveReconnectInfo({
-        code:
-          room.code,
-
-        username:
-          room.players.find(
-            player =>
-              player.id ===
-              socket.id
-          )?.username
-      })
+      saveReconnectInfoFromRoom(room)
 
       console.log(
         "joined lobby",
@@ -114,6 +123,8 @@ export default function registerGameSocketListeners() {
     SOCKET_EVENTS.RECONNECT_LOBBY_SUCCESS,
 
     room => {
+      reconnectInFlight =
+        false
 
       setLobby(room)
 
@@ -121,17 +132,7 @@ export default function registerGameSocketListeners() {
         socket.id
       )
 
-      saveReconnectInfo({
-        code:
-          room.code,
-
-        username:
-          room.players.find(
-            player =>
-              player.id ===
-              socket.id
-          )?.username
-      })
+      saveReconnectInfoFromRoom(room)
 
       console.log(
         "reconnected lobby",
@@ -147,6 +148,8 @@ export default function registerGameSocketListeners() {
 
       setLobby(room)
 
+      saveReconnectInfoFromRoom(room)
+
       console.log(
         "lobby updated",
         room
@@ -160,6 +163,8 @@ export default function registerGameSocketListeners() {
     room => {
 
       setLobby(room)
+
+      saveReconnectInfoFromRoom(room)
 
       console.log(
         "game updated",
@@ -182,12 +187,38 @@ export default function registerGameSocketListeners() {
   )
 
   socket.on(
+    SOCKET_EVENTS.LOBBY_ERROR,
+
+    () => {
+      if (!reconnectInFlight) {
+        return
+      }
+
+      reconnectInFlight =
+        false
+    }
+  )
+
+  socket.on(
     "connect",
 
     () => {
-      if (currentLobby.value) {
+      if (
+        currentLobby.value ||
+        !hasTriedInitialReconnect
+      ) {
+        hasTriedInitialReconnect =
+          true
+
         reconnectToSavedLobby()
       }
     }
   )
+
+  if (socket.connected) {
+    hasTriedInitialReconnect =
+      true
+
+    reconnectToSavedLobby()
+  }
 }
