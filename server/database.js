@@ -1,15 +1,34 @@
+const path =
+  require("path")
+
 const {
   createClient
 } = require("@libsql/client")
 
+const useLocalSqlite =
+  process.env.USE_LOCAL_SQLITE ===
+  "true"
+
 const db =
   createClient({
 
-    url:
-      process.env.TURSO_DATABASE_URL,
+    url: useLocalSqlite
 
-    authToken:
-      process.env.TURSO_AUTH_TOKEN
+      ? `file:${path.join(
+          __dirname,
+          "db",
+          "testingDatabase.db"
+        )}`
+
+      : process.env
+          .TURSO_DATABASE_URL,
+
+    authToken: useLocalSqlite
+
+      ? undefined
+
+      : process.env
+          .TURSO_AUTH_TOKEN
   })
 
 async function initDatabase() {
@@ -35,7 +54,12 @@ async function initDatabase() {
   `)
 
   console.log(
-    "database initialized"
+
+    useLocalSqlite
+
+      ? "local sqlite database initialized"
+
+      : "turso database initialized"
   )
 }
 

@@ -449,29 +449,6 @@ function confirmDelete() {
   padding-top: 16px;
 }
 
-.cards-grid::-webkit-scrollbar {
-  width: 14px;
-}
-
-.cards-grid::-webkit-scrollbar-track {
-  background: #080a09;
-
-  border-radius: 10px;
-}
-
-.cards-grid::-webkit-scrollbar-thumb {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(47,230,107,0.55),
-      rgba(47,230,107,0.18)
-    );
-
-  border-radius: 10px;
-
-  border: 3px solid #080a09;
-}
-
 .card-wrapper {
   display: flex;
   justify-content: center;

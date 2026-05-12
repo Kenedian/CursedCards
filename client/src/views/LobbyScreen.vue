@@ -931,24 +931,6 @@ watch(
   padding-right: clamp(8px, 0.55vw, 22px);
 }
 
-.players-list::-webkit-scrollbar {
-  width: 18px;
-}
-
-.players-list::-webkit-scrollbar-track {
-  background: #151515;
-
-  border-radius: 999px;
-}
-
-.players-list::-webkit-scrollbar-thumb {
-  background: #444;
-
-  border-radius: 999px;
-
-  border: 3px solid #151515;
-}
-
 /* PLAYER ROW */
 
 .player-row {

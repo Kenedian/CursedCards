@@ -71,6 +71,66 @@ body,
   --game-blue: #4d9cff;
   --game-muted: rgba(255,255,255,0.68);
   --game-shadow: 0 22px 60px rgba(0,0,0,0.48);
+  --game-scrollbar-track: #080a09;
+  --game-scrollbar-thumb: rgba(47,230,107,0.5);
+  --game-scrollbar-thumb-hover: rgba(47,230,107,0.72);
+  --game-scrollbar-thumb-active: rgba(255,216,77,0.76);
+}
+
+* {
+  scrollbar-color:
+    var(--game-scrollbar-thumb)
+    var(--game-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+*::-webkit-scrollbar-track {
+  background:
+    var(--game-scrollbar-track);
+
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      var(--game-scrollbar-thumb),
+      rgba(47,230,107,0.2)
+    );
+
+  border:
+    3px solid var(--game-scrollbar-track);
+
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      var(--game-scrollbar-thumb-hover),
+      rgba(47,230,107,0.32)
+    );
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background:
+    linear-gradient(
+      180deg,
+      var(--game-scrollbar-thumb-active),
+      rgba(255,216,77,0.38)
+    );
+}
+
+*::-webkit-scrollbar-corner {
+  background:
+    var(--game-scrollbar-track);
 }
 
 /* AMBIENT BACKGROUND */
