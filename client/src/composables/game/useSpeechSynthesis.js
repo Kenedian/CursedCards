@@ -34,16 +34,16 @@ export function unlockSpeechSynthesis() {
     speechSynthesis.cancel()
 
     const utterance =
-      new SpeechSynthesisUtterance("test")
+      new SpeechSynthesisUtterance(".")
 
     utterance.lang =
       "cs-CZ"
 
     utterance.volume =
-      0.08
+      0.000001
 
     utterance.rate =
-      2
+      10
 
     const unlockTimeout =
       setTimeout(() => {

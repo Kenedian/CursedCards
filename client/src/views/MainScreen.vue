@@ -48,6 +48,9 @@ const joinCode =
 const reconnectInfo =
   ref(getReconnectInfo())
 
+let reconnectExpiryTimer = null
+let reconnectAttempting = false
+
 const settingsOpen =
   ref(false)
 
@@ -132,6 +135,9 @@ function reconnectLobby() {
     return
   }
 
+  reconnectAttempting =
+    true
+
   socket.emit(
     SOCKET_EVENTS.RECONNECT_LOBBY,
 
@@ -155,7 +161,34 @@ function forgetReconnect() {
     null
 }
 
+function refreshReconnectInfo() {
+  reconnectInfo.value =
+    getReconnectInfo()
+}
+
+function scheduleReconnectExpiry() {
+  if (reconnectExpiryTimer) {
+    clearTimeout(
+      reconnectExpiryTimer
+    )
+  }
+
+  reconnectExpiryTimer =
+    setTimeout(() => {
+      refreshReconnectInfo()
+    }, 2 * 60 * 1000)
+}
+
+function isReconnectFailure(message) {
+  return [
+    "Lobby not found",
+    "Reconnect failed"
+  ].includes(message)
+}
+
 function handleLobbySuccess() {
+  reconnectAttempting =
+    false
 
   emit("open-lobby")
 }
@@ -165,9 +198,22 @@ function handleLobbyError(
 ) {
 
   toastError(message)
+
+  if (
+    reconnectAttempting &&
+    isReconnectFailure(message)
+  ) {
+    reconnectAttempting =
+      false
+
+    forgetReconnect()
+  }
 }
 
 onMounted(() => {
+  refreshReconnectInfo()
+
+  scheduleReconnectExpiry()
 
   socket.on(
     SOCKET_EVENTS.CREATE_LOBBY_SUCCESS,
@@ -191,6 +237,11 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (reconnectExpiryTimer) {
+    clearTimeout(
+      reconnectExpiryTimer
+    )
+  }
 
   socket.off(
     SOCKET_EVENTS.CREATE_LOBBY_SUCCESS,
