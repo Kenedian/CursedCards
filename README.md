@@ -25,7 +25,7 @@ The project focuses on real-time multiplayer flow, lobby management, custom card
 - Vue 3
 - Node.js
 - Socket.IO
-- SQLite / Turso
+- Local SQLite demo database / Turso production database
 - Vercel frontend hosting
 - Render backend hosting
 
@@ -36,6 +36,7 @@ Available here: https://cursed-cards-eight.vercel.app/
 The app uses free hosting, so the backend may take around 30 seconds to wake up after inactivity. The database is also hosted on a free tier, so some admin/game actions may be slower.
 
 ## Local Setup
+#### By default, local setup uses the included safe for work demo database.
 
 ### 1. Clone the repository
 
@@ -139,10 +140,10 @@ http://localhost:3000
 - Frontend URL used for CORS/socket connections
 
 `TURSO_DATABASE_URL`
-- Turso database URL
+- Turso database URL, required only when `USE_LOCAL_SQLITE=false`
 
 `TURSO_AUTH_TOKEN`
-- Turso authentication token
+- Turso authentication token, required only when `USE_LOCAL_SQLITE=false`
 
 `USE_LOCAL_SQLITE`
 - Set to `true` to use the included local demo database
