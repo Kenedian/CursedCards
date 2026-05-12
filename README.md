@@ -5,7 +5,7 @@ Cursed Cards is a browser-based multiplayer party game inspired by classic fill-
 The project focuses on real-time multiplayer flow, lobby management, custom card administration, reconnect handling, animated reveals, voting, scoring and a polished game-over screen.
 
 > ⚠️ Content note  
-> The public demo uses a live card database created for a private friend group. Some cards may contain NSFW humor or inside jokes. The repository is primarily intended to showcase the code, architecture and gameplay systems. Screenshots below use safer examples.
+> The public demo uses a live card database created for a private friend group. Some cards may contain NSFW humor or inside jokes. The repository is primarily intended to showcase the code, architecture and gameplay systems. Screenshots below use safer examples or run your local build of this project - instructions below
 
 ## Features
 
@@ -25,19 +25,129 @@ The project focuses on real-time multiplayer flow, lobby management, custom card
 - Vue 3
 - Node.js
 - Socket.IO
-- SQLite / Turso
+- Local SQLite demo database / Turso production database
 - Vercel frontend hosting
 - Render backend hosting
 
 ## Live Demo
 
-Available here: https://cursed-cards-eight.vercel.app/
+Available here: https://cursed-cards-eight.vercel.app/ ⚠️NSFW Content⚠️
 
 The app uses free hosting, so the backend may take around 30 seconds to wake up after inactivity. The database is also hosted on a free tier, so some admin/game actions may be slower.
 
-## Setup
+## Local Setup
+#### By default, local setup uses the included safe for work demo database.
 
-Clone the repository and create `.env` files inside both the `client` and `server` folders using the provided `.env.template` files.
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Kenedian/CursedCards.git
+cd CursedCards
+```
+
+### 2. Install dependencies
+
+Open two terminals.
+
+Terminal 1:
+
+```bash
+cd client
+npm install
+```
+
+Terminal 2:
+
+```bash
+cd server
+npm install
+```
+
+### 3. Create environment files
+
+Both the `client` and `server` folders contain `.env.template` files.
+
+Create `client/.env`:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+Create `server/.env`:
+
+```env
+ADMIN_PASSWORD=your_password
+PORT=3000
+CLIENT_URL=http://localhost:5173
+USE_LOCAL_SQLITE=true
+```
+
+The repository includes a local demo SQLite database, so Turso setup is not required for local testing.
+
+If you want to use Turso instead, set `USE_LOCAL_SQLITE=false` and add:
+
+```env
+TURSO_DATABASE_URL=your_turso_database_url
+TURSO_AUTH_TOKEN=your_turso_auth_token
+```
+
+Turso offers free hobby SQLite hosting here: https://turso.tech/
+
+### 4. Start the development servers
+
+Terminal 1:
+
+```bash
+cd client
+npm run dev
+```
+
+Terminal 2:
+
+```bash
+cd server
+npm run dev
+```
+
+Frontend:
+
+```txt
+http://localhost:5173
+```
+
+Backend:
+
+```txt
+http://localhost:3000
+```
+
+## Environment Variables
+
+### Client
+
+`VITE_API_URL`
+- URL of the backend server
+
+### Server
+
+`ADMIN_PASSWORD`
+- Password for the admin panel
+
+`PORT`
+- Backend server port
+
+`CLIENT_URL`
+- Frontend URL used for CORS/socket connections
+
+`TURSO_DATABASE_URL`
+- Turso database URL, required only when `USE_LOCAL_SQLITE=false`
+
+`TURSO_AUTH_TOKEN`
+- Turso authentication token, required only when `USE_LOCAL_SQLITE=false`
+
+`USE_LOCAL_SQLITE`
+- Set to `true` to use the included local demo database
+- Set to `false` to use Turso
 
 ## Screenshots
 
